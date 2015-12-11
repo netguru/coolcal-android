@@ -1,0 +1,96 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'de.felixschulze.gradle.hockeyapp'
+
+// kockeyapp integration
+hockeyapp {
+    notify = 1 // 1 - Notify all testers
+    status = 2 // 2 - Make available for download
+    notesType = 1 // 1 - Markdown format
+    notes = "Build number: " + System.getenv("CIRCLE_BUILD_NUM")
+    variantToApiToken = [
+            stagingDebug     : "11fd3051b7e84463a3886d697ad4a1ac",
+            productionRelease: "a215b9c3e6db473190c3c87bdb4d866f"
+    ]
+    variantToReleaseType = [
+            stagingDebug     : 0, // 0 - Beta release
+            productionRelease: 1 // 1 - Live release
+    ]
+    variantToApplicationId = [
+            stagingDebug     : "58ea9641fa3f44f39ca9e8de891460ad",
+            productionRelease: "289d8cbf7a8c4c808aab7b60b7923c3e",
+    ]
+    mappingFileNameRegex = "mapping.txt"
+}
+
+// CI
+project.ext {
+    circleDir = System.getenv("CIRCLE_ARTIFACTS") ?: "./build"
+    versionCode = Integer.parseInt(System.getenv("CIRCLE_BUILD_NUM") ?: "0")
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "co.netguru.android.coolcal"
+        minSdkVersion 18
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        staging {
+            applicationId "co.netguru.android.coolcal.staging"
+        }
+
+        production {
+            applicationId "co.netguru.android.coolcal"
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+
+dependencies {
+    // lang support
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // lib
+    compile 'net.hockeyapp.android:HockeySDK:2.2.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+
+    // module
+    compile project(':owm')
+}
+
+buildscript {
+    ext.kotlin_version = '1.0.0-beta-3595'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+repositories {
+    mavenCentral()
+}
