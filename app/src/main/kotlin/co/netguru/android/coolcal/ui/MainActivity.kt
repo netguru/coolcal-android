@@ -14,7 +14,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val toolbar = findViewById(R.id.toolbar) as Toolbar
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp)
         setSupportActionBar(toolbar)
+        supportActionBar.setDisplayShowHomeEnabled(true)
+        supportActionBar.setDisplayShowTitleEnabled(false)
 
         checkForUpdates()
     }
