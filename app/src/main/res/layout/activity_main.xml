@@ -1,40 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    sothree:umanoPanelHeight="?attr/actionBarSize"
+    sothree:umanoShadowHeight="4dp">
 
-<!--<android.support.design.widget.CoordinatorLayout -->
-    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--tools:context=".MainActivity">-->
+    <include
+        android:id="@+id/content_panel_top"
+        layout="@layout/content_panel_top" />
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:sothree="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/sliding_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        sothree:umanoPanelHeight="?attr/actionBarSize"
-        sothree:umanoShadowHeight="4dp">
+    <include
+        android:id="@+id/content_panel_bottom"
+        layout="@layout/content_panel_bottom" />
 
-        <include
-            android:id="@+id/content_panel_top"
-            layout="@layout/content_panel_top" />
-
-        <include
-            android:id="@+id/content_panel_bottom"
-            layout="@layout/content_panel_bottom" />
-
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
-
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--android:src="@drawable/ic_event_note_white_24dp"-->
-        <!--app:layout_anchorGravity="bottom|end"-->
-        <!--app:layout_anchor="@id/content_panel_bottom" />-->
-
-<!--</android.support.design.widget.CoordinatorLayout>-->
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
