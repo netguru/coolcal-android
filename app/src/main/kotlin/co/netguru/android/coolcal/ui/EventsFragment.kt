@@ -1,7 +1,13 @@
 package co.netguru.android.coolcal.ui
 
+import android.content.Context
+import android.database.Cursor
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.support.v4.app.Fragment
+import android.support.v4.app.LoaderManager
+import android.support.v4.content.CursorLoader
+import android.support.v4.content.Loader
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,13 +16,21 @@ import android.view.ViewGroup
 import butterknife.bindView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.model.Event
+import co.netguru.android.coolcal.model.EventsAdapter
+import co.netguru.android.coolcal.model.Loaders
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration
 import java.util.concurrent.TimeUnit
 
-class EventsFragment : Fragment(), EventsLoader.EventsListListener {
+class EventsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     val recyclerView: RecyclerView by bindView(R.id.events_recyclerview)
-    val adapter = EventsAdapter()
+    var adapter: EventsAdapter? = null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        adapter = EventsAdapter(context!!, null)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,11 +38,10 @@ class EventsFragment : Fragment(), EventsLoader.EventsListListener {
         val now = System.currentTimeMillis()
         val weekLater = now + TimeUnit.DAYS.toMillis(7)
         val data = Bundle()
-        data.putLong(EventsLoader.ARG_DT_FROM, now)
-        data.putLong(EventsLoader.ARG_DT_TO, weekLater)
+        data.putLong(Event.ARG_DT_FROM, now)
+        data.putLong(Event.ARG_DT_TO, weekLater)
 
-        val loader = EventsLoader(context, this)
-        activity.supportLoaderManager.initLoader(EventsLoader.ID, data, loader)
+        activity.supportLoaderManager.initLoader(Loaders.EVENT_LOADER, data, this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -47,18 +60,34 @@ class EventsFragment : Fragment(), EventsLoader.EventsListListener {
         recyclerView.layoutManager = LinearLayoutManager(context)
         val decor = StickyRecyclerHeadersDecoration(adapter)
         recyclerView.addItemDecoration(decor)
-        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+        adapter!!.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 decor.invalidateHeaders()
             }
         })
     }
 
-    override fun onReset() {
-        adapter.events = emptyList()
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor>? {
+        val selectionArgs = arrayOf(
+                args?.getLong(Event.ARG_DT_FROM).toString(),
+                args?.getLong(Event.ARG_DT_TO).toString())
+        return when (id) {
+            Event.ID -> CursorLoader(context,
+                    Event.EVENTS_URI,
+                    Event.EVENTS_PROJECTION,
+                    Event.EVENTS_DTSTART_SELECTION,
+                    selectionArgs,
+                    CalendarContract.Events.DTSTART)
+
+            else -> null
+        }
     }
 
-    override fun onLoad(events: List<Event>) {
-        adapter.events = events
+    override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
+        adapter!!.swapCursor(data)
+    }
+
+    override fun onLoaderReset(loader: Loader<Cursor>?) {
+        // nic
     }
 }
