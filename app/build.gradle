@@ -71,12 +71,16 @@ android {
 dependencies {
     // lang support
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
     // lib
     compile 'net.hockeyapp.android:HockeySDK:2.2.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.sothree.slidinguppanel:library:3.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
+    compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+    compile 'joda-time:joda-time:2.9.1'
 
     // module
     compile project(':owm')
@@ -89,6 +93,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
     }
 }
 repositories {

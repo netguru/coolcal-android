@@ -7,7 +7,8 @@ import retrofit.RxJavaCallAdapterFactory
 
 object OpenWeatherMap {
 
-    val client = OkHttpClient();
+    val client = OkHttpClient()
+
     val api: OpenWeatherMapApi by lazy {
 
         val retrofit = Retrofit.Builder()

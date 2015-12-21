@@ -1,0 +1,73 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ui.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <ImageView
+        android:id="@+id/weather_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/weather_icon_description" />
+
+    <TextView
+        android:id="@+id/weather_technical_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/weather_icon"
+        android:layout_centerHorizontal="true"
+        tools:text="Scattered clouds" />
+
+    <TextView
+        android:id="@+id/weather_informal_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/weather_technical_description"
+        android:layout_centerHorizontal="true"
+        tools:text="It will be a lovely day!" />
+
+    <LinearLayout
+        android:id="@+id/weather_temp_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/weather_icon"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/weather_day_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="21\u00b0" />
+
+        <TextView
+            android:id="@+id/weather_night_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="12\u00b0" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/weather_wind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/weather_temp_layout"
+        android:layout_centerHorizontal="true"
+        tools:text="Wind: 2 mph E" />
+
+    <TextView
+        android:id="@+id/weather_pressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/weather_wind"
+        android:layout_centerHorizontal="true"
+        tools:text="Pressure: 1 036 mb" />
+
+</RelativeLayout>
