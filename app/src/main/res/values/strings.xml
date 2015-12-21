@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CoolCal</string>
+    <string name="weather_icon_description">Weather condition icon</string>
 </resources>
