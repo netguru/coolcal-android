@@ -2,9 +2,9 @@ package co.netguru.android.coolcal.ui
 
 import android.content.Context
 import android.database.Cursor
+import android.location.Location
 import android.os.Bundle
 import android.provider.CalendarContract
-import android.support.v4.app.Fragment
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
@@ -24,7 +24,8 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class EventsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
+class EventsFragment : BaseFragment(),
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     val recyclerView: RecyclerView by bindView(R.id.events_recyclerview)
     var adapter: EventsAdapter? = null
@@ -38,12 +39,13 @@ class EventsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initForecastRequest()
         initEventsLoading()
     }
 
-    private fun initForecastRequest() {
-        OpenWeatherMap.api.getForecast(city = "Kraków")
+    private fun requestForecast(location: Location) {
+        val latitude= location.latitude
+        val longitude = location.longitude
+        OpenWeatherMap.api.getForecast(latitude, longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -108,6 +110,13 @@ class EventsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     override fun onLoaderReset(loader: Loader<Cursor>?) {
         // nic
+    }
+
+    override fun onLocationChanged(location: Location?) {
+        super.onLocationChanged(location)
+        if(location != null) {
+            requestForecast(location)
+        }
     }
 
     companion object {

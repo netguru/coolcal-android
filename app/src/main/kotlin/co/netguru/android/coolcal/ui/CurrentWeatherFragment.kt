@@ -1,7 +1,7 @@
 package co.netguru.android.coolcal.ui
 
+import android.location.Location
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +15,7 @@ import co.netguru.android.owm.api.WeatherResponse
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
-class CurrentWeatherFragment : Fragment() {
+class CurrentWeatherFragment : BaseFragment() {
 
     val weatherIcon: ImageView by bindView<ImageView>(R.id.weather_icon)
     val technicalDescrView: TextView by bindView<TextView>(R.id.weather_technical_description)
@@ -32,13 +32,12 @@ class CurrentWeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        requestWeather()
     }
 
-    private fun requestWeather() {
-        // todo: implement location serv. (hardcoded location)
-        OpenWeatherMap.api.getWeather("Kraków")
+    private fun requestWeather(location: Location) {
+        val latitude= location.latitude
+        val longitude = location.longitude
+        subscription = OpenWeatherMap.api.getWeather(latitude, longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -57,5 +56,12 @@ class CurrentWeatherFragment : Fragment() {
         nightTempView.text = "??"
         windView.text = "Wind: ${data.wind?.speed}"
         pressureView.text = "Pressure: ${data.main?.pressure}"
+    }
+
+    override fun onLocationChanged(location: Location?) {
+        super.onLocationChanged(location)
+        if(location != null) {
+            requestWeather(location)
+        }
     }
 }

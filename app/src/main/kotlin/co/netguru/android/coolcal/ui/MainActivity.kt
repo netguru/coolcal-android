@@ -3,11 +3,31 @@ package co.netguru.android.coolcal.ui
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import co.netguru.android.coolcal.R
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationServices
 import net.hockeyapp.android.CrashManager
 import net.hockeyapp.android.UpdateManager
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
+
+    val googleApiClient: GoogleApiClient by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+        GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build()
+    }
+
+    val fragments: List<BaseFragment> by lazy {
+        arrayListOf(supportFragmentManager
+                        .findFragmentById(R.id.weather_fragment) as BaseFragment,
+                    supportFragmentManager
+                        .findFragmentById(R.id.events_fragment) as BaseFragment)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +42,18 @@ class MainActivity : AppCompatActivity() {
         checkForUpdates()
     }
 
+    override fun onStart() {
+        super.onStart()
+        googleApiClient.connect()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (googleApiClient.isConnected) {
+            googleApiClient.disconnect();
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         checkForCrashes()
@@ -34,5 +66,31 @@ class MainActivity : AppCompatActivity() {
     private fun checkForUpdates() {
         // TODO Remove this for store / production builds!
         UpdateManager.register(this, getString(R.string.appIdHockeyApp));
+    }
+
+    /*
+        Google API callbacks
+     */
+
+    override fun onConnectionFailed(result: ConnectionResult?) {
+        Log.e(TAG, "Connection Failed with code ${result?.errorCode}")
+        // todo: handle error code with GoogleApiAvailability
+    }
+
+    override fun onConnected(p0: Bundle?) {
+        val location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        if (location != null) {
+            fragments.forEach { fragment -> fragment.onLocationChanged(location) }
+        } else {
+            Log.e(TAG, "Null location!")
+        }
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+        googleApiClient.connect();
+    }
+
+    companion object {
+        val TAG = "MainActivity"
     }
 }
