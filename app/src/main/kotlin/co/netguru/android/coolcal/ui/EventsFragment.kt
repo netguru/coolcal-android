@@ -18,7 +18,10 @@ import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.model.Event
 import co.netguru.android.coolcal.model.EventsAdapter
 import co.netguru.android.coolcal.model.Loaders
+import co.netguru.android.owm.api.OpenWeatherMap
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class EventsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
@@ -35,8 +38,24 @@ class EventsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initForecastRequest()
+        initEventsLoading()
+    }
+
+    private fun initForecastRequest() {
+        OpenWeatherMap.api.getForecast(city = "Kraków")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    response -> adapter?.forecastResponse = response
+                }, {
+                    error -> // todo: handle error
+                })
+    }
+
+    private fun initEventsLoading() {
         val now = System.currentTimeMillis()
-        val weekLater = now + TimeUnit.DAYS.toMillis(7)
+        val weekLater = now + TimeUnit.DAYS.toMillis(5)
         val data = Bundle()
         data.putLong(Event.ARG_DT_FROM, now)
         data.putLong(Event.ARG_DT_TO, weekLater)
@@ -89,5 +108,9 @@ class EventsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     override fun onLoaderReset(loader: Loader<Cursor>?) {
         // nic
+    }
+
+    companion object {
+        val TAG = "EventsFragment"
     }
 }

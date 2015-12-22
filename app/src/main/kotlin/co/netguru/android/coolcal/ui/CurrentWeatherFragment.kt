@@ -37,7 +37,7 @@ class CurrentWeatherFragment : Fragment() {
     }
 
     private fun requestWeather() {
-        // todo: location
+        // todo: implement location serv. (hardcoded location)
         OpenWeatherMap.api.getWeather("Kraków")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -51,7 +51,7 @@ class CurrentWeatherFragment : Fragment() {
     private fun fillInfoWithData(data: WeatherResponse) {
         val weather = data.weather[0]
 
-        // todo: data formatting
+        // todo: export data formatting (this is a stub)
         technicalDescrView.text = weather.description
         dayTempView.text = "${data.main?.temperature}\u00b0"
         nightTempView.text = "??"

@@ -3,11 +3,14 @@ package co.netguru.android.coolcal.model
 import android.content.Context
 import android.database.Cursor
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import co.netguru.android.coolcal.R
+import co.netguru.android.owm.api.Forecast
+import co.netguru.android.owm.api.ForecastResponse
 import org.joda.time.DateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -16,13 +19,34 @@ class EventsAdapter(context: Context, cursor: Cursor?) :
         HeaderCursorRecyclerViewAdapter<EventsAdapter.EventHolder,
                 EventsAdapter.HeaderHolder>(context, cursor) {
 
+    companion object {
+        val TAG = "EventsAdapter"
+    }
+
+    private var _forecastResponse: ForecastResponse? = null
+    var forecastResponse: ForecastResponse?
+        get() = _forecastResponse
+        set(value) {
+            _forecastResponse = value
+            notifyDataSetChanged()
+        }
+
     /*
         Events
      */
 
     override fun onBindViewHolder(viewHolder: EventHolder?, cursor: Cursor?) {
         val event = Event.fromCursor(cursor!!)
-        viewHolder!!.bind(event)
+        val eventWeather = forecastResponse?.forecastList?.filter {
+            forecast ->
+                event.dtStart in forecast.range3h()
+        }?.lastOrNull()
+
+        if (eventWeather != null) {
+            Log.i(TAG, "PASS! ${event.title}")
+        }
+
+        viewHolder!!.bind(event, eventWeather)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): EventHolder? {
@@ -52,31 +76,25 @@ class EventsAdapter(context: Context, cursor: Cursor?) :
         return TimeUnit.MILLISECONDS.toDays(dtStart)
     }
 
-
-    abstract class Holder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        abstract fun bind(obj: T)
-    }
-
-    class EventHolder(itemView: View) : Holder<Event>(itemView) {
+    class EventHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val titleTextView: TextView by lazy {
             itemView.findViewById(R.id.event_title) as TextView
         }
 
-        override fun bind(obj: Event) {
-            titleTextView.text = obj.title
+        fun bind(obj: Event, forecast: Forecast?) {
+            titleTextView.text = "${obj.title} : ${forecast?.weatherList?.get(0)?.description}"
         }
 
     }
 
-    class HeaderHolder(itemView: View) : Holder<String>(itemView) {
+    class HeaderHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val dateTextView: TextView by lazy {
             itemView.findViewById(R.id.header_date) as TextView
         }
 
-        override fun bind(obj: String) {
+        fun bind(obj: String) {
             dateTextView.text = obj
         }
 
