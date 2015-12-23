@@ -3,6 +3,7 @@ package co.netguru.android.owm.api
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.util.ArrayList
+import java.util.concurrent.TimeUnit
 
 public data class ForecastResponse(@Expose @SerializedName("city") var city: City?,
                                    @Expose @SerializedName("cnt") var cnt: Long?,
@@ -27,7 +28,16 @@ public data class Forecast(@Expose @SerializedName("dt") var dt: Long?,
                            @Expose @SerializedName("wind") var wind: Wind?,
                            @Expose @SerializedName("rain") var rain: Rain?,
                            @Expose @SerializedName("snow") var snow: Snow?,
-                           @Expose @SerializedName("dt_txt") var dateString: String?)
+                           @Expose @SerializedName("dt_txt") var dateString: String?) {
+
+    public fun dtStartMillis(): Long = dt!!.times(1000)
+    public fun dtStopMillis(): Long = dt!!.times(1000) + (MILLIS_3H) - 1
+    public fun range3h(): LongRange = dtStartMillis().rangeTo(dtStopMillis())
+
+    companion object {
+        val MILLIS_3H = TimeUnit.HOURS.toMillis(3)
+    }
+}
 
 
 public data class Main(@Expose @SerializedName("temp") var temperature: Double?,

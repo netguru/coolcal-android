@@ -17,7 +17,6 @@ package co.netguru.android.coolcal.model;
  *
  */
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +26,8 @@ import android.support.v7.widget.RecyclerView;
  */
 
 @SuppressWarnings("DefaultFileTemplate")
-public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
-
-    private Context mContext;
+public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHolder>
+        extends RecyclerView.Adapter<VH> {
 
     private Cursor mCursor;
 
@@ -39,8 +37,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
 
     private DataSetObserver mDataSetObserver;
 
-    public CursorRecyclerViewAdapter(Context context, Cursor cursor) {
-        mContext = context;
+    public CursorRecyclerViewAdapter(Cursor cursor) {
         mCursor = cursor;
         mDataValid = cursor != null;
         mRowIdColumn = mDataValid ? mCursor.getColumnIndex("_id") : -1;
@@ -79,11 +76,11 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(VH viewHolder, int position) {
-        Cursor cursor = positionCursor(position);
+        Cursor cursor = moveCursorToPosition(position);
         onBindViewHolder(viewHolder, cursor);
     }
 
-    protected Cursor positionCursor(int position) {
+    protected Cursor moveCursorToPosition(int position) {
         if (!mDataValid) {
             throw new IllegalStateException("this should only be called when the cursor is valid");
         }
