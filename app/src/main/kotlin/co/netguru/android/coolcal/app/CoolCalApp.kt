@@ -14,6 +14,6 @@ class CoolCalApp : Application() {
         val owmApiKey = getString(R.string.owmApiKey)
         OpenWeatherMap.client.interceptors().add(OWMInterceptor(owmApiKey))
 
-        LeakCanary.install(this);
+        LeakCanary.install(this)
     }
 }

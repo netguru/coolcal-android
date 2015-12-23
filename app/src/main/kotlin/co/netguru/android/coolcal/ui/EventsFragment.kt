@@ -1,6 +1,5 @@
 package co.netguru.android.coolcal.ui
 
-import android.content.Context
 import android.database.Cursor
 import android.location.Location
 import android.os.Bundle
@@ -15,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import butterknife.bindView
 import co.netguru.android.coolcal.R
+import co.netguru.android.coolcal.model.CursorRecyclerViewAdapter
 import co.netguru.android.coolcal.model.Event
 import co.netguru.android.coolcal.model.EventsAdapter
 import co.netguru.android.coolcal.model.Loaders
@@ -22,19 +22,15 @@ import co.netguru.android.owm.api.OpenWeatherMap
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
 
 class EventsFragment : BaseFragment(),
         LoaderManager.LoaderCallbacks<Cursor> {
 
     val recyclerView: RecyclerView by bindView(R.id.events_recyclerview)
-    var adapter: EventsAdapter? = null
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-        adapter = EventsAdapter(context!!, null)
-    }
+    val adapter = EventsAdapter(null)
+    var decorDataObserver: RecyclerView.AdapterDataObserver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,15 +39,16 @@ class EventsFragment : BaseFragment(),
     }
 
     private fun requestForecast(location: Location) {
-        val latitude= location.latitude
+        val latitude = location.latitude
         val longitude = location.longitude
         OpenWeatherMap.api.getForecast(latitude, longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    response -> adapter?.forecastResponse = response
+                    response ->
+                    adapter.forecastResponse = response
                 }, {
-                    error -> // todo: handle error
+                    error -> // todo: handle possible error - retry?
                 })
     }
 
@@ -78,14 +75,20 @@ class EventsFragment : BaseFragment(),
 
     private fun initRecyclerView() {
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
         val decor = StickyRecyclerHeadersDecoration(adapter)
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.addItemDecoration(decor)
-        adapter!!.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
-            override fun onChanged() {
-                decor.invalidateHeaders()
-            }
-        })
+
+        decorDataObserver = DecorAdapterDataObserver(WeakReference(decor))
+        adapter.registerAdapterDataObserver(decorDataObserver)
+    }
+
+    override fun onDestroy() {
+        if (decorDataObserver != null) {
+            adapter.unregisterAdapterDataObserver(decorDataObserver)
+        }
+        activity.supportLoaderManager.destroyLoader(Loaders.EVENT_LOADER)
+        super.onDestroy()
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor>? {
@@ -105,7 +108,7 @@ class EventsFragment : BaseFragment(),
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
-        adapter!!.swapCursor(data)
+        adapter.swapCursor(data)
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>?) {
@@ -114,12 +117,20 @@ class EventsFragment : BaseFragment(),
 
     override fun onLocationChanged(location: Location?) {
         super.onLocationChanged(location)
-        if(location != null) {
+        if (location != null) {
             requestForecast(location)
         }
     }
 
     companion object {
         val TAG = "EventsFragment"
+    }
+
+    class DecorAdapterDataObserver(val decorRef: WeakReference<StickyRecyclerHeadersDecoration>)
+            : RecyclerView.AdapterDataObserver() {
+
+        override fun onChanged() {
+            decorRef.get()?.invalidateHeaders()
+        }
     }
 }

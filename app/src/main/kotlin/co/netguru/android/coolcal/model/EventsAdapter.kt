@@ -1,9 +1,7 @@
 package co.netguru.android.coolcal.model
 
-import android.content.Context
 import android.database.Cursor
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +13,9 @@ import org.joda.time.DateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class EventsAdapter(context: Context, cursor: Cursor?) :
+class EventsAdapter(cursor: Cursor?) :
         HeaderCursorRecyclerViewAdapter<EventsAdapter.EventHolder,
-                EventsAdapter.HeaderHolder>(context, cursor) {
+                EventsAdapter.HeaderHolder>(cursor) {
 
     companion object {
         val TAG = "EventsAdapter"
@@ -41,10 +39,6 @@ class EventsAdapter(context: Context, cursor: Cursor?) :
             forecast ->
                 event.dtStart in forecast.range3h()
         }?.lastOrNull()
-
-        if (eventWeather != null) {
-            Log.i(TAG, "PASS! ${event.title}")
-        }
 
         viewHolder!!.bind(event, eventWeather)
     }

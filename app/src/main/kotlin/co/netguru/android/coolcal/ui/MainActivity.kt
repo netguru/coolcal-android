@@ -1,11 +1,13 @@
 package co.netguru.android.coolcal.ui
 
+import android.content.IntentSender
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import co.netguru.android.coolcal.R
 import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import net.hockeyapp.android.CrashManager
@@ -14,7 +16,9 @@ import net.hockeyapp.android.UpdateManager
 class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener{
 
-    val googleApiClient: GoogleApiClient by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+    private var mResolvingError: Boolean = false
+
+    private val googleApiClient: GoogleApiClient by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
         GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -22,7 +26,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                 .build()
     }
 
-    val fragments: List<BaseFragment> by lazy {
+    private val fragments: List<BaseFragment> by lazy {
         arrayListOf(supportFragmentManager
                         .findFragmentById(R.id.weather_fragment) as BaseFragment,
                     supportFragmentManager
@@ -72,9 +76,29 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         Google API callbacks
      */
 
-    override fun onConnectionFailed(result: ConnectionResult?) {
-        Log.e(TAG, "Connection Failed with code ${result?.errorCode}")
-        // todo: handle error code with GoogleApiAvailability
+    private fun showErrorDialog(errorCode: Int) {
+        val dialog = GoogleApiAvailability.getInstance()
+                .getErrorDialog(this, errorCode, REQUEST_RESOLVE_ERROR);
+        dialog.setOnDismissListener({ mResolvingError = false; });
+        dialog.show();
+    }
+
+    override fun onConnectionFailed(result: ConnectionResult) {
+        Log.e(TAG, "Connection Failed with code ${result.errorCode}")
+        if(mResolvingError) {
+            return;
+        }
+        if(result.hasResolution()) {
+            try {
+                mResolvingError = true;
+                result.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+            } catch (e: IntentSender.SendIntentException) {
+                // todo: signal error to user
+            }
+        } else {
+            showErrorDialog(result.errorCode);
+            mResolvingError = true;
+        }
     }
 
     override fun onConnected(p0: Bundle?) {
@@ -92,5 +116,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
     companion object {
         val TAG = "MainActivity"
+        val REQUEST_RESOLVE_ERROR = 1000
     }
 }
