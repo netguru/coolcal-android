@@ -18,7 +18,7 @@ class EventsAdapter(cursor: Cursor?) :
                 EventsAdapter.HeaderHolder>(cursor) {
 
     companion object {
-        val TAG = "EventsAdapter"
+        const val TAG = "EventsAdapter"
     }
 
     private var _forecastResponse: ForecastResponse? = null

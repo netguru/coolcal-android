@@ -19,9 +19,9 @@ data class Event(val id: Long,
             return Event(id, title, dtStart, dtEnd)
         }
 
-        val ARG_DT_FROM = "dt_from"
-        val ARG_DT_TO = "dt_to"
-        val ID = 0
+        const val ARG_DT_FROM = "dt_from"
+        const val ARG_DT_TO = "dt_to"
+        const val ID = 0
         val EVENTS_URI = CalendarContract.Events.CONTENT_URI;
         val EVENTS_DTSTART_SELECTION =
                 "${CalendarContract.Events.DTSTART} >= ? AND " +

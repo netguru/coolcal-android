@@ -28,6 +28,10 @@ import java.util.concurrent.TimeUnit
 class EventsFragment : BaseFragment(),
         LoaderManager.LoaderCallbacks<Cursor> {
 
+    companion object {
+        const val TAG = "EventsFragment"
+    }
+
     val recyclerView: RecyclerView by bindView(R.id.events_recyclerview)
     val adapter = EventsAdapter(null)
     var decorDataObserver: RecyclerView.AdapterDataObserver? = null
@@ -122,12 +126,8 @@ class EventsFragment : BaseFragment(),
         }
     }
 
-    companion object {
-        val TAG = "EventsFragment"
-    }
-
     class DecorAdapterDataObserver(val decorRef: WeakReference<StickyRecyclerHeadersDecoration>)
-            : RecyclerView.AdapterDataObserver() {
+    : RecyclerView.AdapterDataObserver() {
 
         override fun onChanged() {
             decorRef.get()?.invalidateHeaders()
