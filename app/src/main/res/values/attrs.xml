@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EventTimelineView">
+        <attr name="unitWidth" format="dimension|reference" />
+        <attr name="scaleColor" format="color|reference" />
+        <attr name="barHeight" format="dimension|reference" />
+        <attr name="barSpacing" format="dimension|reference" />
+        <attr name="hourSpan" format="integer|reference" />
+    </declare-styleable>
+</resources>

@@ -127,7 +127,7 @@ class EventsFragment : BaseFragment(),
     }
 
     class DecorAdapterDataObserver(val decorRef: WeakReference<StickyRecyclerHeadersDecoration>)
-    : RecyclerView.AdapterDataObserver() {
+        : RecyclerView.AdapterDataObserver() {
 
         override fun onChanged() {
             decorRef.get()?.invalidateHeaders()
