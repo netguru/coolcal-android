@@ -8,18 +8,22 @@ import android.graphics.Paint
 import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
-import android.view.ViewGroup
+import android.view.View
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.model.Event
+import java.util.concurrent.TimeUnit
 
-class EventTimelineView : ViewGroup {
+class EventTimelineView : View {
 
     companion object {
-        const val DEFAULT_UNITS = 24
-        const val DEFAULT_UNIT_WIDTH = 8 // px
+        val DEFAULT_TIME_SPAN = TimeUnit.HOURS.toMillis(24) // hours in millis
+        const val DEFAULT_START_DT = 0L
         const val DEFAULT_BAR_HEIGHT = 6 // px
         const val DEFAULT_BAR_SPACING = 6 // px
         const val DEFAULT_SCALE_COLOR = Color.LTGRAY
+
+        const val HOUR_MILLIS = 60 * 60 * 1000
+        const val HALF_HOUR_MILLIS = HOUR_MILLIS / 2
     }
 
     val linePaint: Paint by lazy {
@@ -31,8 +35,15 @@ class EventTimelineView : ViewGroup {
         paint
     }
 
-    private var units = DEFAULT_UNITS
-    private var timelineUnitWidth: Int = DEFAULT_UNIT_WIDTH
+    val scalePaint: Paint by lazy {
+        val paint = Paint()
+        paint.color = Color.LTGRAY
+        paint.isAntiAlias = true
+        paint.strokeCap = Paint.Cap.BUTT
+        paint.strokeWidth = 1f
+        paint
+    }
+
     private var barHeight: Int = DEFAULT_BAR_HEIGHT
     private var barSpacing: Int = DEFAULT_BAR_SPACING
     private var scaleColor: Int = DEFAULT_SCALE_COLOR
@@ -48,20 +59,23 @@ class EventTimelineView : ViewGroup {
             invalidate()
         }
 
-    private var _minDt = 0L
-    public var minDt: Long
-        get() = _minDt
+    private var _startDt = DEFAULT_START_DT
+    public var startDt: Long
+        get() = _startDt
         set(value) {
-            _minDt = value
+            _startDt = value
             invalidate()
         }
-    private var _maxDt = Long.MAX_VALUE
-    public var maxDt: Long
-        get() = _maxDt
+
+    private var timeSpan: Long = DEFAULT_TIME_SPAN
+
+    public var hourSpan: Long
+        get() = TimeUnit.MILLISECONDS.toHours(timeSpan)
         set(value) {
-            _maxDt = value
-            invalidate()
+            timeSpan = TimeUnit.HOURS.toMillis(value)
         }
+
+    private fun stopDt() = startDt + timeSpan
 
     constructor(context: Context) : this(context, null) {
     }
@@ -87,14 +101,16 @@ class EventTimelineView : ViewGroup {
         for (i in 0..a.indexCount) {
             val attr = a.getIndex(i)
             when (attr) {
-                R.styleable.EventTimelineView_hourSpan -> units =
-                        a.getInt(attr, DEFAULT_UNITS)
+                R.styleable.EventTimelineView_hourSpan ->
+                    try {
+                        hourSpan = a.getString(attr).toLong()
+                    } catch (e: NumberFormatException) {
+                        // todo: notify?
+                    }
                 R.styleable.EventTimelineView_scaleColor -> scaleColor =
                         a.getColor(attr, DEFAULT_SCALE_COLOR)
                 R.styleable.EventTimelineView_barHeight -> barHeight =
                         a.getDimensionPixelSize(attr, DEFAULT_BAR_HEIGHT)
-                R.styleable.EventTimelineView_unitWidth -> timelineUnitWidth =
-                        a.getDimensionPixelSize(attr, DEFAULT_UNIT_WIDTH)
                 R.styleable.EventTimelineView_barSpacing -> barSpacing =
                         a.getDimensionPixelSize(attr, DEFAULT_BAR_SPACING)
             }
@@ -113,18 +129,31 @@ class EventTimelineView : ViewGroup {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        val stopDt = stopDt()
 
-        fun normForRange(value: Long) = (value - minDt).toFloat() / (maxDt - minDt)
+        fun normForRange(value: Long) = (value - startDt).toFloat() / timeSpan
 
         events.forEachIndexed { i, event ->
-            val start = if (event.dtStart < minDt) minDt else event.dtStart
-            val stop = if (event.dtStop > maxDt) maxDt else event.dtStop
+            val start = if (event.dtStart < startDt) startDt else event.dtStart
+            val stop = if (event.dtStop > stopDt) stopDt else event.dtStop
             val startX = normForRange(start) * w
             val stopX = normForRange(stop) * w
             val Y = ((barSpacing) / 2 + i * barSpacing).toFloat()
 
             Log.d("Timeline", "drawing: ($startX,$Y)->($stopX,$Y)")
             canvas!!.drawLine(startX, Y, stopX, Y, linePaint)
+        }
+
+        for (i in startDt..stopDt) { // todo: maybe optimize to minutes? or attribute-based accuracy?
+            if(i % HALF_HOUR_MILLIS == 0L) {
+                // hour
+                if (i % HOUR_MILLIS == 0L) {
+                    val X = normForRange(i) * w
+                    canvas!!.drawLine(X, 0f, X, h.toFloat(), scalePaint)
+                }
+            } else {
+                // todo: half hour scale
+            }
         }
     }
 
@@ -138,37 +167,30 @@ class EventTimelineView : ViewGroup {
         //Determine Width:
         val width = when (widthMode) {
         // if exactly, set width as desired and modify unit width to fill view
-            MeasureSpec.EXACTLY -> {
-                timelineUnitWidth = widthSize / units
-                widthSize
-            }
+            MeasureSpec.EXACTLY -> widthSize
         // if wrap-content, uses attribute-specified unit width * units to determine
-            MeasureSpec.AT_MOST -> units * timelineUnitWidth
-            else -> { // keep
+            MeasureSpec.AT_MOST -> widthSize // todo: !!! nie ma jeszcze osobnej obslugi wrapa
+            else -> {
                 widthSize
             }
         }
 
         //Determine Height: no default, wrap content and static bar height * bars
         val height = when (heightMode) {
-            // if exactly, modify bar spacing and text size to fit
+        // if exactly, modify bar spacing and text size to fit
             MeasureSpec.EXACTLY -> {
                 barSpacing = heightSize / events.size
                 heightSize
             }
-            // if wrap-content, use attr-specified bar spacing and textsize to determine final height
+        // if wrap-content, use attr-specified bar spacing and textsize to determine final height
             MeasureSpec.AT_MOST -> {
                 barSpacing * events.size + 1
             }
-            else -> { // keep
+            else -> {
                 heightSize
             }
         }
 
         setMeasuredDimension(width, height)
-    }
-
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        // todo: implement
     }
 }

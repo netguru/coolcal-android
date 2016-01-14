@@ -20,16 +20,14 @@ class TestActivity : AppCompatActivity() {
 
         val now = System.currentTimeMillis()
         val hour = TimeUnit.HOURS.toMillis(1)
-        val minDt = LocalDateTime(now).toLocalDate().toDateTimeAtStartOfDay().millis
-        val maxDt = minDt + TimeUnit.DAYS.toMillis(1)
-        val events = listOf(Event(1, "1", minDt + hour*8, minDt + hour*12),
-                            Event(2, "2", minDt + hour*10, minDt + hour*14),
-                            Event(3, "3", minDt + hour*2, minDt + hour*20))
+        val startDt = LocalDateTime(now).toLocalDate().toDateTimeAtStartOfDay().millis
+        val maxDt = startDt + TimeUnit.DAYS.toMillis(1)
+        val events = listOf(Event(1, "1", startDt + hour*8, startDt + hour*12),
+                            Event(2, "2", startDt + hour*10, startDt + hour*14),
+                            Event(3, "3", startDt - hour*2, startDt + hour*20))
 
-        Log.i("Timeline", "min = $minDt, max = $maxDt")
-        eventTimeline.minDt = minDt
-        eventTimeline.maxDt = maxDt
+        Log.i("Timeline", "min = $startDt, max = $maxDt")
+        eventTimeline.startDt = startDt
         eventTimeline.events = events
-        eventTimeline.invalidate()
     }
 }
