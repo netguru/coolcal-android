@@ -14,11 +14,12 @@
             <co.netguru.android.coolcal.ui.EventTimelineView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/event_timeline_view"
-                android:layout_width="400dp"
+                android:layout_width="1000dp"
                 android:layout_height="wrap_content"
                 android:background="@android:color/holo_blue_light"
-                app:barHeight="10dp"
-                app:barSpacing="20dp"/>
+                app:borderSpacing="8dp"
+                app:barHeight="8dp"
+                app:barSpacing="8dp" />
         </FrameLayout>
     </HorizontalScrollView>
 </LinearLayout>

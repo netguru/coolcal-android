@@ -12,11 +12,11 @@
         <attr name="markTime" format="float|reference" />
         <attr name="markScale" format="float|reference" />
         <attr name="timelineUnit" format="enum">
-            <enum name="millisecond" value="MILLISECOND"/>
-            <enum name="second" value="SECOND"/>
-            <enum name="minute" value="MINUTE"/>
-            <enum name="hour" value="HOUR"/>
-            <enum name="day" value="DAY"/>
+            <enum name="millisecond" value="0"/>
+            <enum name="second" value="1"/>
+            <enum name="minute" value="2"/>
+            <enum name="hour" value="3"/>
+            <enum name="day" value="4"/>
         </attr>
 
         <!-- Styling -->
@@ -24,6 +24,7 @@
         <attr name="defaultBarColor" format="color|reference" />
         <attr name="showTime" format="boolean|reference" />
         <attr name="showTitles" format="boolean|reference" />
+        <attr name="showScale" format="boolean|reference" />
         <attr name="fontSize" format="dimension|reference" />
 
         <!-- Span -->

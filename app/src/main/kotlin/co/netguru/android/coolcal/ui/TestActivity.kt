@@ -27,7 +27,8 @@ class TestActivity : AppCompatActivity() {
                             Event(3, "3", startDt - hour*2, startDt + hour*20))
 
         Log.i("Timeline", "min = $startDt, max = $maxDt")
-        eventTimeline.startDt = startDt
+        eventTimeline.startDateTime = startDt
+        eventTimeline.timeSpan = hour * 24
         eventTimeline.events = events
     }
 }
