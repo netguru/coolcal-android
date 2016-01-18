@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="EventTimelineView">
         <!-- Event bar attributes -->
+        <attr name="barRadius" format="float|reference" />
         <attr name="barHeight" format="dimension|reference" />
         <attr name="barSpacing" format="dimension|reference" />
         <attr name="borderSpacing" format="dimension|reference" />
@@ -25,7 +26,8 @@
         <attr name="showTime" format="boolean|reference" />
         <attr name="showTitles" format="boolean|reference" />
         <attr name="showScale" format="boolean|reference" />
-        <attr name="fontSize" format="dimension|reference" />
+        <attr name="timeTextSize" format="dimension|reference" />
+        <attr name="titleTextSize" format="dimension|reference" />
 
         <!-- Span -->
         <!-- LONG[ms]: ex. 0 -->

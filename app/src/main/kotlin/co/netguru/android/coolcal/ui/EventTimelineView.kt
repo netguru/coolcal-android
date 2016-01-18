@@ -2,14 +2,17 @@ package co.netguru.android.coolcal.ui
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.os.Build
+import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.model.Event
+import org.joda.time.DateTime
+import java.lang.Math.ceil
+import java.lang.Math.floor
 import java.util.concurrent.TimeUnit
 
 /**
@@ -22,13 +25,17 @@ class EventTimelineView : View {
         Units enum
      */
     companion object {
-        const val MILLISECOND = 0
-        const val SECOND = 1
-        const val MINUTE = 2
-        const val HOUR = 3
-        const val DAY = 4
+        private const val TAG = "EventTimelineView"
 
-        internal fun unitMillis(unit: Int): Long =
+        private const val TIMESTAMP_PATTERN = "00:00:0000"
+
+        public const val MILLISECOND = 0
+        public const val SECOND = 1
+        public const val MINUTE = 2
+        public const val HOUR = 3
+        public const val DAY = 4
+
+        private fun unitMillis(unit: Int): Long =
                 when (unit) {
                     MILLISECOND -> 1L
                     SECOND -> TimeUnit.SECONDS.toMillis(1)
@@ -41,10 +48,6 @@ class EventTimelineView : View {
                 }
     }
 
-    private enum class TimelineUnit(val millis: Long) {
-
-    }
-
     /*
         Paints
      */
@@ -52,8 +55,6 @@ class EventTimelineView : View {
         val paint = Paint()
         paint.color = Color.RED
         paint.isAntiAlias = true
-        paint.strokeCap = Paint.Cap.ROUND
-        paint.strokeWidth = 4f
         paint
     }
 
@@ -62,9 +63,35 @@ class EventTimelineView : View {
         paint.color = Color.LTGRAY
         paint.isAntiAlias = true
         paint.strokeCap = Paint.Cap.BUTT
-        paint.strokeWidth = 1f
+        paint.strokeWidth = 0f
         paint
     }
+
+    private val timeTextPaint: TextPaint by lazy {
+        val paint = TextPaint()
+        paint.color = Color.BLACK
+        paint.isElegantTextHeight = true
+        paint.isAntiAlias = true
+        paint.textSize = 20f
+        paint.textAlign = Paint.Align.CENTER
+        paint
+    }
+
+    private val titleTextPaint: TextPaint by lazy {
+        val paint = TextPaint()
+        paint.color = Color.BLACK
+        paint.isElegantTextHeight = true
+        paint.isAntiAlias = true
+        paint.textSize = 20f
+        paint.textAlign = Paint.Align.LEFT
+        paint
+    }
+
+    /*
+        Draw sets
+     */
+    private var scaleDrawRange: LongProgression? = null
+    private var timeMarkDrawRange: LongProgression? = null
 
     /*
         Size
@@ -75,6 +102,13 @@ class EventTimelineView : View {
     /*
         Event bar
      */
+    private var _barRadius: Float = 20f
+    private var barRadius: Float
+        get() = _barRadius
+        set(value) {
+            _barRadius = value
+            invalidate()
+        }
     private var _barHeight: Int = 0
     public var barHeight: Int   // px
         get() = _barHeight
@@ -100,7 +134,14 @@ class EventTimelineView : View {
     /*
         Time span
      */
-    private var timelineUnit: Int = HOUR
+    private var _timelineUnit: Int = HOUR
+    private var timelineUnit: Int
+        get() = _timelineUnit
+        set(value) {
+            _timelineUnit = value
+            recalculateDrawRanges()
+            invalidate()
+        }
     private var unitWidth: Int = 0
     private var _markTime: Float = 1f
     private var markTime: Float
@@ -116,13 +157,6 @@ class EventTimelineView : View {
             _markScale = value
             invalidate()
         }
-
-    /*
-        Styling
-     */
-    private var fontSize: Float = 0f
-    private var scaleColor: Int = Color.LTGRAY
-    private var defaultBarColor: Int = Color.RED
 
     /*
         Show flags
@@ -157,15 +191,20 @@ class EventTimelineView : View {
         get() = _timeSpan
         set(value) {
             _timeSpan = value
+            stopDt = startDt + timeSpan
+            recalculateDrawRanges()
             invalidate()
         }
-    private var _startDateTime: Long = 0L
-    public var startDateTime: Long
-        get() = _startDateTime
+    private var _startDt: Long = 0L
+    public var startDt: Long
+        get() = _startDt
         set(value) {
-            _startDateTime = value
+            _startDt = value
+            stopDt = startDt + timeSpan
+            recalculateDrawRanges()
             invalidate()
         }
+    private var stopDt: Long = 0L
 
     /*
         Data set
@@ -178,11 +217,10 @@ class EventTimelineView : View {
             invalidate()
         }
 
-    /*
-        Def
-     */
-    private fun stopDateTime() = startDateTime + timeSpan
-
+    private val barRectF = RectF()
+    private val textRect: Rect by lazy { Rect() }
+    private var timeTextHeight: Int = 0
+    private var titlesSumHeight: Int = 0
 
     constructor(context: Context) : this(context, null) {
     }
@@ -208,53 +246,57 @@ class EventTimelineView : View {
         for (i in 0..a.indexCount) {
             val attr = a.getIndex(i)
             when (attr) { // todo: defaults, exceptions
+                R.styleable.EventTimelineView_barRadius ->
+                    _barRadius = a.getDimension(attr, barRadius)
                 R.styleable.EventTimelineView_barHeight ->
-                    barHeight = a.getDimensionPixelSize(attr, barHeight)
+                    _barHeight = a.getDimensionPixelSize(attr, barHeight)
 
                 R.styleable.EventTimelineView_barSpacing ->
-                    barSpacing = a.getDimensionPixelSize(attr, barSpacing)
+                    _barSpacing = a.getDimensionPixelSize(attr, barSpacing)
 
                 R.styleable.EventTimelineView_borderSpacing ->
-                    borderSpacing = a.getDimensionPixelSize(attr, borderSpacing)
+                    _borderSpacing = a.getDimensionPixelSize(attr, borderSpacing)
 
                 R.styleable.EventTimelineView_unitWidth ->
                     unitWidth = a.getDimensionPixelSize(attr, unitWidth)
 
                 R.styleable.EventTimelineView_markTime ->
-                    markTime = a.getFloat(attr, markTime)
+                    _markTime = a.getFloat(attr, markTime)
 
                 R.styleable.EventTimelineView_markScale ->
-                    markScale = a.getFloat(attr, markScale)
+                    _markScale = a.getFloat(attr, markScale)
 
                 R.styleable.EventTimelineView_timelineUnit ->
-                    timelineUnit = a.getInt(attr, timelineUnit)
+                    _timelineUnit = a.getInt(attr, timelineUnit)
 
                 R.styleable.EventTimelineView_scaleColor ->
-                    scaleColor = a.getColor(attr, scaleColor)
+                    scalePaint.color = a.getColor(attr, scalePaint.color)
 
                 R.styleable.EventTimelineView_defaultBarColor ->
-                    defaultBarColor = a.getColor(attr, defaultBarColor)
+                    barPaint.color = a.getColor(attr, barPaint.color)
 
                 R.styleable.EventTimelineView_showTime ->
-                    showTime = a.getBoolean(attr, showTime)
+                    _showTime = a.getBoolean(attr, showTime)
 
                 R.styleable.EventTimelineView_showTitles ->
-                    showTitles = a.getBoolean(attr, showTitles)
+                    _showTitles = a.getBoolean(attr, showTitles)
 
                 R.styleable.EventTimelineView_showScale ->
-                    showScale = a.getBoolean(attr, showScale)
+                    _showScale = a.getBoolean(attr, showScale)
 
-                R.styleable.EventTimelineView_fontSize ->
-                    fontSize = a.getFloat(attr, fontSize)
+                R.styleable.EventTimelineView_timeTextSize ->
+                    timeTextPaint.textSize = a.getDimension(attr, timeTextPaint.textSize)
 
-                R.styleable.EventTimelineView_startDateTime ->
-                    startDateTime = a.getString(attr).toLong()
+                R.styleable.EventTimelineView_titleTextSize ->
+                    titleTextPaint.textSize = a.getDimension(attr, titleTextPaint.textSize)
 
-                R.styleable.EventTimelineView_timeSpan ->
-                    timeSpan = a.getString(attr).toLong()
+                R.styleable.EventTimelineView_startDateTime -> Unit // todo
+                R.styleable.EventTimelineView_timeSpan -> Unit // todo
             }
         }
         a.recycle()
+
+        recalculateDrawRanges()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -263,13 +305,13 @@ class EventTimelineView : View {
         this.h = h
     }
 
-    private fun normForRange(value: Long) = (value - startDateTime).toFloat() / timeSpan
+    private fun normForRange(value: Long) = (value - startDt).toFloat() / timeSpan
 
     override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-        barPaint.strokeWidth = barHeight.toFloat()
-        drawBars(canvas!!)
-        //drawScale(canvas)
+        super.onDraw(canvas!!)
+        drawScale(canvas)
+        drawBars(canvas)
+        drawTimeText(canvas)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -280,77 +322,107 @@ class EventTimelineView : View {
         val heightSize = MeasureSpec.getSize(heightMeasureSpec)
 
         val width = when (widthMode) {
-        // if exactly, set width as desired and modify unit width to fill view
             MeasureSpec.EXACTLY -> widthSize
         // if wrap-content, uses attribute-specified unit width * units to determine
             MeasureSpec.AT_MOST -> {
                 widthSize
             } // todo: !!! nie ma jeszcze osobnej obslugi wrapa
-            else -> {
-                widthSize
-            }
+            else -> widthSize
         }
 
         val height = when (heightMode) {
-        // if exactly, modify bar spacing and text size to fit
             MeasureSpec.EXACTLY -> heightSize
-            MeasureSpec.AT_MOST -> {
-                val borders = borderSpacing * 2
-                val bars = barHeight * events.size
-                val spacings = barSpacing * events.size - 1
-                borders + bars + spacings // todo: + top text + event titles
-            }
-            else -> {
-                heightSize
-            }
+            MeasureSpec.AT_MOST -> measureHeight()
+            else -> heightSize
         }
 
         setMeasuredDimension(width, height)
     }
 
-    private fun drawBars(canvas: Canvas) {
-        val stopDateTime = stopDateTime()
-        events.forEachIndexed { i, event ->
-            val start = if (event.dtStart < startDateTime) {
-                startDateTime
-            } else {
-                event.dtStart
-            }
+    private fun measureHeight(): Int {
+        val borders = borderSpacing * 2
+        val bars = barHeight * events.size
+        val spacings = barSpacing * (events.size - 1)
+        // calculating text heights
+        timeTextHeight = if (showTime) {
+            timeTextPaint.getTextBounds(TIMESTAMP_PATTERN, 0, TIMESTAMP_PATTERN.length, textRect)
+            textRect.height()
+        } else 0
 
-            val stop = if (event.dtStop > stopDateTime) {
-                stopDateTime
-            } else {
-                event.dtStop
-            }
+        titlesSumHeight = if (showTitles) {
+            events.map { event ->
+                titleTextPaint.getTextBounds(event.title, 0, event.title.length, textRect)
+                textRect.height()
+            }.sum()
+        } else 0
+
+        return borders + bars + spacings + timeTextHeight + titlesSumHeight
+    }
+
+    private fun drawBars(canvas: Canvas) {
+        var textHeightAccumulator = 0
+        val shiftY = if(showTime) timeTextHeight else 0
+        events.forEachIndexed { i, event ->
+            val start = if (event.dtStart < startDt) startDt else event.dtStart
+            val stop = if (event.dtStop > stopDt) stopDt else event.dtStop
 
             val startX = normForRange(start) * w
             val stopX = normForRange(stop) * w
+            val startY = (shiftY + borderSpacing + textHeightAccumulator +
+                    i * (barHeight + barSpacing)).toFloat()
 
-            val Y = (borderSpacing + i * (barHeight + barSpacing) + barHeight / 2).toFloat()
+            val stopY = startY + barHeight
+
+            if (showTitles) {
+                titleTextPaint.getTextBounds(event.title, 0, event.title.length, textRect)
+                val currentTitleHeight = textRect.height()
+                textHeightAccumulator += currentTitleHeight
+                canvas.drawText(event.title, startX, stopY + currentTitleHeight, titleTextPaint)
+            }
 
             // Log.d("Timeline", "drawing: ($startX,$Y)->($stopX,$Y)")
-            canvas.drawLine(startX, Y, stopX, Y, barPaint)
+            barRectF.set(startX, startY, stopX, stopY)
+            canvas.drawRoundRect(barRectF, barRadius, barRadius, barPaint)
+
         }
     }
 
-    /**
-     *  todo: zdecydowanie zabójcze obliczeniowo (pętla po milisekundach)
-     *  todo: trza by to jakoś inniej
-     */
     private fun drawScale(canvas: Canvas) {
-        val stopDateTime = stopDateTime()
-        if (showScale || showTime) {
-            for (i in startDateTime..stopDateTime) {
-                val unitMillis = unitMillis(timelineUnit)
-                if (showScale && i % (unitMillis * markScale).toLong() == 0L) {
-                    // todo: draw scale
-                    val x = normForRange(i) * w
-                    canvas.drawLine(x, 0f, x, h.toFloat(), scalePaint)
-                }
-                if (showTime && i % (unitMillis * markTime).toLong() == 0L) {
-                    // todo: draw time text
-                }
+        Log.d("time span", "$startDt <-> $stopDt")
+        Log.d("scaleDrawRange", scaleDrawRange!!.toString())
+
+        val startY = timeTextHeight.toFloat()
+
+        if (showScale) {
+            for (i in scaleDrawRange!!) {
+                val x = normForRange(i) * w
+                canvas.drawLine(x, startY, x, h.toFloat(), scalePaint)
             }
         }
     }
+
+    private fun drawTimeText(canvas: Canvas) {
+        if (showTime) {
+            for (i in timeMarkDrawRange!!) {
+                val x = normForRange(i) * w
+                val timeText = formatTime(timeMillis = i)
+                canvas.drawText(timeText, x, 0f + timeTextHeight, timeTextPaint)
+            }
+        }
+    }
+
+    private fun recalculateDrawRanges() {
+        val unitMillis = unitMillis(timelineUnit)
+        val baseRange = ceil(startDt.toDouble() / unitMillis).toLong() * unitMillis..
+                floor(stopDt.toDouble() / unitMillis).toLong() * unitMillis
+        scaleDrawRange = baseRange step (unitMillis * markScale).toLong()
+        timeMarkDrawRange = baseRange step (unitMillis * markTime).toLong()
+    }
+
+    override fun invalidate() {
+        super.invalidate()
+        Log.i(TAG, "invalidate()")
+    }
+
+    private fun formatTime(timeMillis: Long) = DateTime(timeMillis).toLocalTime().toString("hh:mm")
 }

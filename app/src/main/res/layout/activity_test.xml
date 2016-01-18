@@ -6,7 +6,9 @@
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:overScrollMode="never">
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -14,12 +16,20 @@
             <co.netguru.android.coolcal.ui.EventTimelineView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/event_timeline_view"
-                android:layout_width="1000dp"
+                android:layout_width="800dp"
                 android:layout_height="wrap_content"
-                android:background="@android:color/holo_blue_light"
-                app:borderSpacing="8dp"
-                app:barHeight="8dp"
-                app:barSpacing="8dp" />
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:showTime="true"
+                app:showTitles="true"
+                app:markScale="1"
+                app:markTime="2"
+                app:timelineUnit="hour"
+                app:timeTextSize="12sp"
+                app:titleTextSize="14sp"
+                app:borderSpacing="6dp"
+                app:barHeight="6dp"
+                app:barSpacing="10dp" />
         </FrameLayout>
     </HorizontalScrollView>
 </LinearLayout>

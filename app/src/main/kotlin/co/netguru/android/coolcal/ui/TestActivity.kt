@@ -22,12 +22,12 @@ class TestActivity : AppCompatActivity() {
         val hour = TimeUnit.HOURS.toMillis(1)
         val startDt = LocalDateTime(now).toLocalDate().toDateTimeAtStartOfDay().millis
         val maxDt = startDt + TimeUnit.DAYS.toMillis(1)
-        val events = listOf(Event(1, "1", startDt + hour*8, startDt + hour*12),
-                            Event(2, "2", startDt + hour*10, startDt + hour*14),
-                            Event(3, "3", startDt - hour*2, startDt + hour*20))
+        val events = listOf(Event(1, "Siłownia z Mokebe", startDt + hour*8, startDt + hour*12),
+                            Event(2, "Śpiewanie Barki", startDt + hour*10, startDt + hour*14),
+                            Event(3, "Opierdalanie", startDt - hour*2, startDt + hour*20))
 
         Log.i("Timeline", "min = $startDt, max = $maxDt")
-        eventTimeline.startDateTime = startDt
+        eventTimeline.startDt = startDt
         eventTimeline.timeSpan = hour * 24
         eventTimeline.events = events
     }
