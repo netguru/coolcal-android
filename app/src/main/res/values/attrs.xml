@@ -5,7 +5,8 @@
         <attr name="barRadius" format="float|reference" />
         <attr name="barHeight" format="dimension|reference" />
         <attr name="barSpacing" format="dimension|reference" />
-        <attr name="borderSpacing" format="dimension|reference" />
+        <attr name="topSpacing" format="dimension|reference" />
+        <attr name="bottomSpacing" format="dimension|reference" />
 
         <!-- Time span attributes -->
         <!-- ex. 20dp, with timeUnit = hour every hour on the timeline will take up 20dp width -->
@@ -28,6 +29,8 @@
         <attr name="showScale" format="boolean|reference" />
         <attr name="timeTextSize" format="dimension|reference" />
         <attr name="titleTextSize" format="dimension|reference" />
+        <attr name="timeTextColor" format="color|reference" />
+        <attr name="eventTitleTextColor" format="color|reference" />
 
         <!-- Span -->
         <!-- LONG[ms]: ex. 0 -->
