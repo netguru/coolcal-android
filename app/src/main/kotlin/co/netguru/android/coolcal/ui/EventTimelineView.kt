@@ -2,7 +2,10 @@ package co.netguru.android.coolcal.ui
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import android.os.Build
 import android.os.SystemClock
 import android.text.TextPaint
@@ -25,6 +28,7 @@ import java.util.concurrent.TimeUnit
  * todo: avoid time mark overlapping: adjusting timeTextPaint.textSize (exactly/at_most width)
  * todo: showing current time
  * todo: check for more possible drawing opt.
+ * todo: "no events" message while empty or sth like that
  */
 
 open class EventTimelineView : View {
@@ -319,7 +323,7 @@ open class EventTimelineView : View {
                     throw UnsupportedOperationException() // todo
 
                 R.styleable.EventTimelineView_timeSpan ->
-                    throw UnsupportedOperationException() // todo
+                    throw UnsupportedOperationException() // todo (use timeline unit)
             }
         }
         a.recycle()
@@ -346,6 +350,7 @@ open class EventTimelineView : View {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        Log.i(TAG, "onMeasure()")
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
@@ -377,10 +382,11 @@ open class EventTimelineView : View {
         return (borders + bars + spacings + timeTextHeight + titlesSumHeight).toInt()
     }
 
-    private fun titleTextHeight() = when(showTitles) {
+    private fun titleTextHeight() = when (showTitles) {
         true -> titleTextPaint.fontMetrics.descent - titleTextPaint.fontMetrics.top
         false -> 0f
     }
+
     private fun timeTextHeight() = when (showTime) {
         true -> timeTextPaint.fontMetrics.bottom - timeTextPaint.fontMetrics.top
         false -> 0f
@@ -397,6 +403,7 @@ open class EventTimelineView : View {
             val stopY = startY + barHeight
 
             barRectF.set(startX, startY, stopX, stopY)
+            Log.i(TAG, "drawing bar: ${barRectF.toShortString()}")
             canvas.drawRoundRect(barRectF, barRadius, barRadius, barPaint)
 
             if (showTitles) {
@@ -439,5 +446,5 @@ open class EventTimelineView : View {
     }
 
     open internal fun formatTime(timeMillis: Long) =
-            DateTime(timeMillis).toLocalTime().toString("hh:mm")
+            DateTime(timeMillis).toString("HH:mm")
 }
