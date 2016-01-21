@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EventTimelineView">
+        <!-- Event bar attributes -->
+        <attr name="barRadius" format="float|reference" />
+        <attr name="barHeight" format="dimension|reference" />
+        <attr name="barSpacing" format="dimension|reference" />
+        <attr name="topSpacing" format="dimension|reference" />
+        <attr name="bottomSpacing" format="dimension|reference" />
+
+        <!-- Time span attributes -->
+        <!-- ex. 20dp, with timeUnit = hour every hour on the timeline will take up 20dp width -->
+        <attr name="unitWidth" format="dimension|reference" />
+        <attr name="markTime" format="float|reference" />
+        <attr name="markScale" format="float|reference" />
+        <attr name="timelineUnit" format="enum">
+            <enum name="millisecond" value="0"/>
+            <enum name="second" value="1"/>
+            <enum name="minute" value="2"/>
+            <enum name="hour" value="3"/>
+            <enum name="day" value="4"/>
+        </attr>
+
+        <!-- Styling -->
+        <attr name="scaleColor" format="color|reference" />
+        <attr name="defaultBarColor" format="color|reference" />
+        <attr name="showTime" format="boolean|reference" />
+        <attr name="showTitles" format="boolean|reference" />
+        <attr name="showScale" format="boolean|reference" />
+        <attr name="timeTextSize" format="dimension|reference" />
+        <attr name="titleTextSize" format="dimension|reference" />
+        <attr name="timeTextColor" format="color|reference" />
+        <attr name="eventTitleTextColor" format="color|reference" />
+
+        <!-- Span -->
+        <!-- LONG[ms]: ex. 0 -->
+        <attr name="startDateTime" format="string" />
+        <!-- LONG[ms]: ex. 3600000 -->
+        <attr name="timeSpan" format="string" />
+    </declare-styleable>
+</resources>

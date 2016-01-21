@@ -14,7 +14,12 @@ import net.hockeyapp.android.CrashManager
 import net.hockeyapp.android.UpdateManager
 
 class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener {
+
+    companion object {
+        const val TAG = "MainActivity"
+        const val REQUEST_RESOLVE_ERROR = 1000
+    }
 
     private var mResolvingError: Boolean = false
 
@@ -28,8 +33,8 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
     private val fragments: List<BaseFragment> by lazy {
         arrayListOf(supportFragmentManager
-                        .findFragmentById(R.id.weather_fragment) as BaseFragment,
-                    supportFragmentManager
+                .findFragmentById(R.id.weather_fragment) as BaseFragment,
+                supportFragmentManager
                         .findFragmentById(R.id.events_fragment) as BaseFragment)
     }
 
@@ -85,10 +90,10 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
     override fun onConnectionFailed(result: ConnectionResult) {
         Log.e(TAG, "Connection Failed with code ${result.errorCode}")
-        if(mResolvingError) {
+        if (mResolvingError) {
             return;
         }
-        if(result.hasResolution()) {
+        if (result.hasResolution()) {
             try {
                 mResolvingError = true;
                 result.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
@@ -112,10 +117,5 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
     override fun onConnectionSuspended(p0: Int) {
         googleApiClient.connect();
-    }
-
-    companion object {
-        val TAG = "MainActivity"
-        val REQUEST_RESOLVE_ERROR = 1000
     }
 }

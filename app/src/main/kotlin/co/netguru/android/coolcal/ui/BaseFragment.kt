@@ -20,4 +20,3 @@ abstract class BaseFragment : Fragment(), LocationListener {
         super.onDestroy()
     }
 }
-

@@ -35,15 +35,15 @@ class CurrentWeatherFragment : BaseFragment() {
     }
 
     private fun requestWeather(location: Location) {
-        val latitude= location.latitude
+        val latitude = location.latitude
         val longitude = location.longitude
         subscription = OpenWeatherMap.api.getWeather(latitude, longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    response: WeatherResponse -> fillInfoWithData(response)
-                }, {
-                    error -> Log.e("ERROR", error.message)
+                .subscribe({ response: WeatherResponse ->
+                    fillInfoWithData(response)
+                }, { error ->
+                    Log.e("ERROR", error.message)
                 })
     }
 
@@ -60,7 +60,7 @@ class CurrentWeatherFragment : BaseFragment() {
 
     override fun onLocationChanged(location: Location?) {
         super.onLocationChanged(location)
-        if(location != null) {
+        if (location != null) {
             requestWeather(location)
         }
     }

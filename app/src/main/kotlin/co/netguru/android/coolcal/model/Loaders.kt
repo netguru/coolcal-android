@@ -2,5 +2,5 @@ package co.netguru.android.coolcal.model
 
 object Loaders {
 
-    val EVENT_LOADER = 0
+    const val EVENT_LOADER = 0
 }
