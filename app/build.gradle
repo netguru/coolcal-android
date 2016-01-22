@@ -2,31 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'de.felixschulze.gradle.hockeyapp'
 
-// kockeyapp integration
-hockeyapp {
-    notify = 1 // 1 - Notify all testers
-    status = 2 // 2 - Make available for download
-    notesType = 1 // 1 - Markdown format
-    notes = "Build number: " + System.getenv("CIRCLE_BUILD_NUM")
-    variantToApiToken = [
-            stagingDebug     : "11fd3051b7e84463a3886d697ad4a1ac",
-            productionRelease: "a215b9c3e6db473190c3c87bdb4d866f"
-    ]
-    variantToReleaseType = [
-            stagingDebug     : 0, // 0 - Beta release
-            productionRelease: 1 // 1 - Live release
-    ]
-    variantToApplicationId = [
-            stagingDebug     : "58ea9641fa3f44f39ca9e8de891460ad",
-            productionRelease: "289d8cbf7a8c4c808aab7b60b7923c3e",
-    ]
-    mappingFileNameRegex = "mapping.txt"
-}
-
-// CI
 project.ext {
-    circleDir = System.getenv("CIRCLE_ARTIFACTS") ?: "./build"
-    versionCode = Integer.parseInt(System.getenv("CIRCLE_BUILD_NUM") ?: "0")
+    versionCode = Integer.parseInt(System.getenv("BITRISE_BUILD_NUMBER") ?: "0")
 }
 
 android {
@@ -38,7 +15,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
     }
 
     buildTypes {
