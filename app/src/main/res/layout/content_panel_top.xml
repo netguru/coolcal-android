@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@drawable/grad"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".app.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/weather_fragment"
-        android:name="co.netguru.android.coolcal.ui.CurrentWeatherFragment"
+        android:name="co.netguru.android.coolcal.weather.CurrentWeatherFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_weather" />

@@ -15,7 +15,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 23
         versionCode 1
-        versionName "0.1"
+        versionName "0.$versionCode"
     }
 
     buildTypes {
@@ -45,29 +45,54 @@ android {
     }
 }
 
-
 dependencies {
-    // lang support
+    // Kotlin standard library
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    // lib
+
+    // HockeyApp
     compile 'net.hockeyapp.android:HockeySDK:2.2.1'
+
+    // Android support libs
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.sothree.slidinguppanel:library:3.2.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
-    compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
-    compile 'joda-time:joda-time:2.9.1'
+
+    // Play Services Location
     compile 'com.google.android.gms:play-services-location:8.4.0'
+
+    // Sliding up panel
+    compile 'com.sothree.slidinguppanel:library:3.2.0'
+
+    // Kotterknife
+    compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+
+    // JodaTime
+    compile 'joda-time:joda-time:2.9.1'
+
+    // SectionCursorAdapter
     compile 'com.twotoasters.SectionCursorAdapter:library:2.0.1'
 
-    // Leak canary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    // GSON
+    compile 'com.google.code.gson:gson:2.5'
 
-    // module
-    compile project(':owm')
+    // Retrofit
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+
+    // ReactiveX
+    compile 'io.reactivex:rxandroid:1.0.1'
+
+    // test
+    testCompile "org.robolectric:robolectric:3.0"
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+
+    // Leak canary
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
 }
 
 buildscript {

@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_coordinator"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/statusBarHeight">
+    android:layout_marginTop="@dimen/statusBarHeight"
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/events_fragment"
-        android:name="co.netguru.android.coolcal.ui.EventsFragment"
+        android:name="co.netguru.android.coolcal.calendar.EventsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_events" />
