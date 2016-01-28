@@ -11,6 +11,7 @@ import android.widget.TextView
 import butterknife.bindView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.BaseFragment
+import co.netguru.android.coolcal.utils.AppPreferences
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -19,8 +20,7 @@ class CurrentWeatherFragment : BaseFragment() {
     val weatherIcon: ImageView by bindView<ImageView>(R.id.weather_icon)
     val technicalDescrView: TextView by bindView<TextView>(R.id.weather_technical_description)
     val informalDescrView: TextView by bindView<TextView>(R.id.weather_informal_description)
-    val dayTempView: TextView by bindView<TextView>(R.id.weather_day_temp)
-    val nightTempView: TextView by bindView<TextView>(R.id.weather_night_temp)
+    val dayTempView: TextView by bindView<TextView>(R.id.weather_temperature)
     val windView: TextView by bindView<TextView>(R.id.weather_wind)
     val pressureView: TextView by bindView<TextView>(R.id.weather_pressure)
 
@@ -49,12 +49,12 @@ class CurrentWeatherFragment : BaseFragment() {
     private fun fillInfoWithData(data: WeatherResponse) {
         val weather = data.weather[0]
 
-        // todo: export data formatting (this is a stub)
+        weatherIcon.setImageResource(WeatherDecoder.getIconRes(weather.icon))
         technicalDescrView.text = weather.description
-        dayTempView.text = "${data.main?.temperature}\u00b0"
-        nightTempView.text = "??"
-        windView.text = "Wind: ${data.wind?.speed}"
-        pressureView.text = "Pressure: ${data.main?.pressure}"
+        informalDescrView.text = "Weather description" // todo
+        dayTempView.text = AppPreferences.formatTemperature(data.main?.temperature)
+        pressureView.text = AppPreferences.formatPressure(data.main?.pressure)
+        windView.text = AppPreferences.formatWind(data.wind)
     }
 
     override fun onLocationChanged(location: Location?) {

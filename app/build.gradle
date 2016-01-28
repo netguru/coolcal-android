@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "co.netguru.android.coolcal"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "0.$versionCode"
@@ -63,7 +63,8 @@ dependencies {
     // Sliding up panel
     compile 'com.sothree.slidinguppanel:library:3.2.0'
 
-    // Kotterknife
+    // Kotterknife / Butterknife
+    compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
 
     // JodaTime

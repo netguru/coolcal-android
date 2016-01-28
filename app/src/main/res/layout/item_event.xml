@@ -1,11 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingLeft="@dimen/spacing_large"
+    android:paddingRight="@dimen/spacing_large"
+    android:paddingTop="@dimen/spacing_normal">
 
-    <TextView
-        android:id="@+id/event_title"
+    <LinearLayout
+        android:id="@+id/event_time_duration_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/event_time"
+            style="@style/AppTheme.EventSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="21:37" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_tiny" />
+
+        <TextView
+            android:id="@+id/event_duration"
+            style="@style/AppTheme.EventPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="20h 30m" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/event_icon_temperature_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/spacing_large"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/event_weather_icon"
+            android:layout_width="@dimen/icon_size_small"
+            android:layout_height="@dimen/icon_size_small"
+            android:contentDescription="@string/weather_icon_description"
+            tools:src="@mipmap/ic_launcher" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_tiny" />
+
+        <TextView
+            android:id="@+id/event_temperature"
+            style="@style/AppTheme.EventPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            tools:text="25" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/spacing_large"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_toEndOf="@id/event_time_duration_layout"
+        android:layout_toStartOf="@id/event_icon_temperature_layout"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/event_title"
+            style="@style/AppTheme.EventSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Event title" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_tiny" />
+
+        <TextView
+            android:id="@+id/event_message"
+            style="@style/AppTheme.EventPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="You'll feel nothing" />
+    </LinearLayout>
+
+</RelativeLayout>
