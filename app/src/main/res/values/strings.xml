@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">CoolCal</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="action_settings">Settings</string>
+    <string name="weather_icon_description">Weather condition icon</string>
 </resources>

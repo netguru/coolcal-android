@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/event_section_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <co.netguru.android.coolcal.calendar.EventTimelineView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/event_timeline_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:markTime="1"
+                app:timelineUnit="hour"
+                app:topSpacing="4dp" />
+        </FrameLayout>
+    </HorizontalScrollView>
+</LinearLayout>
