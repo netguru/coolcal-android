@@ -1,4 +1,4 @@
-package co.netguru.android.coolcal.calendar
+package co.netguru.android.coolcal.utils
 
 object Loaders {
 

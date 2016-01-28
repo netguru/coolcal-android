@@ -14,7 +14,9 @@ import android.widget.ListView
 import butterknife.bindView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.BaseFragment
+import co.netguru.android.coolcal.utils.Loaders
 import co.netguru.android.coolcal.weather.OpenWeatherMap
+import org.joda.time.LocalDateTime
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -85,11 +87,12 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     private fun initEventsLoading() {
-        val now = System.currentTimeMillis()
-        val weekLater = now + TimeUnit.DAYS.toMillis(5)
+        val dtStart = LocalDateTime(System.currentTimeMillis())
+                .toLocalDate().toDateTimeAtStartOfDay().millis
+        val dtStop = dtStart + TimeUnit.DAYS.toMillis(5) // five days later
         val data = Bundle()
-        data.putLong(Event.ARG_DT_FROM, now)
-        data.putLong(Event.ARG_DT_TO, weekLater)
+        data.putLong(Event.ARG_DT_FROM, dtStart)
+        data.putLong(Event.ARG_DT_TO, dtStop)
 
         activity.supportLoaderManager.initLoader(Loaders.EVENT_LOADER, data, this)
     }

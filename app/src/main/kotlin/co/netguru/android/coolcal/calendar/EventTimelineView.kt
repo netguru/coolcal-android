@@ -13,7 +13,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import co.netguru.android.coolcal.R
-import org.joda.time.DateTime
+import co.netguru.android.coolcal.utils.AppPreferences
 import java.lang.Math.ceil
 import java.lang.Math.floor
 import java.util.concurrent.TimeUnit
@@ -445,5 +445,5 @@ open class EventTimelineView : View {
     }
 
     open internal fun formatTime(timeMillis: Long) =
-            DateTime(timeMillis).toString("HH:mm")
+            AppPreferences.formatTime(timeMillis)
 }
