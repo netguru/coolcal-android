@@ -50,8 +50,15 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
         timeTextView.text = AppPreferences.formatTime(obj.dtStart)
         messageTextView.text = "not implemented yet" //todo
         durationTextView.text = Period(obj.dtStart, obj.dtStop).toString(periodFormatter)
-        temperatureTextView.text = AppPreferences.formatTemperature(forecast?.main?.temperature)
-        weatherIconImageView.setImageResource(WeatherDecoder.getIconRes(forecast?.weatherList?.get(0)?.icon))
+        if (forecast != null) {
+            temperatureTextView.visibility = View.VISIBLE
+            weatherIconImageView.visibility = View.VISIBLE
+            temperatureTextView.text = AppPreferences.formatTemperature(forecast.main?.temperature)
+            weatherIconImageView.setImageResource(WeatherDecoder.getIconRes(forecast.weatherList?.get(0).icon))
+        } else {
+            temperatureTextView.visibility = View.GONE
+            weatherIconImageView.visibility = View.GONE
+        }
     }
 
 }
