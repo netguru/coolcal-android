@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/event_section_date"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp" />
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_large"
+        android:paddingStart="@dimen/spacing_large"
+        android:paddingTop="@dimen/spacing_normal">
+
+        <TextView
+            android:id="@+id/event_header_day_of_month"
+            style="@style/AppTheme.Header.LargeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:includeFontPadding="false"
+            tools:text="05" />
+
+        <TextView
+            android:id="@+id/event_header_day_of_week"
+            style="@style/AppTheme.Header.SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/event_header_day_of_month"
+            android:layout_marginStart="@dimen/spacing_tiny"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/event_header_day_of_month"
+            tools:text="tuesday" />
+    </RelativeLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"

@@ -22,13 +22,13 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.EventSecondary">
+    <style name="AppTheme.EventPrimary">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/primary_text_light</item>
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
-    <style name="AppTheme.EventPrimary">
+    <style name="AppTheme.EventSecondary">
         <item name="android:textColor">@android:color/secondary_text_light</item>
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
@@ -47,5 +47,17 @@
     <style name="AppTheme.Weather.LargeText">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/font_huge</item>
+    </style>
+
+    <style name="AppTheme.Header">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+    </style>
+
+    <style name="AppTheme.Header.LargeText">
+        <item name="android:textSize">@dimen/font_huge</item>
+    </style>
+
+    <style name="AppTheme.Header.SmallText">
+        <item name="android:textSize">@dimen/font_normal</item>
     </style>
 </resources>

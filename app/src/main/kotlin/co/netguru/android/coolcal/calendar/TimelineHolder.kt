@@ -12,12 +12,17 @@ class TimelineHolder(itemView: View) : ViewHolder(itemView) {
         itemView.findViewById(R.id.event_timeline_view) as EventTimelineView
     }
 
-    val dateTextView: TextView by lazy {
-        itemView.findViewById(R.id.event_section_date) as TextView
+    val dayOfMonthTextView: TextView by lazy {
+        itemView.findViewById(R.id.event_header_day_of_month) as TextView
+    }
+
+    val dayOfWeekTextView: TextView by lazy {
+        itemView.findViewById(R.id.event_header_day_of_week) as TextView
     }
 
     fun bind(obj: TimelineData) {
-        dateTextView.text = DateTime(obj.startDt).toString("dd EEEE")
+        dayOfMonthTextView.text = DateTime(obj.startDt).toLocalDateTime().toString("dd")
+        dayOfWeekTextView.text = DateTime(obj.startDt).toLocalDateTime().toString("EEEE")
         eventTimelineView.events = obj.events
         eventTimelineView.startDt = obj.startDt
         eventTimelineView.timeSpan = obj.timeSpan
