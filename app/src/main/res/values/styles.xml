@@ -57,6 +57,10 @@
         <item name="android:textSize">@dimen/font_huge</item>
     </style>
 
+    <style name="AppTheme.Header.HalfLargeText">
+        <item name="android:textSize">@dimen/font_larger</item>
+    </style>
+
     <style name="AppTheme.Header.SmallText">
         <item name="android:textSize">@dimen/font_normal</item>
     </style>

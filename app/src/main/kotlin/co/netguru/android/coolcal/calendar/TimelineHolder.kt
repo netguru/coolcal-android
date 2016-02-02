@@ -3,8 +3,8 @@ package co.netguru.android.coolcal.calendar
 import android.view.View
 import android.widget.TextView
 import co.netguru.android.coolcal.R
+import co.netguru.android.coolcal.utils.AppPreferences
 import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder
-import org.joda.time.DateTime
 
 class TimelineHolder(itemView: View) : ViewHolder(itemView) {
 
@@ -21,10 +21,10 @@ class TimelineHolder(itemView: View) : ViewHolder(itemView) {
     }
 
     fun bind(obj: TimelineData) {
-        dayOfMonthTextView.text = DateTime(obj.startDt).toLocalDateTime().toString("dd")
-        dayOfWeekTextView.text = DateTime(obj.startDt).toLocalDateTime().toString("EEEE")
+        dayOfMonthTextView.text = AppPreferences.formatDayOfMonth(obj.dtStart)
+        dayOfWeekTextView.text = AppPreferences.formatDayOfWeek(obj.dtStart)
         eventTimelineView.events = obj.events
-        eventTimelineView.startDt = obj.startDt
+        eventTimelineView.startDt = obj.dtStart
         eventTimelineView.timeSpan = obj.timeSpan
     }
 

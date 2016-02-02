@@ -73,6 +73,9 @@ dependencies {
     // SectionCursorAdapter
     compile 'com.twotoasters.SectionCursorAdapter:library:2.0.1'
 
+    // Rebound
+    compile 'com.facebook.rebound:rebound:0.3.8'
+
     // GSON
     compile 'com.google.code.gson:gson:2.5'
 

@@ -10,6 +10,7 @@ import android.support.v4.content.Loader
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.ListView
 import butterknife.bindView
 import co.netguru.android.coolcal.R
@@ -23,8 +24,17 @@ import java.util.concurrent.TimeUnit
 
 class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
+    companion object {
+        const val TAG = "EventsFragment"
+        val DAY_MILLIS = TimeUnit.DAYS.toMillis(1)
+    }
+
     val listView: ListView by bindView(R.id.events_listview)
+    val calendarTabView: CalendarTabView by bindView(R.id.events_calendar_tab_view)
     var adapter: EventAdapter? = null
+
+    val dtStart: Long = LocalDateTime(System.currentTimeMillis())
+            .toLocalDate().toDateTimeAtStartOfDay().millis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +50,24 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor> {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        calendarTabView.days = (0..5).map { i -> dtStart + i * DAY_MILLIS }
         listView.adapter = adapter
+        listView.setOnScrollListener(object : AbsListView.OnScrollListener {
+            var firstVisibleCache = 0
+
+            override fun onScroll(view: AbsListView?, firstVisibleItem: Int,
+                                  visibleItemCount: Int, totalItemCount: Int) {
+                if (firstVisibleItem != firstVisibleCache) {
+                    firstVisibleCache = firstVisibleItem
+                    val dt = adapter!!.getItemDayStart(firstVisibleItem)
+                    calendarTabView.switchDay(dt)
+                }
+            }
+
+            override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
+                // nothing
+            }
+        })
     }
 
     override fun onDestroy() {
@@ -87,8 +114,6 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     private fun initEventsLoading() {
-        val dtStart = LocalDateTime(System.currentTimeMillis())
-                .toLocalDate().toDateTimeAtStartOfDay().millis
         val dtStop = dtStart + TimeUnit.DAYS.toMillis(5) // five days later
         val data = Bundle()
         data.putLong(Event.ARG_DT_FROM, dtStart)

@@ -149,4 +149,8 @@ object AppPreferences {
         val dateTime = DateTime(dt).toLocalDateTime()
         return dateTime.toString("H:mm", Locale.getDefault())
     }
+
+    public fun formatDayOfMonth(dt: Long): String = DateTime(dt).toLocalDateTime().toString("dd")
+
+    public fun formatDayOfWeek(dt: Long): String = DateTime(dt).toLocalDateTime().toString("EEEE")
 }
