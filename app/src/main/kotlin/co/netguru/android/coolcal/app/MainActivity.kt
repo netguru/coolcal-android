@@ -23,7 +23,9 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         const val REQUEST_RESOLVE_ERROR = 1000
     }
 
-    private val slidingLayout: SlidingUpPanelLayout by bindView(R.id.sliding_layout)
+    private val _slidingLayout: SlidingUpPanelLayout by bindView(R.id.sliding_layout)
+    public val slidingLayout: SlidingUpPanelLayout
+        get() = _slidingLayout
 
     private var mResolvingError: Boolean = false
 
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
         checkForUpdates()
 
-        slidingLayout.setPanelSlideListener(fragments[1] as SlidingUpPanelLayout.PanelSlideListener)
+        _slidingLayout.setPanelSlideListener(fragments[1] as SlidingUpPanelLayout.PanelSlideListener)
     }
 
     override fun onStart() {
@@ -123,5 +125,16 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
     override fun onConnectionSuspended(p0: Int) {
         googleApiClient.connect();
+    }
+
+    override fun onBackPressed() {
+        when (slidingLayout.panelState) {
+            SlidingUpPanelLayout.PanelState.EXPANDED,
+            SlidingUpPanelLayout.PanelState.ANCHORED,
+            SlidingUpPanelLayout.PanelState.DRAGGING -> {
+                slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+            }
+            else -> super.onBackPressed()
+        }
     }
 }

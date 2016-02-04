@@ -16,6 +16,7 @@ import android.widget.TextView
 import butterknife.bindView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.BaseFragment
+import co.netguru.android.coolcal.app.MainActivity
 import co.netguru.android.coolcal.utils.AppPreferences
 import co.netguru.android.coolcal.utils.Loaders
 import co.netguru.android.coolcal.weather.OpenWeatherMap
@@ -63,6 +64,12 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         dayOfMonth.text = AppPreferences.formatDayOfMonth(todayDt)
         calendarTabView.days = (0..5).map { i -> todayDt + i * DAY_MILLIS }
         listView.adapter = adapter
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        (activity as MainActivity).slidingLayout.setDragView(panelHandle)
     }
 
     override fun onDestroy() {

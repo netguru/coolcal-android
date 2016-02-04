@@ -61,6 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_small"
                     android:layout_marginStart="@dimen/spacing_small"
+                    android:textColor="@color/blue"
                     tools:text="3" />
 
                 <TextView
@@ -74,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_small"
                     android:layout_marginStart="@dimen/spacing_small"
+                    android:textColor="@color/blue"
                     tools:text="12h 30m" />
 
             </LinearLayout>
