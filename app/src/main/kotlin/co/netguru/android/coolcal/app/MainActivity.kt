@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import butterknife.bindView
 import co.netguru.android.coolcal.R
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import net.hockeyapp.android.CrashManager
 import net.hockeyapp.android.UpdateManager
 
@@ -21,6 +23,8 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         const val REQUEST_RESOLVE_ERROR = 1000
     }
 
+    private val slidingLayout: SlidingUpPanelLayout by bindView(R.id.sliding_layout)
+
     private var mResolvingError: Boolean = false
 
     private val googleApiClient: GoogleApiClient by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
@@ -31,11 +35,11 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                 .build()
     }
 
-    private val fragments: List<BaseFragment> by lazy {
+    private val fragments: List<BaseFragment?> by lazy {
         arrayListOf(supportFragmentManager
-                .findFragmentById(R.id.weather_fragment) as BaseFragment,
+                .findFragmentById(R.id.weather_fragment) as BaseFragment?,
                 supportFragmentManager
-                        .findFragmentById(R.id.events_fragment) as BaseFragment)
+                        .findFragmentById(R.id.events_fragment) as BaseFragment?)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +53,8 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         supportActionBar.setDisplayShowTitleEnabled(false)
 
         checkForUpdates()
+
+        slidingLayout.setPanelSlideListener(fragments[1] as SlidingUpPanelLayout.PanelSlideListener)
     }
 
     override fun onStart() {
@@ -109,7 +115,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     override fun onConnected(p0: Bundle?) {
         val location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         if (location != null) {
-            fragments.forEach { fragment -> fragment.onLocationChanged(location) }
+            fragments.forEach { fragment -> fragment?.onLocationChanged(location) }
         } else {
             Log.e(TAG, "Null location!")
         }

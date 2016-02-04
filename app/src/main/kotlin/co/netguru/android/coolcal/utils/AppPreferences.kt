@@ -15,6 +15,9 @@ import co.netguru.android.coolcal.utils.Temperature.kelvinToCelsius
 import co.netguru.android.coolcal.utils.Temperature.kelvinToFahrenheit
 import co.netguru.android.coolcal.weather.Wind
 import org.joda.time.DateTime
+import org.joda.time.Period
+import org.joda.time.format.PeriodFormatter
+import org.joda.time.format.PeriodFormatterBuilder
 import java.util.*
 
 object AppPreferences {
@@ -56,6 +59,16 @@ object AppPreferences {
         set(value) {
             preferences!!.edit().putInt(PREF_SPEED_UNIT, value).apply()
         }
+
+    private val periodFormatter: PeriodFormatter by lazy {
+        PeriodFormatterBuilder()
+                .appendHours()
+                .appendSuffix("h")
+                .appendSeparator(" ")
+                .appendMinutes()
+                .appendSuffix("m")
+                .toFormatter()
+    }
 
     internal fun init(context: Context) {
         preferences = context.getSharedPreferences(KEY_PREFERENCES, Context.MODE_PRIVATE)
@@ -145,12 +158,17 @@ object AppPreferences {
         return "$speedString $cardinal"
     }
 
-    public fun formatTime(dt: Long): String {
-        val dateTime = DateTime(dt).toLocalDateTime()
-        return dateTime.toString("H:mm", Locale.getDefault())
-    }
+    public fun formatDateTime(dt: Long, pattern: String) =
+            DateTime(dt).toLocalDateTime().toString(pattern, Locale.getDefault())
 
-    public fun formatDayOfMonth(dt: Long): String = DateTime(dt).toLocalDateTime().toString("dd")
+    public fun formatTimeOfDay(dt: Long) = formatDateTime(dt, "H:mm")
 
-    public fun formatDayOfWeek(dt: Long): String = DateTime(dt).toLocalDateTime().toString("EEEE")
+    public fun formatDayOfMonth(dt: Long) = formatDateTime(dt, "dd")
+
+    public fun formatDayOfWeek(dt: Long) = formatDateTime(dt, "EEEE")
+
+    public fun formatDayOfWeekShort(dt: Long) = formatDateTime(dt, "EEE")
+
+    public fun formatPeriod(dtStart: Long, dtEnd: Long) =
+            Period(dtStart, dtEnd).toString(periodFormatter)
 }

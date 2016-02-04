@@ -445,5 +445,5 @@ open class EventTimelineView : View {
     }
 
     open internal fun formatTime(timeMillis: Long) =
-            AppPreferences.formatTime(timeMillis)
+            AppPreferences.formatTimeOfDay(timeMillis)
 }

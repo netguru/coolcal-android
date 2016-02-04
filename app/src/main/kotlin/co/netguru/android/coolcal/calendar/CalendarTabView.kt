@@ -10,18 +10,21 @@ import android.widget.TextView
 import butterknife.bindViews
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.utils.AppPreferences
+import com.facebook.rebound.SimpleSpringListener
 import com.facebook.rebound.Spring
-import com.facebook.rebound.SpringListener
 import com.facebook.rebound.SpringSystem
 
-class CalendarTabView : LinearLayout, SpringListener {
+class CalendarTabView : LinearLayout {
 
     private var currentPos = 0
     private val frames: List<View> by bindViews(R.id.day0, R.id.day1,
             R.id.day2, R.id.day3, R.id.day4)
-    private val textViews: List<TextView> by bindViews(R.id.day0_dom_text_view,
+    private val domTextViews: List<TextView> by bindViews(R.id.day0_dom_text_view,
             R.id.day1_dom_text_view, R.id.day2_dom_text_view,
             R.id.day3_dom_text_view, R.id.day4_dom_text_view)
+    private val dowTextViews: List<TextView> by bindViews(R.id.day0_dow_text_view,
+            R.id.day1_dow_text_view, R.id.day2_dow_text_view,
+            R.id.day3_dow_text_view, R.id.day4_dow_text_view)
 
     private val springSys = SpringSystem.create()
     private val springs = (0..5).map { springSys.createSpring() }
@@ -34,9 +37,20 @@ class CalendarTabView : LinearLayout, SpringListener {
             updateDayTextViews()
         }
 
-    private fun updateDayTextViews() {
-        textViews.forEachIndexed { i, view ->
-            view.text = AppPreferences.formatDayOfMonth(days!![i])
+    private val springListener = object : SimpleSpringListener() {
+        override fun onSpringUpdate(spring: Spring?) {
+            val value = spring!!.currentValue
+            val sizeScale = (1 + (value * 0.5)).toFloat();
+            val view = when (spring) {
+                springs[0] -> domTextViews[0]
+                springs[1] -> domTextViews[1]
+                springs[2] -> domTextViews[2]
+                springs[3] -> domTextViews[3]
+                springs[4] -> domTextViews[4]
+                else -> null
+            }
+            view?.scaleX = sizeScale
+            view?.scaleY = sizeScale
         }
     }
 
@@ -62,6 +76,11 @@ class CalendarTabView : LinearLayout, SpringListener {
 
         inflate(context, R.layout.view_calendar_tabs, this)
         this.orientation = LinearLayout.HORIZONTAL
+
+        addOnLayoutChangeListener({ v, left, top, right, bottom, oldLeft,
+                                    oldTop, oldRight, oldBottom ->
+            resetPivots()
+        })
     }
 
     public fun switchDay(startDayDt: Long) {
@@ -78,38 +97,27 @@ class CalendarTabView : LinearLayout, SpringListener {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         switchActive(currentPos)
-        springs.forEach { spring -> spring.addListener(this) }
+        springs.forEach { spring -> spring.addListener(springListener) }
     }
 
     override fun onDetachedFromWindow() {
-        springs.forEach { spring -> spring.removeListener(this) }
+        springs.forEach { spring -> spring.removeListener(springListener) }
         super.onDetachedFromWindow()
     }
 
-    override fun onSpringEndStateChange(spring: Spring?) {
-        //        throw UnsupportedOperationException()
-    }
-
-    override fun onSpringActivate(spring: Spring?) {
-        //        throw UnsupportedOperationException()
-    }
-
-    override fun onSpringUpdate(spring: Spring?) {
-        val value = spring!!.currentValue
-        val sizeScale = (1 + (value * 1)).toFloat();
-        val view = when (spring) {
-            springs[0] -> frames[0]
-            springs[1] -> frames[1]
-            springs[2] -> frames[2]
-            springs[3] -> frames[3]
-            springs[4] -> frames[4]
-            else -> null
+    private fun resetPivots() {
+        domTextViews.forEachIndexed { i, view ->
+            view.pivotY = 0f
+            view.pivotX = frames[i].width / 2f
         }
-        view?.scaleX = sizeScale
-        view?.scaleY = sizeScale
     }
 
-    override fun onSpringAtRest(spring: Spring?) {
-        //        throw UnsupportedOperationException()
+    private fun updateDayTextViews() {
+        domTextViews.forEachIndexed { i, view ->
+            view.text = AppPreferences.formatDayOfMonth(days!![i])
+        }
+        dowTextViews.forEachIndexed { i, view ->
+            view.text = AppPreferences.formatDayOfWeekShort(days!![i])
+        }
     }
 }
