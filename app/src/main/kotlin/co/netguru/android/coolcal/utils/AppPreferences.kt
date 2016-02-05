@@ -36,25 +36,25 @@ object AppPreferences {
     private val defaultPressureUnit: Int by lazy { assumeDefaultPressureUnit() }
     private val defaultSpeedUnit: Int by lazy { assumeDefaultSpeedUnit() }
 
-    public var tempUnit: Int
+    var tempUnit: Int
         get() = preferences!!.getInt(PREF_TEMP_UNIT, defaultTemperatureUnit)
         set(value) {
             preferences!!.edit().putInt(PREF_TEMP_UNIT, value).apply()
         }
 
-    public var tempSign: Int
+    var tempSign: Int
         get() = preferences!!.getInt(PREF_TEMP_SIGN, SIGN_DEGREE)
         set(value) {
             preferences!!.edit().putInt(PREF_TEMP_SIGN, value).apply()
         }
 
-    public var pressureUnit: Int
+    var pressureUnit: Int
         get() = preferences!!.getInt(PREF_PRESSURE_UNIT, defaultPressureUnit)
         set(value) {
             preferences!!.edit().putInt(PREF_PRESSURE_UNIT, value).apply()
         }
 
-    public var speedUnit: Int
+    var speedUnit: Int
         get() = preferences!!.getInt(PREF_SPEED_UNIT, defaultSpeedUnit)
         set(value) {
             preferences!!.edit().putInt(PREF_SPEED_UNIT, value).apply()
@@ -101,7 +101,7 @@ object AppPreferences {
                 Speed.UNIT_KMH
             }
 
-    public fun formatTemperature(tempKelvin: Double?): String {
+    fun formatTemperature(tempKelvin: Double?): String {
         if (tempKelvin == null) return SYMBOL_UNDEFINED
         val unit = tempUnit
         val mode = tempSign
@@ -122,7 +122,7 @@ object AppPreferences {
         return "$temp$sign"
     }
 
-    public fun formatPressure(pressure: Double?): String {
+    fun formatPressure(pressure: Double?): String {
         if (pressure == null) return SYMBOL_UNDEFINED
         val pres = Math.round(pressure)
         val unit = when (pressureUnit) {
@@ -132,7 +132,7 @@ object AppPreferences {
         return "$pres$unit"
     }
 
-    public fun formatWind(wind: Wind?): String {
+    fun formatWind(wind: Wind?): String {
         if (wind == null || wind.speed == null) return SYMBOL_UNDEFINED
         val cardinal = when (wind.deg) {
             null -> ""
@@ -158,17 +158,17 @@ object AppPreferences {
         return "$speedString $cardinal"
     }
 
-    public fun formatDateTime(dt: Long, pattern: String) =
+    fun formatDateTime(dt: Long, pattern: String) =
             DateTime(dt).toLocalDateTime().toString(pattern, Locale.getDefault())
 
-    public fun formatTimeOfDay(dt: Long) = formatDateTime(dt, "H:mm")
+    fun formatTimeOfDay(dt: Long) = formatDateTime(dt, "H:mm")
 
-    public fun formatDayOfMonth(dt: Long) = formatDateTime(dt, "dd")
+    fun formatDayOfMonth(dt: Long) = formatDateTime(dt, "dd")
 
-    public fun formatDayOfWeek(dt: Long) = formatDateTime(dt, "EEEE")
+    fun formatDayOfWeek(dt: Long) = formatDateTime(dt, "EEEE")
 
-    public fun formatDayOfWeekShort(dt: Long) = formatDateTime(dt, "EEE")
+    fun formatDayOfWeekShort(dt: Long) = formatDateTime(dt, "EEE")
 
-    public fun formatPeriod(dtStart: Long, dtEnd: Long) =
+    fun formatPeriod(dtStart: Long, dtEnd: Long) =
             Period(dtStart, dtEnd).toString(periodFormatter)
 }

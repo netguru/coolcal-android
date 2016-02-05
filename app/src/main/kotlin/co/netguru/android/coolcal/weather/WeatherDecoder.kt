@@ -4,7 +4,7 @@ import co.netguru.android.coolcal.R
 
 object WeatherDecoder {
 
-    public fun getIconRes(code: String?) = when (code) {
+    fun getIconRes(code: String?) = when (code) {
         "01d" -> R.drawable.icon_clear_sky_day
         "01n" -> R.drawable.icon_clear_sky_night
         "02d" -> R.drawable.icon_few_clouds_day

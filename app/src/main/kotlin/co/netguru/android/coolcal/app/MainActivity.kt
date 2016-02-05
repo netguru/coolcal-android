@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     private val _slidingLayout: SlidingUpPanelLayout by bindView(R.id.sliding_layout)
-    public val slidingLayout: SlidingUpPanelLayout
+    val slidingLayout: SlidingUpPanelLayout
         get() = _slidingLayout
 
     private var mResolvingError: Boolean = false
@@ -51,8 +51,8 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp)
         setSupportActionBar(toolbar)
-        supportActionBar.setDisplayShowHomeEnabled(true)
-        supportActionBar.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         checkForUpdates()
 

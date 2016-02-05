@@ -38,11 +38,11 @@ open class EventTimelineView : View {
     companion object {
         private const val TAG = "EventTimelineView"
 
-        public const val MILLISECOND = 0
-        public const val SECOND = 1
-        public const val MINUTE = 2
-        public const val HOUR = 3
-        public const val DAY = 4
+        const val MILLISECOND = 0
+        const val SECOND = 1
+        const val MINUTE = 2
+        const val HOUR = 3
+        const val DAY = 4
 
         private fun unitMillis(unit: Int): Long =
                 when (unit) {
@@ -119,28 +119,28 @@ open class EventTimelineView : View {
             invalidate()
         }
     private var _barHeight: Float = 12f
-    public var barHeight: Float   // px
+    var barHeight: Float   // px
         get() = _barHeight
         set(value) {
             _barHeight = value
             invalidate()
         }
     private var _barSpacing: Float = 0f
-    public var barSpacing: Float   // px
+    var barSpacing: Float   // px
         get() = _barSpacing
         set(value) {
             _barSpacing = value
             invalidate()
         }
     private var _topSpacing: Float = 0f
-    public var topSpacing: Float
+    var topSpacing: Float
         get() = _topSpacing
         set(value) {
             _topSpacing = value
             invalidate()
         }
     private var _bottomSpacing: Float = 0f
-    public var bottomSpacing: Float
+    var bottomSpacing: Float
         get() = _bottomSpacing
         set(value) {
             _bottomSpacing = value
@@ -208,7 +208,7 @@ open class EventTimelineView : View {
         Span
      */
     private var _timeSpan: Long = 0L
-    public var timeSpan: Long
+    var timeSpan: Long
         get() = _timeSpan
         set(value) {
             _timeSpan = value
@@ -217,7 +217,7 @@ open class EventTimelineView : View {
             invalidate()
         }
     private var _startDt: Long = 0L
-    public var startDt: Long
+    var startDt: Long
         get() = _startDt
         set(value) {
             _startDt = value
@@ -231,7 +231,7 @@ open class EventTimelineView : View {
         Data set
      */
     private var _events = emptyList<Event>()
-    public var events: List<Event>
+    var events: List<Event>
         get() = _events
         set(value) {
             _events = value
@@ -403,6 +403,7 @@ open class EventTimelineView : View {
 
             barRectF.set(startX, startY, stopX, stopY)
             Log.i(TAG, "drawing bar: ${barRectF.toShortString()}")
+            barPaint.color = event.displayColor
             canvas.drawRoundRect(barRectF, barRadius, barRadius, barPaint)
 
             if (showTitles) {
@@ -444,6 +445,6 @@ open class EventTimelineView : View {
         Log.d(TAG, "invalidate()")
     }
 
-    open internal fun formatTime(timeMillis: Long) =
+    open protected fun formatTime(timeMillis: Long) =
             AppPreferences.formatTimeOfDay(timeMillis)
 }

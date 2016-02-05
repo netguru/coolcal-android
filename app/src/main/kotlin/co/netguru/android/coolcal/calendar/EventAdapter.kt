@@ -70,7 +70,7 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
         return millisAtStartOfDay(dt)
     }
 
-    public fun getItemDayStart(position: Int): Long {
+    internal fun getItemDayStart(position: Int): Long {
         val obj = getItem(position)
         val dtStart = when (obj) {
             is TimelineData -> millisAtStartOfDay(obj.dtStart)

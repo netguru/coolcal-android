@@ -25,6 +25,7 @@
                 style="@style/AppTheme.Tab.LargeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 tools:text="05" />
 
             <TextView
@@ -32,6 +33,7 @@
                 style="@style/AppTheme.Tab.SmallText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 tools:text="Mon" />
 
         </LinearLayout>

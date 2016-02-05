@@ -7,6 +7,7 @@ import android.provider.CalendarContract
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
+import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,16 +35,16 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         val DAY_MILLIS = TimeUnit.DAYS.toMillis(1)
     }
 
-    val busyFor: TextView by bindView(R.id.busy_for)
-    val numberOfEvents: TextView by bindView(R.id.number_of_events)
-    val panelHandle: View by bindView(R.id.panel_handle)
-    val dayOfWeek: TextView by bindView(R.id.day_of_week)
-    val dayOfMonth: TextView by bindView(R.id.day_of_month)
-    val listView: ListView by bindView(R.id.events_listview)
-    val calendarTabView: CalendarTabView by bindView(R.id.events_calendar_tab_view)
-    var adapter: EventAdapter? = null
-
-    val todayDt: Long = LocalDateTime(System.currentTimeMillis())
+    private val busyFor: TextView by bindView(R.id.busy_for)
+    private val numberOfEvents: TextView by bindView(R.id.number_of_events)
+    private val panelHandle: View by bindView(R.id.panel_handle)
+    private val dayOfWeek: TextView by bindView(R.id.day_of_week)
+    private val dayOfMonth: TextView by bindView(R.id.day_of_month)
+    private val listView: ListView by bindView(R.id.events_listview)
+    private val calendarTabView: CalendarTabView by bindView(R.id.events_calendar_tab_view)
+    private var adapter: EventAdapter? = null
+    private val interpolator = FastOutSlowInInterpolator()
+    private val todayDt: Long = LocalDateTime(System.currentTimeMillis())
             .toLocalDate().toDateTimeAtStartOfDay().millis
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +70,7 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        (activity as MainActivity).slidingLayout.setDragView(panelHandle)
+        (activity as MainActivity).slidingLayout.setDragView(calendarTabView)
     }
 
     override fun onDestroy() {
@@ -178,20 +179,36 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         }
     }
 
+    private fun crossfadePanelAlpha(slideOffset: Float) {
+        val offset = interpolator.getInterpolation(slideOffset)
+        panelHandle.alpha = 1f - offset
+        calendarTabView.alpha = offset
+    }
+
     override fun onPanelExpanded(panel: View?) {
+        crossfadePanelAlpha(1f)
     }
 
     override fun onPanelSlide(panel: View?, slideOffset: Float) {
-        panelHandle.alpha = 1f - slideOffset
-        calendarTabView.alpha = slideOffset
+        crossfadePanelAlpha(slideOffset)
     }
 
     override fun onPanelCollapsed(panel: View?) {
+        crossfadePanelAlpha(0f)
     }
 
     override fun onPanelHidden(panel: View?) {
     }
 
     override fun onPanelAnchored(panel: View?) {
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        when ((activity as MainActivity).slidingLayout.panelState) {
+            SlidingUpPanelLayout.PanelState.EXPANDED -> crossfadePanelAlpha(1f)
+            else -> crossfadePanelAlpha(0f)
+        }
     }
 }

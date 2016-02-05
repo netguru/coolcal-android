@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_tiny"
             android:layout_alignParentTop="true"
-            android:background="@drawable/grad" />
+            android:background="@drawable/vertical_shadow" />
 
         <ListView
             android:id="@+id/events_listview"

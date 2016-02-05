@@ -83,14 +83,14 @@ class CalendarTabView : LinearLayout {
         })
     }
 
-    public fun switchDay(startDayDt: Long) {
+    fun switchDay(startDayDt: Long) {
         val nextActive = days!!.indexOf(startDayDt)
         switchActive(nextActive)
     }
 
     private fun switchActive(newPos: Int) {
-        springs[currentPos].setEndValue(0.0)
-        springs[newPos].setEndValue(1.0)
+        springs[currentPos].endValue = 0.0
+        springs[newPos].endValue = 1.0
         this.currentPos = newPos
     }
 
