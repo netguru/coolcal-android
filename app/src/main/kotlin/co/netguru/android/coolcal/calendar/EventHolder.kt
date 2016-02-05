@@ -8,23 +8,8 @@ import co.netguru.android.coolcal.utils.AppPreferences
 import co.netguru.android.coolcal.weather.Forecast
 import co.netguru.android.coolcal.weather.WeatherDecoder
 import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder
-import org.joda.time.Period
-import org.joda.time.format.PeriodFormatter
-import org.joda.time.format.PeriodFormatterBuilder
 
 class EventHolder(itemView: View) : ViewHolder(itemView) {
-
-    companion object {
-        private val periodFormatter: PeriodFormatter by lazy {
-            PeriodFormatterBuilder()
-                    .appendHours()
-                    .appendSuffix("h")
-                    .appendSeparator(" ")
-                    .appendMinutes()
-                    .appendSuffix("m")
-                    .toFormatter()
-        }
-    }
 
     val titleTextView: TextView by lazy {
         itemView.findViewById(R.id.event_title) as TextView
@@ -47,14 +32,14 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
 
     fun bind(obj: Event, forecast: Forecast?) {
         titleTextView.text = obj.title
-        timeTextView.text = AppPreferences.formatTime(obj.dtStart)
+        timeTextView.text = AppPreferences.formatTimeOfDay(obj.dtStart)
         messageTextView.text = "not implemented yet" //todo
-        durationTextView.text = Period(obj.dtStart, obj.dtStop).toString(periodFormatter)
+        durationTextView.text = AppPreferences.formatPeriod(obj.dtStart, obj.dtStop)
         if (forecast != null) {
             temperatureTextView.visibility = View.VISIBLE
             weatherIconImageView.visibility = View.VISIBLE
             temperatureTextView.text = AppPreferences.formatTemperature(forecast.main?.temperature)
-            weatherIconImageView.setImageResource(WeatherDecoder.getIconRes(forecast.weatherList?.get(0).icon))
+            weatherIconImageView.setImageResource(WeatherDecoder.getIconRes(forecast.weatherList[0].icon))
         } else {
             temperatureTextView.visibility = View.GONE
             weatherIconImageView.visibility = View.GONE

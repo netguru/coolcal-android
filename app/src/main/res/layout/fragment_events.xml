@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/events_listview"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <co.netguru.android.coolcal.calendar.CalendarTabView
+        android:id="@+id/events_calendar_tab_view"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_alignParentTop="true"
+        android:alpha="0" />
+
+    <include layout="@layout/view_calendar_today_summary" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/events_calendar_tab_view">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_tiny"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/vertical_shadow" />
+
+        <ListView
+            android:id="@+id/events_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

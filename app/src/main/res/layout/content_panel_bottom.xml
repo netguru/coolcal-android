@@ -7,11 +7,6 @@
     android:layout_marginTop="@dimen/statusBarHeight"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="@dimen/spacing_tiny" />
-
     <fragment
         android:id="@+id/events_fragment"
         android:name="co.netguru.android.coolcal.calendar.EventsFragment"

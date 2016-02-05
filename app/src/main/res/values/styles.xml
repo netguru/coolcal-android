@@ -50,11 +50,26 @@
     </style>
 
     <style name="AppTheme.Header">
-        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 
     <style name="AppTheme.Header.LargeText">
         <item name="android:textSize">@dimen/font_huge</item>
+    </style>
+
+    <style name="AppTheme.Tab">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="AppTheme.Tab.LargeText" parent="AppTheme.Tab">
+        <item name="android:textSize">@dimen/font_larger</item>
+    </style>
+
+    <style name="AppTheme.Tab.SmallText" parent="AppTheme.Tab">
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 
     <style name="AppTheme.Header.SmallText">

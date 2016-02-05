@@ -2,13 +2,12 @@ package co.netguru.android.coolcal.calendar
 
 import android.content.Context
 import android.database.Cursor
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.weather.ForecastResponse
 import com.twotoasters.sectioncursoradapter.adapter.SectionCursorAdapter
-import org.joda.time.LocalDateTime
+import org.joda.time.DateTime
 import java.util.concurrent.TimeUnit
 
 class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
@@ -63,12 +62,24 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
 
     override fun bindSectionViewHolder(position: Int, sectionViewHolder: TimelineHolder?,
                                        parent: ViewGroup?, section: TimelineData?) {
-        Log.i(TAG, "Binding section holder with ${section.toString()}")
         sectionViewHolder!!.bind(section!!)
     }
 
     private fun getEventDayStart(cursor: Cursor): Long {
-        val dt = Event.Projection.DTSTART.ordinal
-        return LocalDateTime(cursor.getLong(dt)).toLocalDate().toDateTimeAtStartOfDay().millis
+        val dt = cursor.getLong(Event.Projection.DTSTART.ordinal)
+        return millisAtStartOfDay(dt)
     }
+
+    internal fun getItemDayStart(position: Int): Long {
+        val obj = getItem(position)
+        val dtStart = when (obj) {
+            is TimelineData -> millisAtStartOfDay(obj.dtStart)
+            is Cursor -> getEventDayStart(obj)
+            else -> throw IllegalStateException("Illegal object @ getItemDayStart(position)")
+        }
+        return millisAtStartOfDay(dtStart)
+    }
+
+    private fun millisAtStartOfDay(dt: Long) =
+            DateTime(dt).toLocalDate().toDateTimeAtStartOfDay().millis
 }

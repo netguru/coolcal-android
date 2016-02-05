@@ -15,6 +15,9 @@ import co.netguru.android.coolcal.utils.Temperature.kelvinToCelsius
 import co.netguru.android.coolcal.utils.Temperature.kelvinToFahrenheit
 import co.netguru.android.coolcal.weather.Wind
 import org.joda.time.DateTime
+import org.joda.time.Period
+import org.joda.time.format.PeriodFormatter
+import org.joda.time.format.PeriodFormatterBuilder
 import java.util.*
 
 object AppPreferences {
@@ -33,29 +36,39 @@ object AppPreferences {
     private val defaultPressureUnit: Int by lazy { assumeDefaultPressureUnit() }
     private val defaultSpeedUnit: Int by lazy { assumeDefaultSpeedUnit() }
 
-    public var tempUnit: Int
+    var tempUnit: Int
         get() = preferences!!.getInt(PREF_TEMP_UNIT, defaultTemperatureUnit)
         set(value) {
             preferences!!.edit().putInt(PREF_TEMP_UNIT, value).apply()
         }
 
-    public var tempSign: Int
+    var tempSign: Int
         get() = preferences!!.getInt(PREF_TEMP_SIGN, SIGN_DEGREE)
         set(value) {
             preferences!!.edit().putInt(PREF_TEMP_SIGN, value).apply()
         }
 
-    public var pressureUnit: Int
+    var pressureUnit: Int
         get() = preferences!!.getInt(PREF_PRESSURE_UNIT, defaultPressureUnit)
         set(value) {
             preferences!!.edit().putInt(PREF_PRESSURE_UNIT, value).apply()
         }
 
-    public var speedUnit: Int
+    var speedUnit: Int
         get() = preferences!!.getInt(PREF_SPEED_UNIT, defaultSpeedUnit)
         set(value) {
             preferences!!.edit().putInt(PREF_SPEED_UNIT, value).apply()
         }
+
+    private val periodFormatter: PeriodFormatter by lazy {
+        PeriodFormatterBuilder()
+                .appendHours()
+                .appendSuffix("h")
+                .appendSeparator(" ")
+                .appendMinutes()
+                .appendSuffix("m")
+                .toFormatter()
+    }
 
     internal fun init(context: Context) {
         preferences = context.getSharedPreferences(KEY_PREFERENCES, Context.MODE_PRIVATE)
@@ -88,7 +101,7 @@ object AppPreferences {
                 Speed.UNIT_KMH
             }
 
-    public fun formatTemperature(tempKelvin: Double?): String {
+    fun formatTemperature(tempKelvin: Double?): String {
         if (tempKelvin == null) return SYMBOL_UNDEFINED
         val unit = tempUnit
         val mode = tempSign
@@ -109,7 +122,7 @@ object AppPreferences {
         return "$temp$sign"
     }
 
-    public fun formatPressure(pressure: Double?): String {
+    fun formatPressure(pressure: Double?): String {
         if (pressure == null) return SYMBOL_UNDEFINED
         val pres = Math.round(pressure)
         val unit = when (pressureUnit) {
@@ -119,7 +132,7 @@ object AppPreferences {
         return "$pres$unit"
     }
 
-    public fun formatWind(wind: Wind?): String {
+    fun formatWind(wind: Wind?): String {
         if (wind == null || wind.speed == null) return SYMBOL_UNDEFINED
         val cardinal = when (wind.deg) {
             null -> ""
@@ -145,8 +158,17 @@ object AppPreferences {
         return "$speedString $cardinal"
     }
 
-    public fun formatTime(dt: Long): String {
-        val dateTime = DateTime(dt).toLocalDateTime()
-        return dateTime.toString("H:mm", Locale.getDefault())
-    }
+    fun formatDateTime(dt: Long, pattern: String) =
+            DateTime(dt).toLocalDateTime().toString(pattern, Locale.getDefault())
+
+    fun formatTimeOfDay(dt: Long) = formatDateTime(dt, "H:mm")
+
+    fun formatDayOfMonth(dt: Long) = formatDateTime(dt, "dd")
+
+    fun formatDayOfWeek(dt: Long) = formatDateTime(dt, "EEEE")
+
+    fun formatDayOfWeekShort(dt: Long) = formatDateTime(dt, "EEE")
+
+    fun formatPeriod(dtStart: Long, dtEnd: Long) =
+            Period(dtStart, dtEnd).toString(periodFormatter)
 }

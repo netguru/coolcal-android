@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="5">
+
+    <RelativeLayout
+        android:id="@+id/day0"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clipToPadding="false">
+
+        <TextView
+            android:id="@+id/day0_dom_text_view"
+            style="@style/AppTheme.Tab.LargeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="05" />
+
+        <TextView
+            android:id="@+id/day0_dow_text_view"
+            style="@style/AppTheme.Tab.SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/day0_dom_text_view"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/day1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clipToPadding="false">
+
+        <TextView
+            android:id="@+id/day1_dom_text_view"
+            style="@style/AppTheme.Tab.LargeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="05" />
+
+        <TextView
+            android:id="@+id/day1_dow_text_view"
+            style="@style/AppTheme.Tab.SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/day1_dom_text_view"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/day2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clipToPadding="false">
+
+        <TextView
+            android:id="@+id/day2_dom_text_view"
+            style="@style/AppTheme.Tab.LargeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="05" />
+
+        <TextView
+            android:id="@+id/day2_dow_text_view"
+            style="@style/AppTheme.Tab.SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/day2_dom_text_view"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/day3"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clipToPadding="false">
+
+        <TextView
+            android:id="@+id/day3_dom_text_view"
+            style="@style/AppTheme.Tab.LargeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="05" />
+
+        <TextView
+            android:id="@+id/day3_dow_text_view"
+            style="@style/AppTheme.Tab.SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/day3_dom_text_view"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/day4"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/day4_dom_text_view"
+            style="@style/AppTheme.Tab.LargeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="05" />
+
+        <TextView
+            android:id="@+id/day4_dow_text_view"
+            style="@style/AppTheme.Tab.SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/day4_dom_text_view" />
+
+    </RelativeLayout>
+
+</merge>

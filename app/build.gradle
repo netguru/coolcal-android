@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'de.felixschulze.gradle.hockeyapp'
 
 project.ext {
     versionCode = Integer.parseInt(System.getenv("BITRISE_BUILD_NUMBER") ?: "0")
@@ -64,7 +63,6 @@ dependencies {
     compile 'com.sothree.slidinguppanel:library:3.2.0'
 
     // Kotterknife / Butterknife
-    compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
 
     // JodaTime
@@ -72,6 +70,9 @@ dependencies {
 
     // SectionCursorAdapter
     compile 'com.twotoasters.SectionCursorAdapter:library:2.0.1'
+
+    // Rebound
+    compile 'com.facebook.rebound:rebound:0.3.8'
 
     // GSON
     compile 'com.google.code.gson:gson:2.5'
@@ -97,7 +98,7 @@ dependencies {
 }
 
 buildscript {
-    ext.kotlin_version = '1.0.0-beta-3595'
+    ext.kotlin_version = '1.0.0-rc-1036'
     repositories {
         mavenCentral()
     }
