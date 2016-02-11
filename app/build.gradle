@@ -3,8 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 project.ext {
-    localVersionCode = "$Integer.MAX_VALUE"
-    versionCode = Integer.parseInt(System.getenv("BITRISE_BUILD_NUMBER") ?: localVersionCode)
+    bitriseBuildNumber = System.getenv("BITRISE_BUILD_NUMBER")
+    versionCode = bitriseBuildNumber ? Integer.parseInt(bitriseBuildNumber) : 0
 }
 
 android {
@@ -15,17 +15,19 @@ android {
         applicationId "co.netguru.android.coolcal"
         minSdkVersion 16
         targetSdkVersion 23
-//        versionCode 1
-        versionName "0.1.$project.ext.versionCode"
+        versionCode = project.ext.versionCode
+        versionName "0.1"
     }
 
     buildTypes {
         debug {
+            versionNameSuffix = "-debug-$versionCode"
             debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
+            versionNameSuffix = "-release-$versionCode"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
