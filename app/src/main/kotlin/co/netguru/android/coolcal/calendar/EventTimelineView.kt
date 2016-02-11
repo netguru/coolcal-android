@@ -267,7 +267,7 @@ open class EventTimelineView : View {
                 R.styleable.EventTimelineView_topSpacing ->
                     _topSpacing = a.getDimension(attr, topSpacing)
 
-                R.styleable.EventTimelineView_topSpacing ->
+                R.styleable.EventTimelineView_bottomSpacing ->
                     _bottomSpacing = a.getDimension(attr, bottomSpacing)
 
                 R.styleable.EventTimelineView_unitWidth ->
@@ -399,7 +399,7 @@ open class EventTimelineView : View {
 
             if (showTitles) {
                 canvas.drawText(event.title,
-                        startX, stopY - titleTextPaint.fontMetrics.ascent, titleTextPaint)
+                        startX, stopY - titleTextPaint.fontMetrics.top, titleTextPaint)
             }
         }
     }

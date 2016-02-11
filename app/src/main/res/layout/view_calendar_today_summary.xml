@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/panelHandleLayout"
     android:layout_width="match_parent"
@@ -7,9 +7,11 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/left"
+        android:id="@+id/todayDateView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/spacing_normal"
         android:layout_marginStart="@dimen/spacing_normal"
@@ -35,13 +37,16 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/separatorView"
         android:layout_width="1px"
         android:layout_height="match_parent"
+        android:layout_toEndOf="@id/todayDateView"
         android:background="@color/gray" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/separatorView">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -80,4 +85,13 @@
 
     </FrameLayout>
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/spacing_tiny"
+        android:contentDescription="@string/panel_handle_description"
+        android:src="@drawable/handle" />
+
+</RelativeLayout>

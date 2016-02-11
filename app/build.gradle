@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "co.netguru.android.coolcal"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode = project.ext.versionCode
         versionName "0.1"

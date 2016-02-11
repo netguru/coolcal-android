@@ -4,4 +4,5 @@
 
     <string name="text_number_of_events">Number of events:</string>
     <string name="text_busy_for">Busy for:</string>
+    <string name="panel_handle_description">Panel handle</string>
 </resources>
