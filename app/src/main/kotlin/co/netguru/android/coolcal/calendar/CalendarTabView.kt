@@ -62,17 +62,16 @@ class CalendarTabView : LinearLayout {
 
     constructor(context: Context, attrs: AttributeSet?,
                 defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        initFromAttributes(context, attrs, defStyleAttr, 0)
+        init(context)
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
                 defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
-        initFromAttributes(context, attrs, defStyleAttr, defStyleRes)
+        init(context)
     }
 
-    private fun initFromAttributes(context: Context, attrs: AttributeSet?,
-                                   defStyleAttr: Int, defStyleRes: Int) {
+    private fun init(context: Context) {
 
         inflate(context, R.layout.view_calendar_tabs, this)
         this.orientation = LinearLayout.HORIZONTAL

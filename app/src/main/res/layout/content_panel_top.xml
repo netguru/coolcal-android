@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/weather_fragment"
-        android:name="co.netguru.android.coolcal.weather.CurrentWeatherFragment"
+        android:name="co.netguru.android.coolcal.weather.WeatherFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_weather" />

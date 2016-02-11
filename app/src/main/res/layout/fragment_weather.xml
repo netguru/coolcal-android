@@ -10,7 +10,7 @@
     tools:showIn="@layout/activity_main">
 
     <ImageView
-        android:id="@+id/weather_icon"
+        android:id="@+id/weatherIconImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -19,48 +19,48 @@
         tools:src="@drawable/icon_clear_sky_day" />
 
     <TextView
-        android:id="@+id/weather_technical_description"
+        android:id="@+id/weatherDescriptionTextView"
         style="@style/AppTheme.Weather.SmallText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/weather_icon"
+        android:layout_above="@id/weatherIconImageView"
         android:layout_margin="@dimen/spacing_small"
         tools:text="Scattered clouds" />
 
     <TextView
-        android:id="@+id/weather_informal_description"
+        android:id="@+id/weatherMessageTextView"
         style="@style/AppTheme.Weather.LargeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/weather_technical_description"
+        android:layout_above="@id/weatherDescriptionTextView"
         android:layout_margin="@dimen/spacing_small"
         tools:text="It will be a lovely day!" />
 
     <TextView
-        android:id="@+id/weather_temperature"
+        android:id="@+id/weatherTemperatureTextView"
         style="@style/AppTheme.Weather.LargeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/weather_icon"
+        android:layout_below="@id/weatherIconImageView"
         android:layout_margin="@dimen/spacing_small"
         tools:text="21\u00b0" />
 
     <TextView
-        android:id="@+id/weather_wind"
+        android:id="@+id/weatherWindTextView"
         style="@style/AppTheme.Weather.SmallText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/weather_temperature"
+        android:layout_below="@id/weatherTemperatureTextView"
         android:layout_margin="@dimen/spacing_tiny"
         android:drawableStart="@drawable/icon_tools_wind"
         tools:text="2 mph E" />
 
     <TextView
-        android:id="@+id/weather_pressure"
+        android:id="@+id/weatherPressureTextView"
         style="@style/AppTheme.Weather.SmallText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/weather_wind"
+        android:layout_below="@id/weatherWindTextView"
         android:layout_margin="@dimen/spacing_tiny"
         android:drawableStart="@drawable/icon_tools_pressure"
         tools:text="1 036 mb" />

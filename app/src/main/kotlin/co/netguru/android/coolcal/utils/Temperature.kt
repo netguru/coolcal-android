@@ -25,17 +25,7 @@ object Temperature {
     const val SYMBOL_KELVIN = "\u212A"
 
     // kelvin
-    fun kelvinToCelsius(k: Double) = k - 273.15
+    fun Double.celsius() = this - 273.15
 
-    fun kelvinToFahrenheit(k: Double) = k * 1.8 - 459.67
-
-    // celsius
-    fun celsiusToKelvin(c: Double) = c - 273.15
-
-    fun celsiusToFahrenheit(c: Double) = c * 1.8 + 32
-
-    // fahrenheit
-    fun fahrenheitToKelvin(f: Double) = (f - 32) * 5 / 9
-
-    fun fahrenheitToCelsius(f: Double) = (f + 459.67) * 5 / 9
+    fun Double.fahrenheit() = this * 1.8 - 459.67
 }

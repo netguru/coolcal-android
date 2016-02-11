@@ -2,6 +2,7 @@ package co.netguru.android.coolcal.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import co.netguru.android.coolcal.utils.Speed.mph
 import co.netguru.android.coolcal.utils.Temperature.SIGN_DEGREE
 import co.netguru.android.coolcal.utils.Temperature.SIGN_FULL
 import co.netguru.android.coolcal.utils.Temperature.SYMBOL_DEGREE
@@ -11,14 +12,15 @@ import co.netguru.android.coolcal.utils.Temperature.SYMBOL_KELVIN
 import co.netguru.android.coolcal.utils.Temperature.UNIT_CELSIUS
 import co.netguru.android.coolcal.utils.Temperature.UNIT_FAHRENHEIT
 import co.netguru.android.coolcal.utils.Temperature.UNIT_KELVIN
-import co.netguru.android.coolcal.utils.Temperature.kelvinToCelsius
-import co.netguru.android.coolcal.utils.Temperature.kelvinToFahrenheit
+import co.netguru.android.coolcal.utils.Temperature.celsius
+import co.netguru.android.coolcal.utils.Temperature.fahrenheit
 import co.netguru.android.coolcal.weather.Wind
 import org.joda.time.DateTime
 import org.joda.time.Period
 import org.joda.time.format.PeriodFormatter
 import org.joda.time.format.PeriodFormatterBuilder
 import java.util.*
+
 
 object AppPreferences {
 
@@ -106,8 +108,8 @@ object AppPreferences {
         val unit = tempUnit
         val mode = tempSign
         val temp = when (unit) {
-            UNIT_CELSIUS -> "${Math.round(kelvinToCelsius(tempKelvin))}"
-            UNIT_FAHRENHEIT -> "${Math.round(kelvinToFahrenheit(tempKelvin))}"
+            UNIT_CELSIUS -> "${Math.round(tempKelvin.celsius())}"
+            UNIT_FAHRENHEIT -> "${Math.round(tempKelvin.fahrenheit())}"
             else -> "$tempKelvin"
         }
         val sign = when (mode) {
@@ -147,7 +149,7 @@ object AppPreferences {
         }
         val speedString = when (speedUnit) {
             Speed.UNIT_MPH -> {
-                val mph = Math.round(Speed.kmhToMph(wind.speed!!))
+                val mph = Math.round(wind.speed!!.mph())
                 "$mph ${Speed.SYMBOL_MPH}"
             }
             else -> {

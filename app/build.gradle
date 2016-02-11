@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 project.ext {
-    versionCode = Integer.parseInt(System.getenv("BITRISE_BUILD_NUMBER") ?: "0")
+    localVersionCode = "$Integer.MAX_VALUE"
+    versionCode = Integer.parseInt(System.getenv("BITRISE_BUILD_NUMBER") ?: localVersionCode)
 }
 
 android {
@@ -11,10 +13,10 @@ android {
 
     defaultConfig {
         applicationId "co.netguru.android.coolcal"
-        minSdkVersion 19
+        minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "0.$versionCode"
+//        versionCode 1
+        versionName "0.1.$project.ext.versionCode"
     }
 
     buildTypes {
@@ -49,7 +51,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // HockeyApp
-    compile 'net.hockeyapp.android:HockeySDK:2.2.1'
+    compile 'net.hockeyapp.android:HockeySDK:3.7.0'
 
     // Android support libs
     compile 'com.android.support:appcompat-v7:23.1.1'
@@ -98,7 +100,7 @@ dependencies {
 }
 
 buildscript {
-    ext.kotlin_version = '1.0.0-rc-1036'
+    // kotlin_version moved to global buildscript
     repositories {
         mavenCentral()
     }

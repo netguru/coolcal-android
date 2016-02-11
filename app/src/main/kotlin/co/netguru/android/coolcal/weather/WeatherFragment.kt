@@ -6,23 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import butterknife.bindView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.BaseFragment
 import co.netguru.android.coolcal.utils.AppPreferences
+import kotlinx.android.synthetic.main.fragment_weather.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
-class CurrentWeatherFragment : BaseFragment() {
-
-    val weatherIcon: ImageView by bindView<ImageView>(R.id.weather_icon)
-    val technicalDescrView: TextView by bindView<TextView>(R.id.weather_technical_description)
-    val informalDescrView: TextView by bindView<TextView>(R.id.weather_informal_description)
-    val dayTempView: TextView by bindView<TextView>(R.id.weather_temperature)
-    val windView: TextView by bindView<TextView>(R.id.weather_wind)
-    val pressureView: TextView by bindView<TextView>(R.id.weather_pressure)
+class WeatherFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -49,12 +40,12 @@ class CurrentWeatherFragment : BaseFragment() {
     private fun fillInfoWithData(data: WeatherResponse) {
         val weather = data.weather[0]
 
-        weatherIcon.setImageResource(WeatherDecoder.getIconRes(weather.icon))
-        technicalDescrView.text = weather.description
-        informalDescrView.text = "Weather description" // todo
-        dayTempView.text = AppPreferences.formatTemperature(data.main?.temperature)
-        pressureView.text = AppPreferences.formatPressure(data.main?.pressure)
-        windView.text = AppPreferences.formatWind(data.wind)
+        weatherIconImageView.setImageResource(WeatherDecoder.getIconRes(weather.icon))
+        weatherDescriptionTextView.text = weather.description
+        weatherMessageTextView.text = "Weather description" // todo
+        weatherTemperatureTextView.text = AppPreferences.formatTemperature(data.main?.temperature)
+        weatherPressureTextView.text = AppPreferences.formatPressure(data.main?.pressure)
+        weatherWindTextView.text = AppPreferences.formatWind(data.wind)
     }
 
     override fun onLocationChanged(location: Location?) {

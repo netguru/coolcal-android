@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <co.netguru.android.coolcal.calendar.CalendarTabView
-        android:id="@+id/events_calendar_tab_view"
+        android:id="@+id/eventsCalendarTabView"
         android:layout_width="match_parent"
         android:layout_height="82dp"
         android:layout_alignParentTop="true"
@@ -16,7 +16,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/events_calendar_tab_view">
+        android:layout_below="@id/eventsCalendarTabView">
 
         <View
             android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:background="@drawable/vertical_shadow" />
 
         <ListView
-            android:id="@+id/events_listview"
+            android:id="@+id/eventsListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true" />

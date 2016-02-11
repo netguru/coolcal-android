@@ -2,6 +2,7 @@ package co.netguru.android.coolcal.calendar
 
 import android.content.Context
 import android.database.Cursor
+import android.database.CursorIndexOutOfBoundsException
 import android.view.View
 import android.view.ViewGroup
 import co.netguru.android.coolcal.R
@@ -70,10 +71,11 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
         return millisAtStartOfDay(dt)
     }
 
+    @Throws(CursorIndexOutOfBoundsException::class)
     internal fun getItemDayStart(position: Int): Long {
         val obj = getItem(position)
         val dtStart = when (obj) {
-            is TimelineData -> millisAtStartOfDay(obj.dtStart)
+            is TimelineData -> obj.dtStart
             is Cursor -> getEventDayStart(obj)
             else -> throw IllegalStateException("Illegal object @ getItemDayStart(position)")
         }

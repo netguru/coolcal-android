@@ -2,6 +2,7 @@ package co.netguru.android.coolcal.weather
 
 import co.netguru.android.coolcal.BuildConfig
 import co.netguru.android.coolcal.R
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -10,7 +11,6 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import rx.Observable
 import rx.observers.TestSubscriber
-import kotlin.test.assertNotNull
 
 @RunWith(RobolectricGradleTestRunner::class)
 @Config(constants = BuildConfig::class, sdk = intArrayOf(21),
