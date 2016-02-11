@@ -3,8 +3,9 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 project.ext {
+    localBuildVersionCode = Integer.MAX_VALUE
     bitriseBuildNumber = System.getenv("BITRISE_BUILD_NUMBER")
-    versionCode = bitriseBuildNumber ? Integer.parseInt(bitriseBuildNumber) : 0
+    versionCode = bitriseBuildNumber ? Integer.parseInt(bitriseBuildNumber) : localBuildVersionCode
 }
 
 android {
