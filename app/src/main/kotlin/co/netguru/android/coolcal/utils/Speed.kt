@@ -14,8 +14,8 @@ object Speed {
     const val SYMBOl_KMH = "km/h"
     const val SYMBOL_MPH = "mph"
 
-    fun mphToKmh(mph: Double) = mph / 0.621371
+    fun Double.kmh() = this / 0.621371
 
-    fun kmhToMph(kmh: Double) = kmh * 0.621371
+    fun Double.mph() = this * 0.621371
 
 }

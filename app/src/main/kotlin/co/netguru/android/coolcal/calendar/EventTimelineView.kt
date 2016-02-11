@@ -116,35 +116,30 @@ open class EventTimelineView : View {
         get() = _barRadius
         set(value) {
             _barRadius = value
-            invalidate()
         }
     private var _barHeight: Float = 12f
     var barHeight: Float   // px
         get() = _barHeight
         set(value) {
             _barHeight = value
-            invalidate()
         }
     private var _barSpacing: Float = 0f
     var barSpacing: Float   // px
         get() = _barSpacing
         set(value) {
             _barSpacing = value
-            invalidate()
         }
     private var _topSpacing: Float = 0f
     var topSpacing: Float
         get() = _topSpacing
         set(value) {
             _topSpacing = value
-            invalidate()
         }
     private var _bottomSpacing: Float = 0f
     var bottomSpacing: Float
         get() = _bottomSpacing
         set(value) {
             _bottomSpacing = value
-            invalidate()
         }
 
     /*
@@ -156,7 +151,6 @@ open class EventTimelineView : View {
         set(value) {
             _timelineUnit = value
             recalculateDrawRanges()
-            invalidate()
         }
     private var _unitWidth: Float = 80f
     private var unitWidth: Float
@@ -169,14 +163,12 @@ open class EventTimelineView : View {
         get() = _markTime
         set(value) {
             _markTime = value
-            invalidate()
         }
     private var _markScale: Float = 1f
     private var markScale: Float
         get() = _markScale
         set(value) {
             _markScale = value
-            invalidate()
         }
 
     /*
@@ -187,21 +179,18 @@ open class EventTimelineView : View {
         get() = _showTime
         set(value) {
             _showTime = value
-            invalidate()
         }
     private var _showTitles: Boolean = true
     private var showTitles: Boolean
         get() = _showTitles
         set(value) {
             _showTitles = value
-            invalidate()
         }
     private var _showScale: Boolean = true
     private var showScale: Boolean
         get() = _showScale
         set(value) {
             _showScale = value
-            invalidate()
         }
 
     /*
@@ -214,7 +203,6 @@ open class EventTimelineView : View {
             _timeSpan = value
             stopDt = startDt + timeSpan
             recalculateDrawRanges()
-            invalidate()
         }
     private var _startDt: Long = 0L
     var startDt: Long
@@ -223,7 +211,6 @@ open class EventTimelineView : View {
             _startDt = value
             stopDt = startDt + timeSpan
             recalculateDrawRanges()
-            invalidate()
         }
     private var stopDt: Long = 0L
 
@@ -235,10 +222,14 @@ open class EventTimelineView : View {
         get() = _events
         set(value) {
             _events = value
-            invalidate()
         }
 
     private val barRectF = RectF()
+
+    infix fun invalidating(expression: EventTimelineView.() -> Unit) {
+        expression()
+        invalidate()
+    }
 
     constructor(context: Context) : this(context, null) {
     }

@@ -1,6 +1,7 @@
 package co.netguru.android.coolcal.calendar
 
 import android.database.Cursor
+import android.database.CursorIndexOutOfBoundsException
 import android.location.Location
 import android.os.Bundle
 import android.provider.CalendarContract
@@ -12,9 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.ListView
-import android.widget.TextView
-import butterknife.bindView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.BaseFragment
 import co.netguru.android.coolcal.app.MainActivity
@@ -22,6 +20,9 @@ import co.netguru.android.coolcal.utils.AppPreferences
 import co.netguru.android.coolcal.utils.Loaders
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_events.*
+import kotlinx.android.synthetic.main.view_calendar_today_summary.*
 import org.joda.time.LocalDateTime
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -30,18 +31,7 @@ import java.util.concurrent.TimeUnit
 class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         SlidingUpPanelLayout.PanelSlideListener {
 
-    companion object {
-        const val TAG = "EventsFragment"
-        val DAY_MILLIS = TimeUnit.DAYS.toMillis(1)
-    }
-
-    private val busyFor: TextView by bindView(R.id.busy_for)
-    private val numberOfEvents: TextView by bindView(R.id.number_of_events)
-    private val panelHandle: View by bindView(R.id.panel_handle)
-    private val dayOfWeek: TextView by bindView(R.id.day_of_week)
-    private val dayOfMonth: TextView by bindView(R.id.day_of_month)
-    private val listView: ListView by bindView(R.id.events_listview)
-    private val calendarTabView: CalendarTabView by bindView(R.id.events_calendar_tab_view)
+    private val DAY_MILLIS = TimeUnit.DAYS.toMillis(1)
     private var adapter: EventAdapter? = null
     private val interpolator = FastOutSlowInInterpolator()
     private val todayDt: Long = LocalDateTime(System.currentTimeMillis())
@@ -61,16 +51,16 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dayOfWeek.text = AppPreferences.formatDayOfWeekShort(todayDt)
-        dayOfMonth.text = AppPreferences.formatDayOfMonth(todayDt)
-        calendarTabView.days = (0..5).map { i -> todayDt + i * DAY_MILLIS }
-        listView.adapter = adapter
+        dayOfWeekTextView.text = AppPreferences.formatDayOfWeekShort(todayDt)
+        dayOfMonthTextView.text = AppPreferences.formatDayOfMonth(todayDt)
+        eventsCalendarTabView.days = (0..5).map { i -> todayDt + i * DAY_MILLIS }
+        eventsListView.adapter = adapter
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        (activity as MainActivity).slidingLayout.setDragView(calendarTabView)
+        (activity as MainActivity).slidingLayout.setDragView(eventsCalendarTabView)
     }
 
     override fun onDestroy() {
@@ -92,14 +82,18 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         }
     }
 
-    private fun initScrollListener() {
-        fun switchActiveDay(firstVisibleItem: Int) {
+    private fun switchActiveDay(firstVisibleItem: Int) {
+        try {
             val dt = adapter!!.getItemDayStart(firstVisibleItem)
-            calendarTabView.switchDay(dt)
+            eventsCalendarTabView.switchDay(dt)
+        } catch (e: CursorIndexOutOfBoundsException) {
+            eventsCalendarTabView.switchDay(todayDt)
         }
-        switchActiveDay(listView.firstVisiblePosition)
+    }
 
-        listView.setOnScrollListener(object : AbsListView.OnScrollListener {
+    private fun initScrollListener() {
+        switchActiveDay(eventsListView.firstVisiblePosition)
+        eventsListView.setOnScrollListener(object : AbsListView.OnScrollListener {
             var firstVisibleCache = 0
 
             override fun onScroll(view: AbsListView?, firstVisibleItem: Int,
@@ -134,8 +128,8 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
             }
             data.moveToFirst()
 
-            numberOfEvents.text = "$todayEvents"
-            busyFor.text = AppPreferences.formatPeriod(0, busyTodaySum)
+            numberOfEventsTextView.text = "$todayEvents"
+            busyForTextView.text = AppPreferences.formatPeriod(0, busyTodaySum)
         }
     }
 
@@ -181,8 +175,8 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
 
     private fun crossfadePanelAlpha(slideOffset: Float) {
         val offset = interpolator.getInterpolation(slideOffset)
-        panelHandle.alpha = 1f - offset
-        calendarTabView.alpha = offset
+        panelHandleLayout.alpha = 1f - offset
+        eventsCalendarTabView.alpha = offset
     }
 
     override fun onPanelExpanded(panel: View?) {

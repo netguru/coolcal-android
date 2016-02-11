@@ -20,5 +20,5 @@ open class CoolCalApp : Application() {
         if (isLeakCanaryEnabled()) LeakCanary.install(this)
     }
 
-    open fun isLeakCanaryEnabled() = true
+    open protected fun isLeakCanaryEnabled() = true
 }

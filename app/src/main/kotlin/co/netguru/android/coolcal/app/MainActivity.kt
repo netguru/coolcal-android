@@ -5,13 +5,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import butterknife.bindView
 import co.netguru.android.coolcal.R
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import kotlinx.android.synthetic.main.activity_main.*
 import net.hockeyapp.android.CrashManager
 import net.hockeyapp.android.UpdateManager
 
@@ -22,10 +22,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         const val TAG = "MainActivity"
         const val REQUEST_RESOLVE_ERROR = 1000
     }
-
-    private val _slidingLayout: SlidingUpPanelLayout by bindView(R.id.sliding_layout)
-    val slidingLayout: SlidingUpPanelLayout
-        get() = _slidingLayout
 
     private var mResolvingError: Boolean = false
 
@@ -53,10 +49,9 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        slidingLayout.setPanelSlideListener(fragments[1] as SlidingUpPanelLayout.PanelSlideListener)
 
         checkForUpdates()
-
-        _slidingLayout.setPanelSlideListener(fragments[1] as SlidingUpPanelLayout.PanelSlideListener)
     }
 
     override fun onStart() {
@@ -76,6 +71,11 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         checkForCrashes()
     }
 
+    override fun onPause() {
+        super.onPause()
+        UpdateManager.unregister();
+    }
+
     private fun checkForCrashes() {
         CrashManager.register(this, getString(R.string.appIdHockeyApp));
     }
@@ -88,7 +88,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     /*
         Google API callbacks
      */
-
     private fun showErrorDialog(errorCode: Int) {
         val dialog = GoogleApiAvailability.getInstance()
                 .getErrorDialog(this, errorCode, REQUEST_RESOLVE_ERROR);

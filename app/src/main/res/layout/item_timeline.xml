@@ -14,7 +14,7 @@
         android:paddingTop="@dimen/spacing_normal">
 
         <TextView
-            android:id="@+id/event_header_day_of_month"
+            android:id="@+id/dayOfMonthTextView"
             style="@style/AppTheme.Header.LargeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,14 +23,14 @@
             tools:text="05" />
 
         <TextView
-            android:id="@+id/event_header_day_of_week"
+            android:id="@+id/dayOfWeekTextView"
             style="@style/AppTheme.Header.SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/event_header_day_of_month"
+            android:layout_alignTop="@id/dayOfMonthTextView"
             android:layout_marginStart="@dimen/spacing_tiny"
             android:layout_marginTop="4dp"
-            android:layout_toEndOf="@id/event_header_day_of_month"
+            android:layout_toEndOf="@id/dayOfMonthTextView"
             tools:text="tuesday" />
     </RelativeLayout>
 
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content">
 
             <co.netguru.android.coolcal.calendar.EventTimelineView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/event_timeline_view"
+                android:id="@+id/eventTimelineView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:markTime="1"
