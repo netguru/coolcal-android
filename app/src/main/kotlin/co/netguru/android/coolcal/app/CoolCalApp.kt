@@ -1,7 +1,7 @@
 package co.netguru.android.coolcal.app
 
 import android.app.Application
-import co.netguru.android.coolcal.R
+import co.netguru.android.coolcal.BuildConfig
 import co.netguru.android.coolcal.utils.AppPreferences
 import co.netguru.android.coolcal.weather.OWMInterceptor
 import co.netguru.android.coolcal.weather.OpenWeatherMap
@@ -14,7 +14,7 @@ open class CoolCalApp : Application() {
 
         AppPreferences.init(this)
 
-        val owmApiKey = getString(R.string.owmApiKey)
+        val owmApiKey = BuildConfig.OPENWEATHERMAP_API_KEY
         OpenWeatherMap.client.interceptors().add(OWMInterceptor(owmApiKey))
 
         if (isLeakCanaryEnabled()) LeakCanary.install(this)
