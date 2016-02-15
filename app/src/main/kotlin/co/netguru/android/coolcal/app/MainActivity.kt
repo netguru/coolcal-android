@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import co.netguru.android.coolcal.BuildConfig
 import co.netguru.android.coolcal.R
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     override fun onStop() {
         super.onStop()
         if (googleApiClient.isConnected) {
-            googleApiClient.disconnect();
+            googleApiClient.disconnect()
         }
     }
 
@@ -73,16 +74,16 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
     override fun onPause() {
         super.onPause()
-        UpdateManager.unregister();
+        UpdateManager.unregister()
     }
 
     private fun checkForCrashes() {
-        CrashManager.register(this, getString(R.string.appIdHockeyApp));
+        CrashManager.register(this, BuildConfig.HOCKEYAPP_APP_ID)
     }
 
     private fun checkForUpdates() {
         // TODO Remove this for store / production builds!
-        UpdateManager.register(this, getString(R.string.appIdHockeyApp));
+        UpdateManager.register(this, BuildConfig.HOCKEYAPP_APP_ID)
     }
 
     /*
@@ -90,31 +91,31 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
      */
     private fun showErrorDialog(errorCode: Int) {
         val dialog = GoogleApiAvailability.getInstance()
-                .getErrorDialog(this, errorCode, REQUEST_RESOLVE_ERROR);
-        dialog.setOnDismissListener({ mResolvingError = false; });
-        dialog.show();
+                .getErrorDialog(this, errorCode, REQUEST_RESOLVE_ERROR)
+        dialog.setOnDismissListener({ mResolvingError = false })
+        dialog.show()
     }
 
     override fun onConnectionFailed(result: ConnectionResult) {
         Log.e(TAG, "Connection Failed with code ${result.errorCode}")
         if (mResolvingError) {
-            return;
+            return
         }
         if (result.hasResolution()) {
             try {
-                mResolvingError = true;
-                result.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+                mResolvingError = true
+                result.startResolutionForResult(this, REQUEST_RESOLVE_ERROR)
             } catch (e: IntentSender.SendIntentException) {
                 // todo: signal error to user
             }
         } else {
-            showErrorDialog(result.errorCode);
-            mResolvingError = true;
+            showErrorDialog(result.errorCode)
+            mResolvingError = true
         }
     }
 
     override fun onConnected(p0: Bundle?) {
-        val location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        val location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
         if (location != null) {
             fragments.forEach { fragment -> fragment?.onLocationChanged(location) }
         } else {
@@ -123,7 +124,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     override fun onConnectionSuspended(p0: Int) {
-        googleApiClient.connect();
+        googleApiClient.connect()
     }
 
     override fun onBackPressed() {

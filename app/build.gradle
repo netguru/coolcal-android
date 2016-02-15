@@ -2,6 +2,24 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+/**
+ * Function to retrieve a secret from environment variable or gradle property
+ * @param envVarName name of the environment variable to be used in the first place
+ * @param propertyName name of the gradle.properties entry
+ * @return value of the env. var, property or "undefined"
+ */
+def secret(String envVarName, String propertyName) {
+    try {
+        return '"' + (System.getenv(envVarName) ?: property(propertyName)) + '"'
+    } catch (MissingPropertyException ignored) {
+        return "\"$propertyName undefined\""
+    }
+}
+
+def hockeyAppAppIdProp = secret("HOCKEYAPP_APP_ID", "HockeyAppAppId")
+
+def openWeatherMapApiKeyProp = secret("OPENWEATHERMAP_API_KEY", "OpenWeatherMapApiKey")
+
 project.ext {
     localBuildVersionCode = Integer.MAX_VALUE
     bitriseBuildNumber = System.getenv("BITRISE_BUILD_NUMBER")
@@ -14,10 +32,15 @@ android {
 
     defaultConfig {
         applicationId "co.netguru.android.coolcal"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode = project.ext.versionCode
         versionName "0.1"
+    }
+
+    buildTypes.each { buildType ->
+        buildType.buildConfigField 'String', 'HOCKEYAPP_APP_ID', hockeyAppAppIdProp
+        buildType.buildConfigField 'String', 'OPENWEATHERMAP_API_KEY', openWeatherMapApiKeyProp
     }
 
     buildTypes {

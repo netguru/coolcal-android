@@ -11,5 +11,6 @@ build
 *.iml
 *.iws
 *.ipr
-*~
 *.swp
+*~
+~$*
