@@ -1,4 +1,4 @@
-package co.netguru.android.coolcal.app
+package co.netguru.android.coolcal.ui
 
 import android.content.IntentSender
 import android.os.Bundle

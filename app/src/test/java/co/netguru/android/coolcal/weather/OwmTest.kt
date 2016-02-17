@@ -1,16 +1,14 @@
 package co.netguru.android.coolcal.weather
 
 import co.netguru.android.coolcal.BuildConfig
-import co.netguru.android.coolcal.R
 import org.junit.Assert.assertNotNull
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricGradleTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import rx.Observable
 import rx.observers.TestSubscriber
+import javax.inject.Inject
 
 @RunWith(RobolectricGradleTestRunner::class)
 @Config(constants = BuildConfig::class, sdk = intArrayOf(21),
@@ -18,13 +16,7 @@ import rx.observers.TestSubscriber
         packageName = "co.netguru.android.coolcal")
 class TestNoLeakCanaryApp : NoLeakCanaryApp() {
 
-    val apiKey = RuntimeEnvironment.application.getString(R.string.owmApiKey)
-    val owm = OpenWeatherMap.api
-
-    @Before
-    fun prepareApi() {
-        OpenWeatherMap.client.interceptors().add(OWMInterceptor(apiKey))
-    }
+    @Inject lateinit var openWeatherMap: OpenWeatherMap
 
     @Throws(Exception::class)
     fun<T> testCall(obs: Observable<T>) {
@@ -39,14 +31,14 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
     @Test
     @Throws(Exception::class)
     fun testCalls() {
-        testCall(owm.getWeather("Kraków"))
-        testCall(owm.getForecast("Kraków"))
+        testCall(openWeatherMap.getWeather("Kraków"))
+        testCall(openWeatherMap.getForecast("Kraków"))
     }
 
     @Test
     @Throws(Exception::class)
     fun testWeatherResponse() {
-        owm.getWeather("Kraków")
+        openWeatherMap.getWeather("Kraków")
                 .toBlocking()
                 .forEach { response ->
                     assertNotNull(response.coord)
@@ -62,7 +54,7 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
     @Test
     @Throws(Exception::class)
     fun testForecastResponse() {
-        owm.getForecast("Kraków", count = 1)
+        openWeatherMap.getForecast("Kraków", count = 1)
                 .toBlocking()
                 .forEach { response ->
                     response.forecastList.forEach {

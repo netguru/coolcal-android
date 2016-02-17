@@ -1,4 +1,4 @@
-package co.netguru.android.coolcal.weather
+package co.netguru.android.coolcal.ui
 
 import android.location.Location
 import android.os.Bundle
@@ -7,13 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.app.BaseFragment
-import co.netguru.android.coolcal.utils.AppPreferences
+import co.netguru.android.coolcal.preferences.AppPreferences
+import co.netguru.android.coolcal.weather.OpenWeatherMap
+import co.netguru.android.coolcal.weather.WeatherDecoder
+import co.netguru.android.coolcal.weather.WeatherResponse
 import kotlinx.android.synthetic.main.fragment_weather.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import javax.inject.Inject
 
 class WeatherFragment : BaseFragment() {
+
+    @Inject lateinit var openWeatherMap: OpenWeatherMap
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -27,7 +32,7 @@ class WeatherFragment : BaseFragment() {
     private fun requestWeather(location: Location) {
         val latitude = location.latitude
         val longitude = location.longitude
-        subscription = OpenWeatherMap.api.getWeather(latitude, longitude)
+        subscription = openWeatherMap.getWeather(latitude, longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response: WeatherResponse ->

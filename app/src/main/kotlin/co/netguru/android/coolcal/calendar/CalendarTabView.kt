@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import butterknife.bindViews
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.utils.AppPreferences
+import co.netguru.android.coolcal.preferences.AppPreferences
 import com.facebook.rebound.SimpleSpringListener
 import com.facebook.rebound.Spring
 import com.facebook.rebound.SpringSystem

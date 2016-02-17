@@ -3,7 +3,7 @@ package co.netguru.android.coolcal.calendar
 import android.view.View
 import android.widget.TextView
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.utils.AppPreferences
+import co.netguru.android.coolcal.preferences.AppPreferences
 import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder
 
 class TimelineHolder(itemView: View) : ViewHolder(itemView) {

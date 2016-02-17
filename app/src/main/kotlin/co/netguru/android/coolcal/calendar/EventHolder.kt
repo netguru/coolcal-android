@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.utils.AppPreferences
+import co.netguru.android.coolcal.preferences.AppPreferences
 import co.netguru.android.coolcal.weather.Forecast
 import co.netguru.android.coolcal.weather.WeatherDecoder
 import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder

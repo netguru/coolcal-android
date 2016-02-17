@@ -13,7 +13,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.utils.AppPreferences
+import co.netguru.android.coolcal.preferences.AppPreferences
 import java.lang.Math.ceil
 import java.lang.Math.floor
 import java.util.concurrent.TimeUnit

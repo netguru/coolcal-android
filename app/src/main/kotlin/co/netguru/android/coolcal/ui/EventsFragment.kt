@@ -1,4 +1,4 @@
-package co.netguru.android.coolcal.calendar
+package co.netguru.android.coolcal.ui
 
 import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
@@ -14,10 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.app.BaseFragment
-import co.netguru.android.coolcal.app.MainActivity
-import co.netguru.android.coolcal.utils.AppPreferences
-import co.netguru.android.coolcal.utils.Loaders
+import co.netguru.android.coolcal.calendar.Event
+import co.netguru.android.coolcal.calendar.EventAdapter
+import co.netguru.android.coolcal.calendar.Loaders
+import co.netguru.android.coolcal.preferences.AppPreferences
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,13 +27,18 @@ import org.joda.time.LocalDateTime
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         SlidingUpPanelLayout.PanelSlideListener {
 
-    private val DAY_MILLIS = TimeUnit.DAYS.toMillis(1)
-    private var adapter: EventAdapter? = null
+    @Inject lateinit var openWeatherMap: OpenWeatherMap
+
+    private lateinit var adapter: EventAdapter
+
     private val interpolator = FastOutSlowInInterpolator()
+
+    private val DAY_MILLIS = TimeUnit.DAYS.toMillis(1)
     private val todayDt: Long = LocalDateTime(System.currentTimeMillis())
             .toLocalDate().toDateTimeAtStartOfDay().millis
 
@@ -84,7 +89,7 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
 
     private fun switchActiveDay(firstVisibleItem: Int) {
         try {
-            val dt = adapter!!.getItemDayStart(firstVisibleItem)
+            val dt = adapter.getItemDayStart(firstVisibleItem)
             eventsCalendarTabView.switchDay(dt)
         } catch (e: CursorIndexOutOfBoundsException) {
             eventsCalendarTabView.switchDay(todayDt)
@@ -135,7 +140,7 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
 
     override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
         initTodayStatistics(data)
-        adapter?.swapCursor(data)
+        adapter.swapCursor(data)
         initScrollListener()
     }
 
@@ -146,12 +151,12 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
     private fun requestForecast(location: Location) {
         val latitude = location.latitude
         val longitude = location.longitude
-        OpenWeatherMap.api.getForecast(latitude, longitude)
+        openWeatherMap.getForecast(latitude, longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     response ->
-                    adapter?.forecastResponse = response
+                    adapter.forecastResponse = response
                 }, {
                     error -> // todo: handle possible error - retry?
                 })

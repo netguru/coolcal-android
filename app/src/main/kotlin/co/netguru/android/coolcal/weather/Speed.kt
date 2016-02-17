@@ -1,4 +1,4 @@
-package co.netguru.android.coolcal.utils
+package co.netguru.android.coolcal.weather
 
 object Speed {
 

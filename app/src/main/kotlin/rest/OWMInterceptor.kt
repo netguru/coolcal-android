@@ -1,4 +1,4 @@
-package co.netguru.android.coolcal.weather
+package rest
 
 import android.util.Log
 import com.squareup.okhttp.Interceptor
@@ -16,6 +16,8 @@ class OWMInterceptor(val apiKey: String) : Interceptor {
                 .method(request.method(), request.body())
                 .url(appidUrl)
         .build()
+
+        //todo: check if owm response is cached, if not try adding CacheControl to response header
 
         return chain.proceed(apiKeyRequest);
     }

@@ -1,4 +1,4 @@
-package co.netguru.android.coolcal.app
+package co.netguru.android.coolcal.ui
 
 import android.location.Location
 import android.support.v4.app.Fragment

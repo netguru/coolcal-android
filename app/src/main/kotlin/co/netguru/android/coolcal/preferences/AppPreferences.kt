@@ -1,25 +1,27 @@
-package co.netguru.android.coolcal.utils
+package co.netguru.android.coolcal.preferences
 
-import android.content.Context
 import android.content.SharedPreferences
-import co.netguru.android.coolcal.utils.Speed.mph
-import co.netguru.android.coolcal.utils.Temperature.SIGN_DEGREE
-import co.netguru.android.coolcal.utils.Temperature.SIGN_FULL
-import co.netguru.android.coolcal.utils.Temperature.SYMBOL_DEGREE
-import co.netguru.android.coolcal.utils.Temperature.SYMBOL_DEGREE_CELSIUS
-import co.netguru.android.coolcal.utils.Temperature.SYMBOL_DEGREE_FAHRENHEIT
-import co.netguru.android.coolcal.utils.Temperature.SYMBOL_KELVIN
-import co.netguru.android.coolcal.utils.Temperature.UNIT_CELSIUS
-import co.netguru.android.coolcal.utils.Temperature.UNIT_FAHRENHEIT
-import co.netguru.android.coolcal.utils.Temperature.UNIT_KELVIN
-import co.netguru.android.coolcal.utils.Temperature.celsius
-import co.netguru.android.coolcal.utils.Temperature.fahrenheit
+import co.netguru.android.coolcal.weather.Pressure
+import co.netguru.android.coolcal.weather.Speed
+import co.netguru.android.coolcal.weather.Speed.mph
+import co.netguru.android.coolcal.weather.Temperature.SIGN_DEGREE
+import co.netguru.android.coolcal.weather.Temperature.SIGN_FULL
+import co.netguru.android.coolcal.weather.Temperature.SYMBOL_DEGREE
+import co.netguru.android.coolcal.weather.Temperature.SYMBOL_DEGREE_CELSIUS
+import co.netguru.android.coolcal.weather.Temperature.SYMBOL_DEGREE_FAHRENHEIT
+import co.netguru.android.coolcal.weather.Temperature.SYMBOL_KELVIN
+import co.netguru.android.coolcal.weather.Temperature.UNIT_CELSIUS
+import co.netguru.android.coolcal.weather.Temperature.UNIT_FAHRENHEIT
+import co.netguru.android.coolcal.weather.Temperature.UNIT_KELVIN
+import co.netguru.android.coolcal.weather.Temperature.celsius
+import co.netguru.android.coolcal.weather.Temperature.fahrenheit
 import co.netguru.android.coolcal.weather.Wind
 import org.joda.time.DateTime
 import org.joda.time.Period
 import org.joda.time.format.PeriodFormatter
 import org.joda.time.format.PeriodFormatterBuilder
 import java.util.*
+import javax.inject.Inject
 
 
 object AppPreferences {
@@ -32,34 +34,34 @@ object AppPreferences {
     private const val PREF_PRESSURE_UNIT = "pref_pressure_unit"
     private const val PREF_SPEED_UNIT = "pref_speed_unit"
 
-    private var preferences: SharedPreferences? = null
+    @Inject lateinit var preferences: SharedPreferences
 
     private val defaultTemperatureUnit: Int by lazy { assumeDefaultTempUnit() }
     private val defaultPressureUnit: Int by lazy { assumeDefaultPressureUnit() }
     private val defaultSpeedUnit: Int by lazy { assumeDefaultSpeedUnit() }
 
     var tempUnit: Int
-        get() = preferences!!.getInt(PREF_TEMP_UNIT, defaultTemperatureUnit)
+        get() = preferences.getInt(PREF_TEMP_UNIT, defaultTemperatureUnit)
         set(value) {
-            preferences!!.edit().putInt(PREF_TEMP_UNIT, value).apply()
+            preferences.edit().putInt(PREF_TEMP_UNIT, value).apply()
         }
 
     var tempSign: Int
-        get() = preferences!!.getInt(PREF_TEMP_SIGN, SIGN_DEGREE)
+        get() = preferences.getInt(PREF_TEMP_SIGN, SIGN_DEGREE)
         set(value) {
-            preferences!!.edit().putInt(PREF_TEMP_SIGN, value).apply()
+            preferences.edit().putInt(PREF_TEMP_SIGN, value).apply()
         }
 
     var pressureUnit: Int
-        get() = preferences!!.getInt(PREF_PRESSURE_UNIT, defaultPressureUnit)
+        get() = preferences.getInt(PREF_PRESSURE_UNIT, defaultPressureUnit)
         set(value) {
-            preferences!!.edit().putInt(PREF_PRESSURE_UNIT, value).apply()
+            preferences.edit().putInt(PREF_PRESSURE_UNIT, value).apply()
         }
 
     var speedUnit: Int
-        get() = preferences!!.getInt(PREF_SPEED_UNIT, defaultSpeedUnit)
+        get() = preferences.getInt(PREF_SPEED_UNIT, defaultSpeedUnit)
         set(value) {
-            preferences!!.edit().putInt(PREF_SPEED_UNIT, value).apply()
+            preferences.edit().putInt(PREF_SPEED_UNIT, value).apply()
         }
 
     private val periodFormatter: PeriodFormatter by lazy {
@@ -70,10 +72,6 @@ object AppPreferences {
                 .appendMinutes()
                 .appendSuffix("m")
                 .toFormatter()
-    }
-
-    internal fun init(context: Context) {
-        preferences = context.getSharedPreferences(KEY_PREFERENCES, Context.MODE_PRIVATE)
     }
 
     /**

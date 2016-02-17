@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.neenbedankt.android-apt'
 
 /**
  * Function to retrieve a secret from environment variable or gradle property
@@ -74,7 +75,7 @@ android {
 
 dependencies {
     // Kotlin standard library
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.0"
 
     // HockeyApp
     compile 'net.hockeyapp.android:HockeySDK:3.7.0'
@@ -113,6 +114,11 @@ dependencies {
     // ReactiveX
     compile 'io.reactivex:rxandroid:1.0.1'
 
+    // Dagger2
+    apt 'com.google.dagger:dagger-compiler:2.0.2'
+    compile 'com.google.dagger:dagger:2.0.2'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
     // test
     testCompile "org.robolectric:robolectric:3.0"
     testCompile 'junit:junit:4.12'
@@ -123,18 +129,4 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
-}
-
-buildscript {
-    // kotlin_version moved to global buildscript
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-    }
-}
-repositories {
-    mavenCentral()
 }
