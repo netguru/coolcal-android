@@ -1,4 +1,4 @@
-package rest
+package co.netguru.android.coolcal.rest
 
 import android.content.Context
 import co.netguru.android.coolcal.BuildConfig
@@ -14,7 +14,7 @@ import retrofit.RxJavaCallAdapterFactory
 import javax.inject.Singleton
 
 @Module
-class OpenWeatherMapModule {
+class RestModule {
 
     companion object {
         const val CACHE_SIZE = 100 * 1024L
@@ -26,15 +26,14 @@ class OpenWeatherMapModule {
 
     @Provides
     @Singleton
-    fun provideInterceptors(): List<Interceptor> =
-            arrayListOf(OWMInterceptor(BuildConfig.OPENWEATHERMAP_API_KEY))
+    fun provideInterceptor(): Interceptor = OWMInterceptor(BuildConfig.OPENWEATHERMAP_API_KEY)
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(cache: Cache, interceptors: List<Interceptor>): OkHttpClient {
+    fun provideOkHttpClient(cache: Cache, interceptor: Interceptor): OkHttpClient {
         val client = OkHttpClient()
         client.cache = cache
-        client.interceptors().addAll(interceptors)
+        client.interceptors().add(interceptor)
         return client
     }
 

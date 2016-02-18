@@ -70,12 +70,17 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
+}
+
+kapt {
+    generateStubs = true
 }
 
 dependencies {
     // Kotlin standard library
-    compile "org.jetbrains.kotlin:kotlin-stdlib:1.0.0"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // HockeyApp
     compile 'net.hockeyapp.android:HockeySDK:3.7.0'
@@ -95,7 +100,7 @@ dependencies {
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
 
     // JodaTime
-    compile 'joda-time:joda-time:2.9.1'
+    compile 'joda-time:joda-time:2.9.1' // todo: change to JodaTime-android for smaller apk
 
     // SectionCursorAdapter
     compile 'com.twotoasters.SectionCursorAdapter:library:2.0.1'
@@ -115,7 +120,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.0.1'
 
     // Dagger2
-    apt 'com.google.dagger:dagger-compiler:2.0.2'
+    kapt 'com.google.dagger:dagger-compiler:2.0.2'
     compile 'com.google.dagger:dagger:2.0.2'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
@@ -129,4 +134,15 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+}
+
+buildscript {
+    ext.kotlin_version = '1.0.0'
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
+    }
 }

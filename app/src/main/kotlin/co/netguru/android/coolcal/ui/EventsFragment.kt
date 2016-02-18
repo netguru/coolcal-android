@@ -14,10 +14,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import co.netguru.android.coolcal.R
+import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.calendar.Event
 import co.netguru.android.coolcal.calendar.EventAdapter
 import co.netguru.android.coolcal.calendar.Loaders
-import co.netguru.android.coolcal.preferences.AppPreferences
+import co.netguru.android.coolcal.formatting.TimeFormatter
+import co.netguru.android.coolcal.formatting.ValueFormatter
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,7 +34,13 @@ import javax.inject.Inject
 class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         SlidingUpPanelLayout.PanelSlideListener {
 
+    init {
+        App.component.inject(this)
+    }
+
     @Inject lateinit var openWeatherMap: OpenWeatherMap
+    @Inject lateinit var valueFormatter: ValueFormatter
+    @Inject lateinit var timeFormatter: TimeFormatter
 
     private lateinit var adapter: EventAdapter
 
@@ -56,8 +64,8 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dayOfWeekTextView.text = AppPreferences.formatDayOfWeekShort(todayDt)
-        dayOfMonthTextView.text = AppPreferences.formatDayOfMonth(todayDt)
+        dayOfWeekTextView.text = timeFormatter.formatDayOfWeekShort(todayDt)
+        dayOfMonthTextView.text = timeFormatter.formatDayOfMonth(todayDt)
         eventsCalendarTabView.days = (0..5).map { i -> todayDt + i * DAY_MILLIS }
         eventsListView.adapter = adapter
     }
@@ -134,7 +142,7 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
             data.moveToFirst()
 
             numberOfEventsTextView.text = "$todayEvents"
-            busyForTextView.text = AppPreferences.formatPeriod(0, busyTodaySum)
+            busyForTextView.text = timeFormatter.formatPeriod(0, busyTodaySum)
         }
     }
 

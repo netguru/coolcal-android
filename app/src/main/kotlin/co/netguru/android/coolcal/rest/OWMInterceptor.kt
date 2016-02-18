@@ -1,4 +1,4 @@
-package rest
+package co.netguru.android.coolcal.rest
 
 import android.util.Log
 import com.squareup.okhttp.Interceptor

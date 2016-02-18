@@ -1,14 +1,19 @@
 package co.netguru.android.coolcal.weather
 
 import co.netguru.android.coolcal.BuildConfig
+import co.netguru.android.coolcal.rest.OWMInterceptor
+import com.squareup.okhttp.OkHttpClient
 import org.junit.Assert.assertNotNull
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricGradleTestRunner
 import org.robolectric.annotation.Config
+import retrofit.GsonConverterFactory
+import retrofit.Retrofit
+import retrofit.RxJavaCallAdapterFactory
 import rx.Observable
 import rx.observers.TestSubscriber
-import javax.inject.Inject
 
 @RunWith(RobolectricGradleTestRunner::class)
 @Config(constants = BuildConfig::class, sdk = intArrayOf(21),
@@ -16,7 +21,21 @@ import javax.inject.Inject
         packageName = "co.netguru.android.coolcal")
 class TestNoLeakCanaryApp : NoLeakCanaryApp() {
 
-    @Inject lateinit var openWeatherMap: OpenWeatherMap
+    lateinit var openWeatherMap: OpenWeatherMap
+
+    @Before
+    fun prepare() {
+        val interceptor = OWMInterceptor(BuildConfig.OPENWEATHERMAP_API_KEY)
+        val client = OkHttpClient()
+        client.interceptors().add(interceptor)
+        val retrofit = Retrofit.Builder()
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .baseUrl(OpenWeatherMap.API_ROOT)
+                .build()
+        openWeatherMap = retrofit.create(OpenWeatherMap::class.java)
+    }
 
     @Throws(Exception::class)
     fun<T> testCall(obs: Observable<T>) {

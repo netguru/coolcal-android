@@ -14,7 +14,7 @@ object Speed {
     const val SYMBOl_KMH = "km/h"
     const val SYMBOL_MPH = "mph"
 
-    fun Double.kmh() = this / 0.621371
+    fun Double.kmh() = this / 0.621371 // todo: check the actual unit of the owm response speed
 
     fun Double.mph() = this * 0.621371
 

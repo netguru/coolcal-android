@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.preferences.AppPreferences
+import co.netguru.android.coolcal.app.App
+import co.netguru.android.coolcal.formatting.ValueFormatter
+import co.netguru.android.coolcal.formatting.WeatherDecoder
 import co.netguru.android.coolcal.weather.OpenWeatherMap
-import co.netguru.android.coolcal.weather.WeatherDecoder
 import co.netguru.android.coolcal.weather.WeatherResponse
 import kotlinx.android.synthetic.main.fragment_weather.*
 import rx.android.schedulers.AndroidSchedulers
@@ -19,6 +20,12 @@ import javax.inject.Inject
 class WeatherFragment : BaseFragment() {
 
     @Inject lateinit var openWeatherMap: OpenWeatherMap
+    @Inject lateinit var weatherDecoder: WeatherDecoder
+    @Inject lateinit var valueFormatter: ValueFormatter
+
+    init {
+        App.component.inject(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -45,12 +52,12 @@ class WeatherFragment : BaseFragment() {
     private fun fillInfoWithData(data: WeatherResponse) {
         val weather = data.weather[0]
 
-        weatherIconImageView.setImageResource(WeatherDecoder.getIconRes(weather.icon))
+        weatherIconImageView.setImageResource(weatherDecoder.getIconRes(weather.icon))
         weatherDescriptionTextView.text = weather.description
         weatherMessageTextView.text = "Weather description" // todo
-        weatherTemperatureTextView.text = AppPreferences.formatTemperature(data.main?.temperature)
-        weatherPressureTextView.text = AppPreferences.formatPressure(data.main?.pressure)
-        weatherWindTextView.text = AppPreferences.formatWind(data.wind)
+        weatherTemperatureTextView.text = valueFormatter.formatTemperature(data.main?.temperature)
+        weatherPressureTextView.text = valueFormatter.formatPressure(data.main?.pressure)
+        weatherWindTextView.text = valueFormatter.formatWind(data.wind)
     }
 
     override fun onLocationChanged(location: Location?) {

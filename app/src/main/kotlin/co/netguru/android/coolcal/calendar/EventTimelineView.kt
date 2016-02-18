@@ -13,10 +13,12 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.preferences.AppPreferences
+import co.netguru.android.coolcal.app.App
+import co.netguru.android.coolcal.formatting.TimeFormatter
 import java.lang.Math.ceil
 import java.lang.Math.floor
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  * example: day timeline with scale every hour and time mark every 2 hours
@@ -37,13 +39,11 @@ open class EventTimelineView : View {
      */
     companion object {
         private const val TAG = "EventTimelineView"
-
         const val MILLISECOND = 0
         const val SECOND = 1
         const val MINUTE = 2
         const val HOUR = 3
         const val DAY = 4
-
         private fun unitMillis(unit: Int): Long =
                 when (unit) {
                     MILLISECOND -> 1L
@@ -56,6 +56,8 @@ open class EventTimelineView : View {
                     }
                 }
     }
+
+    @Inject lateinit var timeFormatter: TimeFormatter
 
     /*
         Paints
@@ -250,6 +252,9 @@ open class EventTimelineView : View {
 
     private fun initFromAttributes(context: Context, attrs: AttributeSet?,
                                    defStyleAttr: Int, defStyleRes: Int) {
+
+        App.component.inject(this)
+
         val a = context.obtainStyledAttributes(attrs, R.styleable.EventTimelineView,
                 defStyleAttr, defStyleRes)
         for (i in 0..a.indexCount) {
@@ -436,6 +441,5 @@ open class EventTimelineView : View {
         Log.d(TAG, "invalidate()")
     }
 
-    open protected fun formatTime(timeMillis: Long) =
-            AppPreferences.formatTimeOfDay(timeMillis)
+    open protected fun formatTime(timeMillis: Long) = timeFormatter.formatTimeOfDay(timeMillis)
 }

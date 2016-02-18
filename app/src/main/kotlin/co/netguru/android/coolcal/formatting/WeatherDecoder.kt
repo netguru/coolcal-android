@@ -1,8 +1,8 @@
-package co.netguru.android.coolcal.weather
+package co.netguru.android.coolcal.formatting
 
 import co.netguru.android.coolcal.R
 
-object WeatherDecoder {
+class WeatherDecoder {
 
     fun getIconRes(code: String?) = when (code) {
         "01d" -> R.drawable.icon_clear_sky_day

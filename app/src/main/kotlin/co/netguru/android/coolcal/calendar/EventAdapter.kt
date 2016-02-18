@@ -15,10 +15,6 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
         SectionCursorAdapter<TimelineData, TimelineHolder, EventHolder>
         (context, cursor, flags, R.layout.item_timeline, R.layout.item_event) {
 
-    companion object {
-        const val TAG = "EventsAdapter"
-    }
-
     private var _forecastResponse: ForecastResponse? = null
     var forecastResponse: ForecastResponse?
         get() = _forecastResponse
@@ -77,7 +73,11 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
         val dtStart = when (obj) {
             is TimelineData -> obj.dtStart
             is Cursor -> getEventDayStart(obj)
-            else -> throw IllegalStateException("Illegal object @ getItemDayStart(position)")
+            else -> {
+                // todo: track error
+                throw IllegalStateException("Illegal object of class ${obj.javaClass.simpleName} " +
+                        "@ getItemDayStart(position)")
+            }
         }
         return millisAtStartOfDay(dtStart)
     }
