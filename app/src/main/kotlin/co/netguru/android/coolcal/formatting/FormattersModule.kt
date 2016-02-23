@@ -1,6 +1,9 @@
 package co.netguru.android.coolcal.formatting
 
+import android.content.Context
+import android.graphics.Bitmap
 import co.netguru.android.coolcal.preferences.AppPreferences
+import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
 import org.joda.time.format.PeriodFormatter
@@ -37,4 +40,10 @@ class FormattersModule {
     @Provides
     @Singleton
     fun provideWeatherDecoder(): WeatherDecoder = WeatherDecoder()
+
+    @Provides
+    @Singleton
+    fun providePicasso(context: Context): Picasso = Picasso.Builder(context)
+            .defaultBitmapConfig(Bitmap.Config.RGB_565)
+            .build()
 }

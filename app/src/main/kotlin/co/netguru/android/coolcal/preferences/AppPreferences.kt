@@ -1,6 +1,7 @@
 package co.netguru.android.coolcal.preferences
 
 import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 import co.netguru.android.coolcal.weather.Pressure
 import co.netguru.android.coolcal.weather.Speed
 import co.netguru.android.coolcal.weather.Temperature.SIGN_DEGREE
@@ -16,58 +17,42 @@ class AppPreferences(val preferences: SharedPreferences, val locale: Locale) {
         private const val PREF_TEMP_SIGN = "pref_temp_unit"
         private const val PREF_PRESSURE_UNIT = "pref_pressure_unit"
         private const val PREF_SPEED_UNIT = "pref_speed_unit"
+
+        operator inline fun SharedPreferences.plus(crossinline block: Editor.() -> Editor) {
+            this.edit().block().apply()
+        }
     }
 
-    private val defaultTemperatureUnit: Int by lazy { assumeDefaultTempUnit() }
-    private val defaultPressureUnit: Int by lazy { assumeDefaultPressureUnit() }
-    private val defaultSpeedUnit: Int by lazy { assumeDefaultSpeedUnit() }
-    private val isImperialLocale: Boolean by lazy {
-        locale.isO3Country.equals("usa", ignoreCase = true)
-                || locale.isO3Country.equals("mmr", ignoreCase = true)
-    }
+    private val isImperialLocale: Boolean =
+            locale.isO3Country.equals("usa", ignoreCase = true)
+                    || locale.isO3Country.equals("mmr", ignoreCase = true)
+
+    private val defTempUnit = if (isImperialLocale) UNIT_FAHRENHEIT else UNIT_CELSIUS
+    private val defPresUnit = if (isImperialLocale) Pressure.UNIT_MB else Pressure.UNIT_HPA
+    private val defSpeedUnit = if (isImperialLocale) Speed.UNIT_MPH else Speed.UNIT_KMH
+
 
     var tempUnit: Int
-        get() = preferences.getInt(PREF_TEMP_UNIT, defaultTemperatureUnit)
+        get() = preferences.getInt(PREF_TEMP_UNIT, defTempUnit)
         set(value) {
-            preferences.edit().putInt(PREF_TEMP_UNIT, value).apply()
+            preferences + { putInt(PREF_TEMP_UNIT, value) }
         }
 
     var tempSign: Int
         get() = preferences.getInt(PREF_TEMP_SIGN, SIGN_DEGREE)
         set(value) {
-            preferences.edit().putInt(PREF_TEMP_SIGN, value).apply()
+            preferences + { putInt(PREF_TEMP_SIGN, value) }
         }
 
     var pressureUnit: Int
-        get() = preferences.getInt(PREF_PRESSURE_UNIT, defaultPressureUnit)
+        get() = preferences.getInt(PREF_PRESSURE_UNIT, defPresUnit)
         set(value) {
-            preferences.edit().putInt(PREF_PRESSURE_UNIT, value).apply()
+            preferences + { putInt(PREF_PRESSURE_UNIT, value) }
         }
 
     var speedUnit: Int
-        get() = preferences.getInt(PREF_SPEED_UNIT, defaultSpeedUnit)
+        get() = preferences.getInt(PREF_SPEED_UNIT, defSpeedUnit)
         set(value) {
-            preferences.edit().putInt(PREF_SPEED_UNIT, value).apply()
+            preferences + { putInt(PREF_SPEED_UNIT, value) }
         }
-
-    private fun assumeDefaultTempUnit(): Int =
-            if (isImperialLocale) {
-                UNIT_FAHRENHEIT
-            } else {
-                UNIT_CELSIUS
-            }
-
-    private fun assumeDefaultPressureUnit(): Int =
-            if (isImperialLocale) {
-                Pressure.UNIT_MB
-            } else {
-                Pressure.UNIT_HPA
-            }
-
-    private fun assumeDefaultSpeedUnit(): Int =
-            if (isImperialLocale) {
-                Speed.UNIT_MPH
-            } else {
-                Speed.UNIT_KMH
-            }
 }

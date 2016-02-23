@@ -4,9 +4,9 @@ import android.content.IntentSender
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import co.netguru.android.coolcal.BuildConfig
 import co.netguru.android.coolcal.R
+import co.netguru.android.coolcal.utils.logDebug
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient
@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     companion object {
-        const val TAG = "MainActivity"
         const val REQUEST_RESOLVE_ERROR = 1000
     }
 
@@ -97,7 +96,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     override fun onConnectionFailed(result: ConnectionResult) {
-        Log.e(TAG, "Connection Failed with code ${result.errorCode}")
+        logDebug { "Connection Failed with code ${result.errorCode}" }
         if (mResolvingError) {
             return
         }
@@ -119,7 +118,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         if (location != null) {
             fragments.forEach { fragment -> fragment?.onLocationChanged(location) }
         } else {
-            Log.e(TAG, "Null location!")
+            logDebug { "Null location!" }
         }
     }
 

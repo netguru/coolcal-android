@@ -74,8 +74,7 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
             is TimelineData -> obj.dtStart
             is Cursor -> getEventDayStart(obj)
             else -> {
-                // todo: track error
-                throw IllegalStateException("Illegal object of class ${obj.javaClass.simpleName} " +
+                throw IllegalStateException("Illegal object of class ${obj?.javaClass?.simpleName} " +
                         "@ getItemDayStart(position)")
             }
         }

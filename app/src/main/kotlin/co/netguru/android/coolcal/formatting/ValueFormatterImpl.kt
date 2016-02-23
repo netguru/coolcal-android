@@ -65,10 +65,11 @@ class ValueFormatterImpl(val appPreferences: AppPreferences) : ValueFormatter {
                 val mph = Math.round(wind.speed!!.mph())
                 "$mph ${Speed.SYMBOL_MPH}"
             }
-            else -> {
+            Speed.UNIT_KMH -> {
                 val kmh = Math.round(wind.speed!!)
                 "$kmh ${Speed.SYMBOl_KMH}"
             }
+            else -> "${wind.speed!!} ${Speed.SYMBOL_MS}"
         }
         return "$speedString $cardinal"
     }

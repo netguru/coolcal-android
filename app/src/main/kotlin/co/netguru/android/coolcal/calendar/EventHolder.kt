@@ -42,7 +42,7 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
     }
 
     fun bind(obj: Event, forecast: Forecast?) {
-        titleTextView.text = obj.title
+        titleTextView.text = obj.title ?: ""
         timeTextView.text = timeFormatter.formatTimeOfDay(obj.dtStart)
         messageTextView.text = "not implemented yet" //todo
         durationTextView.text = timeFormatter.formatPeriod(obj.dtStart, obj.dtStop)

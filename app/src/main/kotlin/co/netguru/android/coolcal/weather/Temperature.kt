@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package co.netguru.android.coolcal.weather
 
 object Temperature {

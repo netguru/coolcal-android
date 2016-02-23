@@ -32,9 +32,9 @@ class TimelineHolder(itemView: View) : ViewHolder(itemView) {
 
         dayOfMonthTextView.text = timeFormatter.formatDayOfMonth(obj.dtStart)
         dayOfWeekTextView.text = timeFormatter.formatDayOfWeek(obj.dtStart)
-        eventTimelineView invalidating {
-            events = obj.events
-            startDt = obj.dtStart
+        eventTimelineView.refresh {
+            adapter = EventTimelineAdapter(obj)
+            timelineDtStart = obj.dtStart
             timeSpan = obj.timeSpan
         }
     }

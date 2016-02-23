@@ -20,6 +20,8 @@ import co.netguru.android.coolcal.calendar.EventAdapter
 import co.netguru.android.coolcal.calendar.Loaders
 import co.netguru.android.coolcal.formatting.TimeFormatter
 import co.netguru.android.coolcal.formatting.ValueFormatter
+import co.netguru.android.coolcal.utils.logDebug
+import co.netguru.android.coolcal.utils.logError
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -53,6 +55,7 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = EventAdapter(context, null, 0)
+
         initEventsLoading()
     }
 
@@ -99,8 +102,11 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         try {
             val dt = adapter.getItemDayStart(firstVisibleItem)
             eventsCalendarTabView.switchDay(dt)
+        } catch(e: IllegalStateException) {
+            logDebug { e.message }
         } catch (e: CursorIndexOutOfBoundsException) {
-            eventsCalendarTabView.switchDay(todayDt)
+            logDebug { "CursorIndexOutOfBoundsException (Cursor returned from getItemDayStart)" }
+
         }
     }
 
@@ -133,7 +139,8 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
                 while (data.moveToNext()) {
                     val dtStart = data.getLong(Event.Projection.DTSTART.ordinal)
                     val dtEnd = data.getLong(Event.Projection.DTEND.ordinal)
-                    if (dtStart in range || dtEnd in range) {
+                    val isAllDay = data.getInt(Event.Projection.ALL_DAY.ordinal) != 0
+                    if (isAllDay && (dtStart in range || dtEnd in range)) {
                         todayEvents += 1
                         busyTodaySum += dtEnd - dtStart
                     }
@@ -146,9 +153,9 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         }
     }
 
-    override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
-        initTodayStatistics(data)
-        adapter.swapCursor(data)
+    override fun onLoadFinished(loader: Loader<Cursor>?, cursor: Cursor?) {
+        adapter.swapCursor(cursor)
+        initTodayStatistics(cursor)
         initScrollListener()
     }
 
@@ -166,7 +173,9 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
                     response ->
                     adapter.forecastResponse = response
                 }, {
-                    error -> // todo: handle possible error - retry?
+                    error ->
+                    logError { error.message }
+                    // todo: handle possible error - retry?
                 })
     }
 

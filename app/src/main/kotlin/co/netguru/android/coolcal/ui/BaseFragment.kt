@@ -8,7 +8,7 @@ import rx.Subscription
 abstract class BaseFragment : Fragment(), LocationListener {
 
     protected var subscription: Subscription? = null
-    protected var currentLocation: Location? = null
+    @Volatile protected var currentLocation: Location? = null
 
     override fun onLocationChanged(location: Location?) {
         currentLocation = location

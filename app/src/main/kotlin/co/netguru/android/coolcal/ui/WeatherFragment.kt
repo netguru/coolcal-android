@@ -2,7 +2,6 @@ package co.netguru.android.coolcal.ui
 
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,10 @@ import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.formatting.ValueFormatter
 import co.netguru.android.coolcal.formatting.WeatherDecoder
+import co.netguru.android.coolcal.utils.logError
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import co.netguru.android.coolcal.weather.WeatherResponse
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_weather.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -19,13 +20,14 @@ import javax.inject.Inject
 
 class WeatherFragment : BaseFragment() {
 
-    @Inject lateinit var openWeatherMap: OpenWeatherMap
-    @Inject lateinit var weatherDecoder: WeatherDecoder
-    @Inject lateinit var valueFormatter: ValueFormatter
-
     init {
         App.component.inject(this)
     }
+
+    @Inject lateinit var openWeatherMap: OpenWeatherMap
+    @Inject lateinit var weatherDecoder: WeatherDecoder
+    @Inject lateinit var valueFormatter: ValueFormatter
+    @Inject lateinit var picasso: Picasso
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -45,12 +47,17 @@ class WeatherFragment : BaseFragment() {
                 .subscribe({ response: WeatherResponse ->
                     fillInfoWithData(response)
                 }, { error ->
-                    Log.e("ERROR", error.message)
+                    logError { error.message }
                 })
     }
 
     private fun fillInfoWithData(data: WeatherResponse) {
         val weather = data.weather[0]
+
+        picasso.load(weatherDecoder.getBackgroundsRes(weather.icon))
+                .fit()
+                .centerCrop()
+                .into(weatherBackground)
 
         weatherIconImageView.setImageResource(weatherDecoder.getIconRes(weather.icon))
         weatherDescriptionTextView.text = weather.description
