@@ -17,10 +17,6 @@ class AppPreferences(val preferences: SharedPreferences, val locale: Locale) {
         private const val PREF_TEMP_SIGN = "pref_temp_unit"
         private const val PREF_PRESSURE_UNIT = "pref_pressure_unit"
         private const val PREF_SPEED_UNIT = "pref_speed_unit"
-
-        operator inline fun SharedPreferences.plus(crossinline block: Editor.() -> Editor) {
-            this.edit().block().apply()
-        }
     }
 
     private val isImperialLocale: Boolean =
@@ -35,24 +31,28 @@ class AppPreferences(val preferences: SharedPreferences, val locale: Locale) {
     var tempUnit: Int
         get() = preferences.getInt(PREF_TEMP_UNIT, defTempUnit)
         set(value) {
-            preferences + { putInt(PREF_TEMP_UNIT, value) }
+            preferences.edit { putInt(PREF_TEMP_UNIT, value) }
         }
 
     var tempSign: Int
         get() = preferences.getInt(PREF_TEMP_SIGN, SIGN_DEGREE)
         set(value) {
-            preferences + { putInt(PREF_TEMP_SIGN, value) }
+            preferences.edit { putInt(PREF_TEMP_SIGN, value) }
         }
 
     var pressureUnit: Int
         get() = preferences.getInt(PREF_PRESSURE_UNIT, defPresUnit)
         set(value) {
-            preferences + { putInt(PREF_PRESSURE_UNIT, value) }
+            preferences.edit { putInt(PREF_PRESSURE_UNIT, value) }
         }
 
     var speedUnit: Int
         get() = preferences.getInt(PREF_SPEED_UNIT, defSpeedUnit)
         set(value) {
-            preferences + { putInt(PREF_SPEED_UNIT, value) }
+            preferences.edit { putInt(PREF_SPEED_UNIT, value) }
         }
+}
+
+inline fun SharedPreferences.edit(crossinline block: Editor.() -> Editor) {
+    this.edit().block().apply()
 }

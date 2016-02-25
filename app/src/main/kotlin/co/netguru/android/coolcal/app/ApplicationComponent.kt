@@ -25,6 +25,6 @@ interface ApplicationComponent {
     fun inject(target: WeatherFragment)
     fun inject(target: EventHolder)
     fun inject(target: TimelineHolder)
-    fun inject(target: CalendarTabView)
-    fun inject(target: EventTimelineView)
+    fun inject(target: CalendarTabView) // todo: make no @inject in view
+    fun inject(target: EventTimelineView) // todo: jw
 }

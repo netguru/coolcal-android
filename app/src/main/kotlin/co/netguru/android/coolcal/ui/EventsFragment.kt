@@ -56,7 +56,7 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         super.onCreate(savedInstanceState)
         adapter = EventAdapter(context, null, 0)
 
-        initEventsLoading()
+        initEventsLoader()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -106,7 +106,6 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
             logDebug { e.message }
         } catch (e: CursorIndexOutOfBoundsException) {
             logDebug { "CursorIndexOutOfBoundsException (Cursor returned from getItemDayStart)" }
-
         }
     }
 
@@ -179,7 +178,7 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
                 })
     }
 
-    private fun initEventsLoading() {
+    private fun initEventsLoader() {
         val dtStop = todayDt + TimeUnit.DAYS.toMillis(5) // five days later
         val data = Bundle()
         data.putLong(Event.ARG_DT_FROM, todayDt)
