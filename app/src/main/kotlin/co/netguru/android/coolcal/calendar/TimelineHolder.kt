@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.TextView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
-import co.netguru.android.coolcal.formatting.TimeFormatter
+import co.netguru.android.coolcal.rendering.TimeFormatter
 import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder
 import javax.inject.Inject
 

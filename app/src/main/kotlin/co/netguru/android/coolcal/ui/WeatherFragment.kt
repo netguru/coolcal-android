@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
-import co.netguru.android.coolcal.formatting.ValueFormatter
-import co.netguru.android.coolcal.formatting.WeatherDecoder
+import co.netguru.android.coolcal.rendering.WeatherDataFormatter
+import co.netguru.android.coolcal.rendering.WeatherDecoder
 import co.netguru.android.coolcal.utils.logError
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import co.netguru.android.coolcal.weather.WeatherResponse
@@ -26,7 +26,7 @@ class WeatherFragment : BaseFragment() {
 
     @Inject lateinit var openWeatherMap: OpenWeatherMap
     @Inject lateinit var weatherDecoder: WeatherDecoder
-    @Inject lateinit var valueFormatter: ValueFormatter
+    @Inject lateinit var weatherDataFormatter: WeatherDataFormatter
     @Inject lateinit var picasso: Picasso
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -62,9 +62,9 @@ class WeatherFragment : BaseFragment() {
         weatherIconImageView.setImageResource(weatherDecoder.getIconRes(weather.icon))
         weatherDescriptionTextView.text = weather.description
         weatherMessageTextView.text = "Weather description" // todo
-        weatherTemperatureTextView.text = valueFormatter.formatTemperature(data.main?.temperature)
-        weatherPressureTextView.text = valueFormatter.formatPressure(data.main?.pressure)
-        weatherWindTextView.text = valueFormatter.formatWind(data.wind)
+        weatherTemperatureTextView.text = weatherDataFormatter.formatTemperature(data.main?.temperature)
+        weatherPressureTextView.text = weatherDataFormatter.formatPressure(data.main?.pressure)
+        weatherWindTextView.text = weatherDataFormatter.formatWind(data.wind?.speed, data.wind?.deg)
     }
 
     override fun onLocationChanged(location: Location?) {

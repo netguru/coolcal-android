@@ -2,11 +2,10 @@ package co.netguru.android.coolcal.ui
 
 import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
+import android.database.MergeCursor
 import android.location.Location
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.support.v4.app.LoaderManager
-import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.view.LayoutInflater
@@ -15,11 +14,9 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
-import co.netguru.android.coolcal.calendar.Event
-import co.netguru.android.coolcal.calendar.EventAdapter
-import co.netguru.android.coolcal.calendar.Loaders
-import co.netguru.android.coolcal.formatting.TimeFormatter
-import co.netguru.android.coolcal.formatting.ValueFormatter
+import co.netguru.android.coolcal.calendar.*
+import co.netguru.android.coolcal.rendering.TimeFormatter
+import co.netguru.android.coolcal.rendering.WeatherDataFormatter
 import co.netguru.android.coolcal.utils.logDebug
 import co.netguru.android.coolcal.utils.logError
 import co.netguru.android.coolcal.weather.OpenWeatherMap
@@ -33,30 +30,33 @@ import rx.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
-        SlidingUpPanelLayout.PanelSlideListener {
+class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
+
+    companion object {
+        // loader id's
+        val loaders = intArrayOf(0, 1, 2, 3, 4)
+
+        private val DAY_MILLIS = TimeUnit.DAYS.toMillis(1)
+    }
 
     init {
         App.component.inject(this)
     }
 
     @Inject lateinit var openWeatherMap: OpenWeatherMap
-    @Inject lateinit var valueFormatter: ValueFormatter
+    @Inject lateinit var weatherDataFormatter: WeatherDataFormatter
     @Inject lateinit var timeFormatter: TimeFormatter
 
     private lateinit var adapter: EventAdapter
 
     private val interpolator = FastOutSlowInInterpolator()
-
-    private val DAY_MILLIS = TimeUnit.DAYS.toMillis(1)
     private val todayDt: Long = LocalDateTime(System.currentTimeMillis())
             .toLocalDate().toDateTimeAtStartOfDay().millis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = EventAdapter(context, null, 0)
-
-        initEventsLoader()
+        initEventsLoader(InstancesLoaderCallbacks())
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -80,21 +80,24 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
     }
 
     override fun onDestroy() {
-        activity.supportLoaderManager.destroyLoader(Loaders.EVENT_LOADER)
+        loaders.forEach { loader ->
+            activity.supportLoaderManager.destroyLoader(loader)
+        }
         super.onDestroy()
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor>? {
-        return when (id) {
-            Event.ID -> CursorLoader(context,
-                    Event.EVENTS_URI,
-                    Event.EVENTS_PROJECTION,
-                    Event.EVENTS_DTSTART_SELECTION,
-                    arrayOf(args?.getLong(Event.ARG_DT_FROM).toString(),
-                            args?.getLong(Event.ARG_DT_TO).toString()),
-                    CalendarContract.Events.DTSTART)
+    private fun initEventsLoader(callbacks: LoaderManager.LoaderCallbacks<Cursor>) {
+        // create separate loader for each consecutive 5 days (--> MergeCursor)
 
-            else -> null
+        loaders.forEachIndexed { i, loader ->
+            val dtStart = todayDt + i * DAY_MILLIS
+            val dtStop = todayDt + (i + 1) * DAY_MILLIS
+
+            val data = Bundle()
+            data.putLong(InstancesLoader.ARG_DT_FROM, dtStart)
+            data.putLong(InstancesLoader.ARG_DT_TO, dtStop)
+
+            activity.supportLoaderManager.initLoader(loader, data, callbacks)
         }
     }
 
@@ -103,9 +106,9 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
             val dt = adapter.getItemDayStart(firstVisibleItem)
             eventsCalendarTabView.switchDay(dt)
         } catch(e: IllegalStateException) {
-            logDebug { e.message }
+            logError { e.message }
         } catch (e: CursorIndexOutOfBoundsException) {
-            logDebug { "CursorIndexOutOfBoundsException (Cursor returned from getItemDayStart)" }
+            logError { "CursorIndexOutOfBoundsException (Cursor returned from getItemDayStart)" }
         }
     }
 
@@ -128,38 +131,25 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         })
     }
 
-    private fun initTodayStatistics(data: Cursor?) {
-        if (data != null) {
-            val tomorrowDt = todayDt + TimeUnit.DAYS.toMillis(1)
-            val range = todayDt..tomorrowDt
-            var todayEvents = 0
-            var busyTodaySum = 0L
-            if (data.moveToFirst()) {
-                while (data.moveToNext()) {
-                    val dtStart = data.getLong(Event.Projection.DTSTART.ordinal)
-                    val dtEnd = data.getLong(Event.Projection.DTEND.ordinal)
-                    val isAllDay = data.getInt(Event.Projection.ALL_DAY.ordinal) != 0
-                    if (isAllDay && (dtStart in range || dtEnd in range)) {
-                        todayEvents += 1
-                        busyTodaySum += dtEnd - dtStart
-                    }
+    private fun initTodayStatistics(cursor: Cursor) {
+        val startPosition = cursor.position
+        var todayEvents = 0
+        var busyTodaySum = 0L
+        if (cursor.moveToFirst()) {
+            while (cursor.moveToNext()) {
+                val duration = cursor.eventDuration()
+                val isAllDay = cursor.eventIsAllDay()
+
+                if (!isAllDay) {
+                    todayEvents += 1
+                    busyTodaySum += duration
                 }
             }
-            data.moveToFirst()
-
-            numberOfEventsTextView.text = "$todayEvents"
-            busyForTextView.text = timeFormatter.formatPeriod(0, busyTodaySum)
         }
-    }
+        cursor.moveToPosition(startPosition) // reset cursor
 
-    override fun onLoadFinished(loader: Loader<Cursor>?, cursor: Cursor?) {
-        adapter.swapCursor(cursor)
-        initTodayStatistics(cursor)
-        initScrollListener()
-    }
-
-    override fun onLoaderReset(loader: Loader<Cursor>?) {
-        // nic
+        numberOfEventsTextView.text = "$todayEvents"
+        busyForTextView.text = timeFormatter.formatPeriod(busyTodaySum)
     }
 
     private fun requestForecast(location: Location) {
@@ -176,15 +166,6 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
                     logError { error.message }
                     // todo: handle possible error - retry?
                 })
-    }
-
-    private fun initEventsLoader() {
-        val dtStop = todayDt + TimeUnit.DAYS.toMillis(5) // five days later
-        val data = Bundle()
-        data.putLong(Event.ARG_DT_FROM, todayDt)
-        data.putLong(Event.ARG_DT_TO, dtStop)
-
-        activity.supportLoaderManager.initLoader(Loaders.EVENT_LOADER, data, this)
     }
 
     override fun onLocationChanged(location: Location?) {
@@ -224,6 +205,59 @@ class EventsFragment : BaseFragment(), LoaderManager.LoaderCallbacks<Cursor>,
         when ((activity as MainActivity).slidingLayout.panelState) {
             SlidingUpPanelLayout.PanelState.EXPANDED -> crossfadePanelAlpha(1f)
             else -> crossfadePanelAlpha(0f)
+        }
+    }
+
+    inner class InstancesLoaderCallbacks :
+            LoaderManager.LoaderCallbacks<Cursor> {
+
+        val cursors = arrayOfNulls<Cursor>(5)
+
+        override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor>? {
+            when (id) {
+                in loaders -> {
+                    val dtTo = args!!.getLong(InstancesLoader.ARG_DT_TO).toString()
+                    val dtFrom = args.getLong(InstancesLoader.ARG_DT_FROM).toString()
+
+                    return InstancesLoader.createLoader(context, dtFrom, dtTo)
+                }
+
+                else -> return null
+            }
+        }
+
+        override fun onLoadFinished(loader: Loader<Cursor>?, cursor: Cursor?) {
+            synchronized(this) {
+                val id = loader?.id!!
+                when (id) {
+                    in loaders -> {
+                        cursors[id] = cursor
+
+                        if (id == 0) initTodayStatistics(cursor!!)
+                    }
+
+                    else -> {
+                        /* null */
+                    }
+                }
+
+                if (cursors.all { it != null }) {
+                    val mergeCursor = MergeCursor(cursors)
+
+                    if (mergeCursor.moveToFirst()) {
+                        while (mergeCursor.moveToNext()) {
+                            logDebug { "${mergeCursor.eventBegin()}: ${mergeCursor.eventTitle()}" }
+                        }
+                    }
+
+                    adapter.swapCursor(mergeCursor)
+                    initScrollListener()
+                }
+            }
+        }
+
+        override fun onLoaderReset(loader: Loader<Cursor>?) {
+            // nic
         }
     }
 }

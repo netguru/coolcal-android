@@ -12,7 +12,7 @@ import android.util.AttributeSet
 import android.view.View
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
-import co.netguru.android.coolcal.formatting.TimeFormatter
+import co.netguru.android.coolcal.rendering.TimeFormatter
 import java.lang.Math.ceil
 import java.lang.Math.floor
 import java.util.concurrent.TimeUnit
@@ -32,6 +32,10 @@ import javax.inject.Inject
 
 class EventTimelineView : View {
 
+    /**
+     * Adapter interface. The EventTimelineView will use an instance of this adapter to obtain
+     * all the data necessary to render the timeline.
+     */
     interface Adapter {
         fun isItemAllDay(position: Int): Boolean
         fun getItemDateStart(position: Int): Long

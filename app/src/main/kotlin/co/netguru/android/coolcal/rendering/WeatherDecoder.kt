@@ -1,4 +1,4 @@
-package co.netguru.android.coolcal.formatting
+package co.netguru.android.coolcal.rendering
 
 import co.netguru.android.coolcal.R
 

@@ -1,7 +1,7 @@
 package co.netguru.android.coolcal.preferences
 
 import android.content.SharedPreferences
-import android.content.SharedPreferences.Editor
+import co.netguru.android.coolcal.utils.into
 import co.netguru.android.coolcal.weather.Pressure
 import co.netguru.android.coolcal.weather.Speed
 import co.netguru.android.coolcal.weather.Temperature.SIGN_DEGREE
@@ -31,28 +31,32 @@ class AppPreferences(val preferences: SharedPreferences, val locale: Locale) {
     var tempUnit: Int
         get() = preferences.getInt(PREF_TEMP_UNIT, defTempUnit)
         set(value) {
-            preferences.edit { putInt(PREF_TEMP_UNIT, value) }
+            into (preferences) {
+                putInt(PREF_TEMP_UNIT, value)
+            }
         }
 
     var tempSign: Int
         get() = preferences.getInt(PREF_TEMP_SIGN, SIGN_DEGREE)
         set(value) {
-            preferences.edit { putInt(PREF_TEMP_SIGN, value) }
+            into (preferences) {
+                putInt(PREF_TEMP_SIGN, value)
+            }
         }
 
     var pressureUnit: Int
         get() = preferences.getInt(PREF_PRESSURE_UNIT, defPresUnit)
         set(value) {
-            preferences.edit { putInt(PREF_PRESSURE_UNIT, value) }
+            into (preferences) {
+                putInt(PREF_PRESSURE_UNIT, value)
+            }
         }
 
     var speedUnit: Int
         get() = preferences.getInt(PREF_SPEED_UNIT, defSpeedUnit)
         set(value) {
-            preferences.edit { putInt(PREF_SPEED_UNIT, value) }
+            into (preferences) {
+                putInt(PREF_SPEED_UNIT, value)
+            }
         }
-}
-
-inline fun SharedPreferences.edit(crossinline block: Editor.() -> Editor) {
-    this.edit().block().apply()
 }

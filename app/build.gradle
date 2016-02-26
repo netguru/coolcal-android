@@ -46,13 +46,13 @@ android {
 
     buildTypes {
         debug {
-            versionNameSuffix = "-debug-$versionCode"
+            versionNameSuffix "-debug-$versionCode"
             debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            versionNameSuffix = "-release-$versionCode"
+            versionNameSuffix "-release-$versionCode"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -126,6 +126,9 @@ dependencies {
 
     // Picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // Anko SQLite
+    compile 'org.jetbrains.anko:anko-sqlite:0.8.2'
 
     // test
     testCompile "org.robolectric:robolectric:3.0"

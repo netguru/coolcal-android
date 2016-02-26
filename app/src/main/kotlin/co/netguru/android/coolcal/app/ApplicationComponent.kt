@@ -4,8 +4,8 @@ import co.netguru.android.coolcal.calendar.CalendarTabView
 import co.netguru.android.coolcal.calendar.EventHolder
 import co.netguru.android.coolcal.calendar.EventTimelineView
 import co.netguru.android.coolcal.calendar.TimelineHolder
-import co.netguru.android.coolcal.formatting.FormattersModule
 import co.netguru.android.coolcal.preferences.PreferencesModule
+import co.netguru.android.coolcal.rendering.RenderModule
 import co.netguru.android.coolcal.rest.RestModule
 import co.netguru.android.coolcal.ui.EventsFragment
 import co.netguru.android.coolcal.ui.WeatherFragment
@@ -17,7 +17,7 @@ import javax.inject.Singleton
         ApplicationModule::class,
         PreferencesModule::class,
         RestModule::class,
-        FormattersModule::class
+        RenderModule::class
 ))
 interface ApplicationComponent {
 

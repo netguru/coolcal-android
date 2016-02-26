@@ -3,6 +3,7 @@ package co.netguru.android.coolcal.calendar
 import android.content.Context
 import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
+import android.provider.CalendarContract
 import android.view.View
 import android.view.ViewGroup
 import co.netguru.android.coolcal.R
@@ -26,7 +27,7 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
     override fun bindItemViewHolder(viewHolder: EventHolder?, cursor: Cursor?, parent: ViewGroup?) {
         val event = Event.fromCursor(cursor!!)
         val eventWeather = forecastResponse?.forecastList?.filter { forecast ->
-            event.dtStart in forecast.range3h()
+            event.begin in forecast.range3h()
         }?.lastOrNull()
 
         viewHolder!!.bind(event, eventWeather)
@@ -46,6 +47,7 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
                 }
             } while (cursor.moveToNext())
         }
+
         // haxy pod sectioncursoradapter
         cursor.moveToPosition(startPos)
         return TimelineData(list, origDt, timeSpan)
@@ -63,7 +65,7 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
     }
 
     private fun getEventDayStart(cursor: Cursor): Long {
-        val dt = cursor.getLong(Event.Projection.DTSTART.ordinal)
+        val dt = cursor.from(CalendarContract.Instances.BEGIN) { getLong(it) }
         return millisAtStartOfDay(dt)
     }
 

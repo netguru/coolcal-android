@@ -10,7 +10,7 @@ import android.widget.TextView
 import butterknife.bindViews
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
-import co.netguru.android.coolcal.formatting.TimeFormatter
+import co.netguru.android.coolcal.rendering.TimeFormatter
 import com.facebook.rebound.SimpleSpringListener
 import com.facebook.rebound.Spring
 import com.facebook.rebound.SpringSystem
@@ -87,8 +87,12 @@ class CalendarTabView : LinearLayout {
     }
 
     fun switchDay(startDayDt: Long) {
-        val nextActive = days!!.indexOf(startDayDt)
-        switchActive(nextActive)
+        try {
+            val nextActive = days!!.indexOf(startDayDt)
+            switchActive(nextActive)
+        } catch (e: ArrayIndexOutOfBoundsException) {
+
+        }
     }
 
     private fun switchActive(newPos: Int) {
@@ -123,4 +127,6 @@ class CalendarTabView : LinearLayout {
             view.text = timeFormatter.formatDayOfWeekShort(days!![i])
         }
     }
+
+
 }

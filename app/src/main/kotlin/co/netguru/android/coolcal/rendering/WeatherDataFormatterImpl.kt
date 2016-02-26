@@ -1,4 +1,4 @@
-package co.netguru.android.coolcal.formatting
+package co.netguru.android.coolcal.rendering
 
 import co.netguru.android.coolcal.preferences.AppPreferences
 import co.netguru.android.coolcal.weather.Pressure
@@ -7,10 +7,8 @@ import co.netguru.android.coolcal.weather.Speed.mph
 import co.netguru.android.coolcal.weather.Temperature
 import co.netguru.android.coolcal.weather.Temperature.celsius
 import co.netguru.android.coolcal.weather.Temperature.fahrenheit
-import co.netguru.android.coolcal.weather.Wind
 
-
-class ValueFormatterImpl(val appPreferences: AppPreferences) : ValueFormatter {
+class WeatherDataFormatterImpl(val appPreferences: AppPreferences) : WeatherDataFormatter {
 
     companion object {
         const val SYMBOL_UNDEFINED = "N/A"
@@ -47,9 +45,9 @@ class ValueFormatterImpl(val appPreferences: AppPreferences) : ValueFormatter {
         return "$pres$unit"
     }
 
-    override fun formatWind(wind: Wind?): String {
-        if (wind == null || wind.speed == null) return SYMBOL_UNDEFINED
-        val cardinal = when (wind.deg) {
+    override fun formatWind(speed: Double?, deg: Double?): String {
+        if (speed == null) return SYMBOL_UNDEFINED
+        val cardinal = when (deg) {
             null -> ""
             in 22.5..67.5 -> "NE"
             in 67.5..112.5 -> "E"
@@ -62,14 +60,14 @@ class ValueFormatterImpl(val appPreferences: AppPreferences) : ValueFormatter {
         }
         val speedString = when (appPreferences.speedUnit) {
             Speed.UNIT_MPH -> {
-                val mph = Math.round(wind.speed!!.mph())
+                val mph = Math.round(speed.mph())
                 "$mph ${Speed.SYMBOL_MPH}"
             }
             Speed.UNIT_KMH -> {
-                val kmh = Math.round(wind.speed!!)
+                val kmh = Math.round(speed)
                 "$kmh ${Speed.SYMBOl_KMH}"
             }
-            else -> "${wind.speed!!} ${Speed.SYMBOL_MS}"
+            else -> "${speed} ${Speed.SYMBOL_MS}"
         }
         return "$speedString $cardinal"
     }

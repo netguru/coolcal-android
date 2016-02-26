@@ -1,4 +1,4 @@
-package co.netguru.android.coolcal.formatting
+package co.netguru.android.coolcal.rendering
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -12,7 +12,7 @@ import java.util.*
 import javax.inject.Singleton
 
 @Module
-class FormattersModule {
+class RenderModule {
 
     @Provides
     fun providePeriodFormatter() =
@@ -29,13 +29,14 @@ class FormattersModule {
 
     @Provides
     @Singleton
-    fun provideTimeFormatter(locale: Locale, periodFormatter: PeriodFormatter): TimeFormatter =
-            TimeFormatterImpl(locale, periodFormatter)
+    fun provideTimeFormatter(context: Context, locale: Locale,
+                             periodFormatter: PeriodFormatter): TimeFormatter =
+            TimeFormatterImpl(context, locale, periodFormatter)
 
     @Provides
     @Singleton
-    fun provideValueFormatter(appPreferences: AppPreferences): ValueFormatter =
-            ValueFormatterImpl(appPreferences)
+    fun provideWeatherDataFormatter(appPreferences: AppPreferences): WeatherDataFormatter =
+            WeatherDataFormatterImpl(appPreferences)
 
     @Provides
     @Singleton
@@ -46,4 +47,5 @@ class FormattersModule {
     fun providePicasso(context: Context): Picasso = Picasso.Builder(context)
             .defaultBitmapConfig(Bitmap.Config.RGB_565)
             .build()
+
 }
