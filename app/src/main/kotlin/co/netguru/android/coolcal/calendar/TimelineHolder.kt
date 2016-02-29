@@ -3,10 +3,18 @@ package co.netguru.android.coolcal.calendar
 import android.view.View
 import android.widget.TextView
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.utils.AppPreferences
+import co.netguru.android.coolcal.app.App
+import co.netguru.android.coolcal.rendering.TimeFormatter
 import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder
+import javax.inject.Inject
 
 class TimelineHolder(itemView: View) : ViewHolder(itemView) {
+
+    init {
+        App.component.inject(this)
+    }
+
+    @Inject lateinit var timeFormatter: TimeFormatter
 
     val eventTimelineView: EventTimelineView by lazy {
         itemView.findViewById(R.id.eventTimelineView) as EventTimelineView
@@ -21,12 +29,11 @@ class TimelineHolder(itemView: View) : ViewHolder(itemView) {
     }
 
     fun bind(obj: TimelineData) {
-
-        dayOfMonthTextView.text = AppPreferences.formatDayOfMonth(obj.dtStart)
-        dayOfWeekTextView.text = AppPreferences.formatDayOfWeek(obj.dtStart)
-        eventTimelineView invalidating {
-            events = obj.events
-            startDt = obj.dtStart
+        dayOfMonthTextView.text = timeFormatter.formatDayOfMonth(obj.dtStart)
+        dayOfWeekTextView.text = timeFormatter.formatDayOfWeek(obj.dtStart)
+        eventTimelineView.refresh {
+            adapter = EventTimelineAdapter(obj)
+            timelineDtStart = obj.dtStart
             timeSpan = obj.timeSpan
         }
     }

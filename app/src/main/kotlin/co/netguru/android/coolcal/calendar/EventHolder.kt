@@ -4,12 +4,23 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.utils.AppPreferences
+import co.netguru.android.coolcal.app.App
+import co.netguru.android.coolcal.rendering.TimeFormatter
+import co.netguru.android.coolcal.rendering.WeatherDataFormatter
+import co.netguru.android.coolcal.rendering.WeatherDecoder
 import co.netguru.android.coolcal.weather.Forecast
-import co.netguru.android.coolcal.weather.WeatherDecoder
 import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder
+import javax.inject.Inject
 
 class EventHolder(itemView: View) : ViewHolder(itemView) {
+
+    init {
+        App.component.inject(this)
+    }
+
+    @Inject lateinit var weatherDecoder: WeatherDecoder
+    @Inject lateinit var weatherDataFormatter: WeatherDataFormatter
+    @Inject lateinit var timeFormatter: TimeFormatter
 
     val titleTextView: TextView by lazy {
         itemView.findViewById(R.id.event_title) as TextView
@@ -31,19 +42,18 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
     }
 
     fun bind(obj: Event, forecast: Forecast?) {
-        titleTextView.text = obj.title
-        timeTextView.text = AppPreferences.formatTimeOfDay(obj.dtStart)
+        titleTextView.text = obj.title ?: ""
+        timeTextView.text = timeFormatter.formatTimeOfDay(obj.begin, obj.isAllDay)
         messageTextView.text = "not implemented yet" //todo
-        durationTextView.text = AppPreferences.formatPeriod(obj.dtStart, obj.dtStop)
-        if (forecast != null) {
-            temperatureTextView.visibility = View.VISIBLE
-            weatherIconImageView.visibility = View.VISIBLE
-            temperatureTextView.text = AppPreferences.formatTemperature(forecast.main?.temperature)
-            weatherIconImageView.setImageResource(WeatherDecoder.getIconRes(forecast.weatherList[0].icon))
-        } else {
+        durationTextView.text = timeFormatter.formatPeriod(obj.begin, obj.end, obj.isAllDay)
+        if (forecast == null || obj.isAllDay) {
             temperatureTextView.visibility = View.GONE
             weatherIconImageView.visibility = View.GONE
+        } else {
+            temperatureTextView.visibility = View.VISIBLE
+            weatherIconImageView.visibility = View.VISIBLE
+            temperatureTextView.text = weatherDataFormatter.formatTemperature(forecast.main?.temperature)
+            weatherIconImageView.setImageResource(weatherDecoder.getIconRes(forecast.weatherList[0].icon))
         }
     }
-
 }

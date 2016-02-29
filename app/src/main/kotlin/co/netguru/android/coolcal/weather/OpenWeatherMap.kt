@@ -1,23 +1,44 @@
 package co.netguru.android.coolcal.weather
 
-import com.squareup.okhttp.OkHttpClient
-import retrofit.GsonConverterFactory
-import retrofit.Retrofit
-import retrofit.RxJavaCallAdapterFactory
+import retrofit.http.GET
 
-object OpenWeatherMap {
+import retrofit.http.Query
+import rx.Observable
 
-    val client = OkHttpClient()
+/**
+ * This interface specifies REST methods with route for Retrofit to generate proper implementation
+ */
+interface OpenWeatherMap {
 
-    val api: OpenWeatherMapApi by lazy {
-
-        val retrofit = Retrofit.Builder()
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(OpenWeatherMapApi.WEATHER_API_ROOT)
-                .build()
-
-        retrofit.create(OpenWeatherMapApi::class.java)
+    companion object {
+        const val API_ROOT = "http://api.openweathermap.org/data/2.5/"
     }
+
+    /*
+        Current weather
+     */
+    @GET("weather")
+    fun getWeather(@Query("q") city: String): Observable<WeatherResponse>
+
+    @GET("weather")
+    fun getWeather(@Query("lat") latitude: Double,
+                   @Query("lon") longitude: Double): Observable<WeatherResponse>
+
+    /*
+        5 day / 3h Forecast
+     */
+    @GET("forecast")
+    fun getForecast(@Query("q") city: String,
+                    @Query("cnt") count: Long = 0): Observable<ForecastResponse>
+
+    @GET("forecast")
+    fun getForecast(@Query("lat") latitude: Double,
+                    @Query("lon") longitude: Double,
+                    @Query("cnt") count: Long = 0): Observable<ForecastResponse>
+
 }
+/*
+    Querying for cities - ids
+ */
+//    http://api.openweathermap.org/data/2.5/
+//         find?q=<searchphrase>&type=like&sort=population&cnt=<howmany>&appid=<appid>

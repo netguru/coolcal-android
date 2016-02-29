@@ -1,14 +1,18 @@
 package co.netguru.android.coolcal.weather
 
 import co.netguru.android.coolcal.BuildConfig
-import co.netguru.android.coolcal.R
+import co.netguru.android.coolcal.rest.CacheControlInterceptor
+import co.netguru.android.coolcal.rest.OwmInterceptor
+import com.squareup.okhttp.OkHttpClient
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricGradleTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import retrofit.GsonConverterFactory
+import retrofit.Retrofit
+import retrofit.RxJavaCallAdapterFactory
 import rx.Observable
 import rx.observers.TestSubscriber
 
@@ -18,12 +22,21 @@ import rx.observers.TestSubscriber
         packageName = "co.netguru.android.coolcal")
 class TestNoLeakCanaryApp : NoLeakCanaryApp() {
 
-    val apiKey = RuntimeEnvironment.application.getString(R.string.owmApiKey)
-    val owm = OpenWeatherMap.api
+    lateinit var openWeatherMap: OpenWeatherMap
 
     @Before
-    fun prepareApi() {
-        OpenWeatherMap.client.interceptors().add(OWMInterceptor(apiKey))
+    fun prepare() {
+        val interceptor = OwmInterceptor(BuildConfig.OPENWEATHERMAP_API_KEY)
+        val client = OkHttpClient()
+        client.interceptors().add(interceptor)
+        client.networkInterceptors().add(CacheControlInterceptor(10 * 60L, 10 * 60L))
+        val retrofit = Retrofit.Builder()
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .baseUrl(OpenWeatherMap.API_ROOT)
+                .build()
+        openWeatherMap = retrofit.create(OpenWeatherMap::class.java)
     }
 
     @Throws(Exception::class)
@@ -39,14 +52,14 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
     @Test
     @Throws(Exception::class)
     fun testCalls() {
-        testCall(owm.getWeather("Kraków"))
-        testCall(owm.getForecast("Kraków"))
+        testCall(openWeatherMap.getWeather("Kraków"))
+        testCall(openWeatherMap.getForecast("Kraków"))
     }
 
     @Test
     @Throws(Exception::class)
     fun testWeatherResponse() {
-        owm.getWeather("Kraków")
+        openWeatherMap.getWeather("Kraków")
                 .toBlocking()
                 .forEach { response ->
                     assertNotNull(response.coord)
@@ -62,7 +75,7 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
     @Test
     @Throws(Exception::class)
     fun testForecastResponse() {
-        owm.getForecast("Kraków", count = 1)
+        openWeatherMap.getForecast("Kraków", count = 1)
                 .toBlocking()
                 .forEach { response ->
                     response.forecastList.forEach {

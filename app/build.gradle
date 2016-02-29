@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.neenbedankt.android-apt'
 
 /**
  * Function to retrieve a secret from environment variable or gradle property
@@ -45,13 +46,13 @@ android {
 
     buildTypes {
         debug {
-            versionNameSuffix = "-debug-$versionCode"
+            versionNameSuffix "-debug-$versionCode"
             debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            versionNameSuffix = "-release-$versionCode"
+            versionNameSuffix "-release-$versionCode"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -69,7 +70,12 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
+}
+
+kapt {
+    generateStubs = true
 }
 
 dependencies {
@@ -94,7 +100,7 @@ dependencies {
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
 
     // JodaTime
-    compile 'joda-time:joda-time:2.9.1'
+    compile 'joda-time:joda-time:2.9.1' // todo: change to JodaTime-android for smaller apk
 
     // SectionCursorAdapter
     compile 'com.twotoasters.SectionCursorAdapter:library:2.0.1'
@@ -113,6 +119,17 @@ dependencies {
     // ReactiveX
     compile 'io.reactivex:rxandroid:1.0.1'
 
+    // Dagger2
+    kapt 'com.google.dagger:dagger-compiler:2.0.2'
+    compile 'com.google.dagger:dagger:2.0.2'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    // Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // Anko SQLite
+    compile 'org.jetbrains.anko:anko-sqlite:0.8.2'
+
     // test
     testCompile "org.robolectric:robolectric:3.0"
     testCompile 'junit:junit:4.12'
@@ -126,15 +143,12 @@ dependencies {
 }
 
 buildscript {
-    // kotlin_version moved to global buildscript
+    ext.kotlin_version = '1.0.0'
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
     }
-}
-repositories {
-    mavenCentral()
 }

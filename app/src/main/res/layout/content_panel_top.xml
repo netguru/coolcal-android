@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/blue"
     android:fitsSystemWindows="true"
-    tools:context=".app.MainActivity">
+    tools:context=".ui.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/weather_fragment"
-        android:name="co.netguru.android.coolcal.weather.WeatherFragment"
+        android:name="co.netguru.android.coolcal.ui.WeatherFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_weather" />

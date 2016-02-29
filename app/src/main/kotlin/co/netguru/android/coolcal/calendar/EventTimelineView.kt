@@ -7,16 +7,16 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Build
-import android.os.SystemClock
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.utils.AppPreferences
+import co.netguru.android.coolcal.app.App
+import co.netguru.android.coolcal.rendering.TimeFormatter
 import java.lang.Math.ceil
 import java.lang.Math.floor
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  * example: day timeline with scale every hour and time mark every 2 hours
@@ -30,20 +30,27 @@ import java.util.concurrent.TimeUnit
  * todo: "no events" message while empty or sth like that
  */
 
-open class EventTimelineView : View {
+class EventTimelineView : View {
 
-    /*
-        Units enum
+    /**
+     * Adapter interface. The EventTimelineView will use an instance of this adapter to obtain
+     * all the data necessary to render the timeline.
      */
-    companion object {
-        private const val TAG = "EventTimelineView"
+    interface Adapter {
+        fun isItemAllDay(position: Int): Boolean
+        fun getItemDateStart(position: Int): Long
+        fun getItemDateStop(position: Int): Long
+        fun getItemColor(position: Int): Int?
+        fun getItemTitle(position: Int): String
+        fun getItemCount(): Int
+    }
 
+    companion object {
         const val MILLISECOND = 0
         const val SECOND = 1
         const val MINUTE = 2
         const val HOUR = 3
         const val DAY = 4
-
         private fun unitMillis(unit: Int): Long =
                 when (unit) {
                     MILLISECOND -> 1L
@@ -56,6 +63,18 @@ open class EventTimelineView : View {
                     }
                 }
     }
+
+    @Inject lateinit var timeFormatter: TimeFormatter
+
+    /*
+        Adapter
+     */
+    private var _adapter: Adapter? = null
+    var adapter: Adapter?
+        get() = _adapter
+        set(value) {
+            _adapter = value
+        }
 
     /*
         Paints
@@ -201,33 +220,31 @@ open class EventTimelineView : View {
         get() = _timeSpan
         set(value) {
             _timeSpan = value
-            stopDt = startDt + timeSpan
+            timelineDtStop = timelineDtStart + timeSpan
             recalculateDrawRanges()
         }
-    private var _startDt: Long = 0L
-    var startDt: Long
-        get() = _startDt
+    private var _timelineDtStart: Long = 0L
+    var timelineDtStart: Long
+        get() = _timelineDtStart
         set(value) {
-            _startDt = value
-            stopDt = startDt + timeSpan
+            _timelineDtStart = value
+            timelineDtStop = timelineDtStart + timeSpan
             recalculateDrawRanges()
         }
-    private var stopDt: Long = 0L
+    private var timelineDtStop: Long = 0L
 
     /*
-        Data set
+        Color
      */
-    private var _events = emptyList<Event>()
-    var events: List<Event>
-        get() = _events
-        set(value) {
-            _events = value
-        }
-
     private val barRectF = RectF()
+    private var defaultColor = Color.BLACK
 
-    infix fun invalidating(expression: EventTimelineView.() -> Unit) {
-        expression()
+    inline fun refresh(crossinline block: EventTimelineView.() -> Unit) {
+        block()
+        while (!isInLayout) {
+            requestLayout()
+            break
+        }
         invalidate()
     }
 
@@ -250,6 +267,9 @@ open class EventTimelineView : View {
 
     private fun initFromAttributes(context: Context, attrs: AttributeSet?,
                                    defStyleAttr: Int, defStyleRes: Int) {
+
+        App.component.inject(this)
+
         val a = context.obtainStyledAttributes(attrs, R.styleable.EventTimelineView,
                 defStyleAttr, defStyleRes)
         for (i in 0..a.indexCount) {
@@ -295,7 +315,7 @@ open class EventTimelineView : View {
                     scalePaint.color = a.getColor(attr, scalePaint.color)
 
                 R.styleable.EventTimelineView_defaultBarColor ->
-                    barPaint.color = a.getColor(attr, barPaint.color)
+                    defaultColor = a.getColor(attr, defaultColor)
 
                 R.styleable.EventTimelineView_eventTitleTextColor ->
                     titleTextPaint.color = a.getColor(attr, titleTextPaint.color)
@@ -327,20 +347,16 @@ open class EventTimelineView : View {
         this.h = h
     }
 
-    private fun normForRange(value: Long) = (value - startDt).toFloat() / timeSpan
+    private fun normForRange(value: Long) = (value - timelineDtStart).toFloat() / timeSpan
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas!!)
-        val start = SystemClock.elapsedRealtime()
         drawScale(canvas)
         drawBars(canvas)
         drawTimeText(canvas)
-        val delta = (SystemClock.elapsedRealtime() - start) / 1000f
-        Log.i(TAG, "Draw executed in ${delta}s")
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        Log.i(TAG, "onMeasure()")
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val widthSize = MeasureSpec.getSize(widthMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
@@ -356,7 +372,6 @@ open class EventTimelineView : View {
             MeasureSpec.AT_MOST -> heightSize
             else -> measureHeight()
         }
-        Log.d(TAG, "Measured dimension: $width x $height")
         setMeasuredDimension(width, height)
     }
 
@@ -364,11 +379,12 @@ open class EventTimelineView : View {
             ((timeSpan.toFloat() / unitMillis(timelineUnit)) * unitWidth).toInt()
 
     private fun measureHeight(): Int {
+        val size = adapter?.getItemCount() ?: 0
         val borders = topSpacing + bottomSpacing
-        val bars = barHeight * events.size
-        val spacings = barSpacing * (events.size - 1)
+        val bars = barHeight * size
+        val spacings = barSpacing * (size - 1)
         val timeTextHeight = timeTextHeight()
-        val titlesSumHeight = titleTextHeight() * events.size
+        val titlesSumHeight = titleTextHeight() * size
         return (borders + bars + spacings + timeTextHeight + titlesSumHeight).toInt()
     }
 
@@ -382,25 +398,38 @@ open class EventTimelineView : View {
         false -> 0f
     }
 
-    private fun drawBars(canvas: Canvas) {
-        events.forEachIndexed { i, event ->
-            val start = if (event.dtStart < startDt) startDt else event.dtStart
-            val stop = if (event.dtStop > stopDt) stopDt else event.dtStop
-            val startX = normForRange(start) * w
-            val stopX = normForRange(stop) * w
-            val startY = (timeTextHeight() + topSpacing +
-                    i * (barHeight + titleTextHeight() + barSpacing)).toFloat()
-            val stopY = startY + barHeight
+    private fun prepareRect(rectF: RectF, i: Int, dtStart: Long, dtStop: Long) {
+        val start = if (dtStart < timelineDtStart) timelineDtStart else dtStart
+        val stop = if (dtStop > timelineDtStop) timelineDtStop else dtStop
+        val startX = normForRange(start) * w
+        val stopX = normForRange(stop) * w
+        val startY = (timeTextHeight() + topSpacing +
+                i * (barHeight + titleTextHeight() + barSpacing)).toFloat()
+        val stopY = startY + barHeight
 
-            barRectF.set(startX, startY, stopX, stopY)
-            Log.i(TAG, "drawing bar: ${barRectF.toShortString()}")
-            barPaint.color = event.displayColor
-            canvas.drawRoundRect(barRectF, barRadius, barRadius, barPaint)
+        rectF.set(startX, startY, stopX, stopY)
+    }
+
+    private fun drawBars(canvas: Canvas) {
+        val events = 0 until (adapter?.getItemCount() ?: 0)
+
+        events.forEach { i ->
+            val allDay = adapter!!.isItemAllDay(i)
+            val dtStart = if (allDay) timelineDtStart else adapter!!.getItemDateStart(i)
+            val dtStop = if (allDay) timelineDtStop else adapter!!.getItemDateStop(i)
+            prepareRect(barRectF, i, dtStart, dtStop)
+
+            val displayColor = adapter!!.getItemColor(i)
+            barPaint.color = displayColor ?: defaultColor
 
             if (showTitles) {
-                canvas.drawText(event.title,
-                        startX, stopY - titleTextPaint.fontMetrics.top, titleTextPaint)
+                val title = adapter!!.getItemTitle(i)
+                canvas.drawText(title,
+                        barRectF.left,
+                        barRectF.bottom - titleTextPaint.fontMetrics.top,
+                        titleTextPaint)
             }
+            canvas.drawRoundRect(barRectF, barRadius, barRadius, barPaint)
         }
     }
 
@@ -425,17 +454,11 @@ open class EventTimelineView : View {
 
     private fun recalculateDrawRanges() {
         val unitMillis = unitMillis(timelineUnit)
-        val baseRange = ceil(startDt.toDouble() / unitMillis).toLong() * unitMillis..
-                floor(stopDt.toDouble() / unitMillis).toLong() * unitMillis
+        val baseRange = ceil(timelineDtStart.toDouble() / unitMillis).toLong() * unitMillis..
+                floor(timelineDtStop.toDouble() / unitMillis).toLong() * unitMillis
         scaleDrawRange = baseRange step (unitMillis * markScale).toLong()
         timeMarkDrawRange = baseRange step (unitMillis * markTime).toLong()
     }
 
-    override fun invalidate() {
-        super.invalidate()
-        Log.d(TAG, "invalidate()")
-    }
-
-    open protected fun formatTime(timeMillis: Long) =
-            AppPreferences.formatTimeOfDay(timeMillis)
+    private fun formatTime(timeMillis: Long) = timeFormatter.formatTimeOfDay(timeMillis)
 }

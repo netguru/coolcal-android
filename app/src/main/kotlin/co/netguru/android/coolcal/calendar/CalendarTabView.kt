@@ -9,14 +9,19 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import butterknife.bindViews
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.utils.AppPreferences
+import co.netguru.android.coolcal.app.App
+import co.netguru.android.coolcal.rendering.TimeFormatter
 import com.facebook.rebound.SimpleSpringListener
 import com.facebook.rebound.Spring
 import com.facebook.rebound.SpringSystem
+import javax.inject.Inject
 
 class CalendarTabView : LinearLayout {
 
+    @Inject lateinit var timeFormatter: TimeFormatter
+
     private var currentPos = 0
+
     private val frames: List<View> by bindViews(R.id.day0, R.id.day1,
             R.id.day2, R.id.day3, R.id.day4)
     private val domTextViews: List<TextView> by bindViews(R.id.day0_dom_text_view,
@@ -26,9 +31,6 @@ class CalendarTabView : LinearLayout {
             R.id.day1_dow_text_view, R.id.day2_dow_text_view,
             R.id.day3_dow_text_view, R.id.day4_dow_text_view)
 
-    private val springSys = SpringSystem.create()
-    private val springs = (0..5).map { springSys.createSpring() }
-
     private var _days: List<Long>? = null
     var days: List<Long>?
         get() = _days
@@ -37,6 +39,8 @@ class CalendarTabView : LinearLayout {
             updateDayTextViews()
         }
 
+    private val springSys = SpringSystem.create()
+    private val springs = (0..5).map { springSys.createSpring() }
     private val springListener = object : SimpleSpringListener() {
         override fun onSpringUpdate(spring: Spring?) {
             val value = spring!!.currentValue
@@ -72,7 +76,7 @@ class CalendarTabView : LinearLayout {
     }
 
     private fun init(context: Context) {
-
+        App.component.inject(this)
         inflate(context, R.layout.view_calendar_tabs, this)
         this.orientation = LinearLayout.HORIZONTAL
 
@@ -83,8 +87,12 @@ class CalendarTabView : LinearLayout {
     }
 
     fun switchDay(startDayDt: Long) {
-        val nextActive = days!!.indexOf(startDayDt)
-        switchActive(nextActive)
+        try {
+            val nextActive = days!!.indexOf(startDayDt)
+            switchActive(nextActive)
+        } catch (e: ArrayIndexOutOfBoundsException) {
+
+        }
     }
 
     private fun switchActive(newPos: Int) {
@@ -113,10 +121,12 @@ class CalendarTabView : LinearLayout {
 
     private fun updateDayTextViews() {
         domTextViews.forEachIndexed { i, view ->
-            view.text = AppPreferences.formatDayOfMonth(days!![i])
+            view.text = timeFormatter.formatDayOfMonth(days!![i])
         }
         dowTextViews.forEachIndexed { i, view ->
-            view.text = AppPreferences.formatDayOfWeekShort(days!![i])
+            view.text = timeFormatter.formatDayOfWeekShort(days!![i])
         }
     }
+
+
 }

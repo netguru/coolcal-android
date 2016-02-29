@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/events_fragment"
-        android:name="co.netguru.android.coolcal.calendar.EventsFragment"
+        android:name="co.netguru.android.coolcal.ui.EventsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_events" />
