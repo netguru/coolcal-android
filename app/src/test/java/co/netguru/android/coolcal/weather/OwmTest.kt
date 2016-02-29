@@ -1,7 +1,8 @@
 package co.netguru.android.coolcal.weather
 
 import co.netguru.android.coolcal.BuildConfig
-import co.netguru.android.coolcal.rest.OWMInterceptor
+import co.netguru.android.coolcal.rest.CacheControlInterceptor
+import co.netguru.android.coolcal.rest.OwmInterceptor
 import com.squareup.okhttp.OkHttpClient
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -25,9 +26,10 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
 
     @Before
     fun prepare() {
-        val interceptor = OWMInterceptor(BuildConfig.OPENWEATHERMAP_API_KEY)
+        val interceptor = OwmInterceptor(BuildConfig.OPENWEATHERMAP_API_KEY)
         val client = OkHttpClient()
         client.interceptors().add(interceptor)
+        client.networkInterceptors().add(CacheControlInterceptor(10 * 60L, 10 * 60L))
         val retrofit = Retrofit.Builder()
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())

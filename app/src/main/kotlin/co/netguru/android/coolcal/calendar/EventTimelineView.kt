@@ -241,7 +241,10 @@ class EventTimelineView : View {
 
     inline fun refresh(crossinline block: EventTimelineView.() -> Unit) {
         block()
-        requestLayout()
+        while (!isInLayout) {
+            requestLayout()
+            break
+        }
         invalidate()
     }
 

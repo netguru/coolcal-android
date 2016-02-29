@@ -13,6 +13,7 @@
         android:id="@+id/weatherBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/weather_background_image"
         android:cropToPadding="false" />
 
     <ImageView

@@ -8,4 +8,5 @@
 
     <string name="all_day">All day</string>
     <string name="time_placeholder">--:--</string>
+    <string name="weather_background_image">Weather background image</string>
 </resources>

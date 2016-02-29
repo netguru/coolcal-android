@@ -29,7 +29,6 @@ class TimelineHolder(itemView: View) : ViewHolder(itemView) {
     }
 
     fun bind(obj: TimelineData) {
-
         dayOfMonthTextView.text = timeFormatter.formatDayOfMonth(obj.dtStart)
         dayOfWeekTextView.text = timeFormatter.formatDayOfWeek(obj.dtStart)
         eventTimelineView.refresh {

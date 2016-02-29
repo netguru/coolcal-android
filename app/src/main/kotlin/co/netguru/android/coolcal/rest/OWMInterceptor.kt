@@ -4,7 +4,7 @@ import co.netguru.android.coolcal.utils.logDebug
 import com.squareup.okhttp.Interceptor
 import com.squareup.okhttp.Response
 
-class OWMInterceptor(val apiKey: String) : Interceptor {
+class OwmInterceptor(val apiKey: String) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain?): Response? {
         val request = chain!!.request()

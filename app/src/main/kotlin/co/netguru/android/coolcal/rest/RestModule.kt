@@ -11,6 +11,7 @@ import dagger.Provides
 import retrofit.GsonConverterFactory
 import retrofit.Retrofit
 import retrofit.RxJavaCallAdapterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -18,6 +19,11 @@ class RestModule {
 
     companion object {
         const val CACHE_SIZE = 100 * 1024L
+        const val MAX_STALE = 10 * 60L // todo check
+        const val MAX_AGE = 10 * 60L // todo check
+
+        const val NAME_OWM_INTERCEPTOR = "owm_interceptor"
+        const val NAME_CC_INTERCEPTOR = "cache_control_interceptor"
     }
 
     @Provides
@@ -26,14 +32,25 @@ class RestModule {
 
     @Provides
     @Singleton
-    fun provideInterceptor(): Interceptor = OWMInterceptor(BuildConfig.OPENWEATHERMAP_API_KEY)
+    @Named(NAME_OWM_INTERCEPTOR)
+    fun provideOwmInterceptor(): Interceptor = OwmInterceptor(BuildConfig.OPENWEATHERMAP_API_KEY)
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(cache: Cache, interceptor: Interceptor): OkHttpClient {
+    @Named(NAME_CC_INTERCEPTOR)
+    fun provideCacheControlInterceptor(): Interceptor = CacheControlInterceptor(MAX_STALE, MAX_AGE)
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(cache: Cache,
+                            @Named(NAME_OWM_INTERCEPTOR)
+                            owmInterceptor: Interceptor,
+                            @Named(NAME_CC_INTERCEPTOR)
+                            cacheControlInterceptor: Interceptor): OkHttpClient {
         val client = OkHttpClient()
         client.cache = cache
-        client.interceptors().add(interceptor)
+        client.interceptors().add(owmInterceptor)
+        client.networkInterceptors().add(cacheControlInterceptor)
         return client
     }
 
