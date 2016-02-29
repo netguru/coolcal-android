@@ -10,7 +10,7 @@ class OWMInterceptor(val apiKey: String) : Interceptor {
         val request = chain!!.request()
 
         val appidUrl = "${request.urlString()}&APPID=$apiKey"
-        logDebug { appidUrl }
+        logDebug(appidUrl)
 
         val apiKeyRequest = request.newBuilder()
                 .method(request.method(), request.body())

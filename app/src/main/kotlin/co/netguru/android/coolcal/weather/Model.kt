@@ -31,11 +31,11 @@ data class Forecast(@Expose @SerializedName("dt") var dt: Long?,
                     @Expose @SerializedName("dt_txt") var dateString: String?) {
 
     fun dtStartMillis(): Long = dt!!.times(1000)
-    fun dtStopMillis(): Long = dt!!.times(1000) + (MILLIS_3H) - 1
-    fun range3h(): LongRange = dtStartMillis().rangeTo(dtStopMillis())
+    fun dtStopMillis(): Long = dt!!.times(1000) + (MILLIS_3H)
+    fun range3h(): LongRange = dtStartMillis()..(dtStopMillis())
 
     companion object {
-        val MILLIS_3H = TimeUnit.HOURS.toMillis(3)
+        private val MILLIS_3H = TimeUnit.HOURS.toMillis(3)
     }
 }
 

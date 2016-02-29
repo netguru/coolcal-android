@@ -14,10 +14,12 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
-import co.netguru.android.coolcal.calendar.*
+import co.netguru.android.coolcal.calendar.EventAdapter
+import co.netguru.android.coolcal.calendar.InstancesLoader
+import co.netguru.android.coolcal.calendar.eventDuration
+import co.netguru.android.coolcal.calendar.eventIsAllDay
 import co.netguru.android.coolcal.rendering.TimeFormatter
 import co.netguru.android.coolcal.rendering.WeatherDataFormatter
-import co.netguru.android.coolcal.utils.logDebug
 import co.netguru.android.coolcal.utils.logError
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -106,9 +108,9 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
             val dt = adapter.getItemDayStart(firstVisibleItem)
             eventsCalendarTabView.switchDay(dt)
         } catch(e: IllegalStateException) {
-            logError { e.message }
+            logError(e.message)
         } catch (e: CursorIndexOutOfBoundsException) {
-            logError { "CursorIndexOutOfBoundsException (Cursor returned from getItemDayStart)" }
+            logError("CursorIndexOutOfBoundsException (Cursor returned from getItemDayStart)")
         }
     }
 
@@ -163,7 +165,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
                     adapter.forecastResponse = response
                 }, {
                     error ->
-                    logError { error.message }
+                    logError(error.message)
                     // todo: handle possible error - retry?
                 })
     }
@@ -235,7 +237,6 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
 
                         if (id == 0) initTodayStatistics(cursor!!)
                     }
-
                     else -> {
                         /* null */
                     }
@@ -243,13 +244,6 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
 
                 if (cursors.all { it != null }) {
                     val mergeCursor = MergeCursor(cursors)
-
-                    if (mergeCursor.moveToFirst()) {
-                        while (mergeCursor.moveToNext()) {
-                            logDebug { "${mergeCursor.eventBegin()}: ${mergeCursor.eventTitle()}" }
-                        }
-                    }
-
                     adapter.swapCursor(mergeCursor)
                     initScrollListener()
                 }

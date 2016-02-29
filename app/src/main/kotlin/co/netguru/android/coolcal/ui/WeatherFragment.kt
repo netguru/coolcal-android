@@ -45,13 +45,13 @@ class WeatherFragment : BaseFragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response: WeatherResponse ->
-                    fillInfoWithData(response)
+                    renderWeatherData(response)
                 }, { error ->
-                    logError { error.message }
+                    logError(error.message)
                 })
     }
 
-    private fun fillInfoWithData(data: WeatherResponse) {
+    private fun renderWeatherData(data: WeatherResponse) {
         val weather = data.weather[0]
 
         picasso.load(weatherDecoder.getBackgroundsRes(weather.icon))

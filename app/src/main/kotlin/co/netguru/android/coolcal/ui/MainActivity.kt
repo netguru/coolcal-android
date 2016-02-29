@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     override fun onConnectionFailed(result: ConnectionResult) {
-        logDebug { "Connection Failed with code ${result.errorCode}" }
+        logDebug("Connection Failed with code ${result.errorCode}")
         if (mResolvingError) {
             return
         }
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         if (location != null) {
             fragments.forEach { fragment -> fragment?.onLocationChanged(location) }
         } else {
-            logDebug { "Null location!" }
+            logDebug("Null location!")
         }
     }
 

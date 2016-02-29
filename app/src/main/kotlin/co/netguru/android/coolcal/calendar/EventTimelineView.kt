@@ -239,8 +239,9 @@ class EventTimelineView : View {
     private val barRectF = RectF()
     private var defaultColor = Color.BLACK
 
-    fun refresh(expression: EventTimelineView.() -> Unit) {
-        expression()
+    inline fun refresh(crossinline block: EventTimelineView.() -> Unit) {
+        block()
+        requestLayout()
         invalidate()
     }
 
