@@ -18,10 +18,15 @@ import co.netguru.android.coolcal.calendar.EventAdapter
 import co.netguru.android.coolcal.calendar.InstancesLoader
 import co.netguru.android.coolcal.calendar.eventDuration
 import co.netguru.android.coolcal.calendar.eventIsAllDay
+import co.netguru.android.coolcal.preferences.AppPreferences
 import co.netguru.android.coolcal.rendering.TimeFormatter
 import co.netguru.android.coolcal.rendering.WeatherDataFormatter
 import co.netguru.android.coolcal.utils.logError
+import co.netguru.android.coolcal.utils.updateNeeded
+import co.netguru.android.coolcal.weather.ForecastResponse
 import co.netguru.android.coolcal.weather.OpenWeatherMap
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_events.*
@@ -48,6 +53,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
     @Inject lateinit var openWeatherMap: OpenWeatherMap
     @Inject lateinit var weatherDataFormatter: WeatherDataFormatter
     @Inject lateinit var timeFormatter: TimeFormatter
+    @Inject lateinit var appPreferences: AppPreferences
 
     private lateinit var adapter: EventAdapter
 
@@ -73,6 +79,11 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
         dayOfMonthTextView.text = timeFormatter.formatDayOfMonth(todayDt)
         eventsCalendarTabView.days = (0..5).map { i -> todayDt + i * DAY_MILLIS }
         eventsListView.adapter = adapter
+
+        if (appPreferences.lastForecast.length > 0){
+            val turnsType = object : TypeToken<ForecastResponse>() {}.type
+            adapter.forecastResponse = Gson().fromJson<ForecastResponse>(appPreferences.lastForecast, turnsType)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -172,7 +183,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     override fun onLocationChanged(location: Location?) {
         super.onLocationChanged(location)
-        if (location != null) {
+        if (location != null && updateNeeded(appPreferences.lastWeatherSync)) {
             requestForecast(location)
         }
     }

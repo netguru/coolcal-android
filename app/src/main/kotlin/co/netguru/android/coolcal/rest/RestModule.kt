@@ -22,6 +22,8 @@ class RestModule {
         const val MAX_STALE = 10 * 60L // todo check
         const val MAX_AGE = 10 * 60L // todo check
 
+        const val SYNC_INTERVAL = 30 * 60 * 1000L // 30 minutes
+
         const val NAME_OWM_INTERCEPTOR = "owm_interceptor"
         const val NAME_CC_INTERCEPTOR = "cache_control_interceptor"
     }

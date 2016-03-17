@@ -7,11 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
+import co.netguru.android.coolcal.preferences.AppPreferences
 import co.netguru.android.coolcal.rendering.WeatherDataFormatter
 import co.netguru.android.coolcal.rendering.WeatherDecoder
 import co.netguru.android.coolcal.utils.logError
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import co.netguru.android.coolcal.weather.WeatherResponse
+import co.netguru.android.coolcal.utils.updateNeeded
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_weather.*
 import rx.android.schedulers.AndroidSchedulers
@@ -26,6 +30,7 @@ class WeatherFragment : BaseFragment() {
 
     @Inject lateinit var openWeatherMap: OpenWeatherMap
     @Inject lateinit var weatherDecoder: WeatherDecoder
+    @Inject lateinit var appPreferences: AppPreferences
     @Inject lateinit var weatherDataFormatter: WeatherDataFormatter
     @Inject lateinit var picasso: Picasso
 
@@ -36,15 +41,22 @@ class WeatherFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (appPreferences.lastWeather.length > 0){
+            val turnsType = object : TypeToken<WeatherResponse>() {}.type
+            renderWeatherData(Gson().fromJson<WeatherResponse>(appPreferences.lastWeather, turnsType))
+        }
     }
 
     private fun requestWeather(location: Location) {
         val latitude = location.latitude
         val longitude = location.longitude
-        subscription = openWeatherMap.getWeather(latitude, longitude)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        subscription =
+                openWeatherMap.getWeather(latitude, longitude)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response: WeatherResponse ->
+                    appPreferences.lastWeather = Gson().toJson(response)
                     renderWeatherData(response)
                 }, { error ->
                     logError(error.message)
@@ -69,7 +81,7 @@ class WeatherFragment : BaseFragment() {
 
     override fun onLocationChanged(location: Location?) {
         super.onLocationChanged(location)
-        if (location != null) {
+        if (location != null && updateNeeded(appPreferences.lastWeatherSync)) {
             requestWeather(location)
         }
     }

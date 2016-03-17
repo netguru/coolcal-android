@@ -18,6 +18,11 @@ class AppPreferences(val preferences: SharedPreferences, val locale: Locale) {
         private const val PREF_TEMP_SIGN = "pref_temp_sign"
         private const val PREF_PRESSURE_UNIT = "pref_pressure_unit"
         private const val PREF_SPEED_UNIT = "pref_speed_unit"
+
+        private const val PREF_LAST_WEATHER = "pref_last_weather"
+        private const val PREF_LAST_WEATHER_SYNC = "pref_last_weather_sync"
+        private const val PREF_FORECAST = "pref_forecast"
+        private const val PREF_FORECAST_SYNC = "pref_forecast_sync"
     }
 
     private val isImperialLocale: Boolean =
@@ -58,6 +63,40 @@ class AppPreferences(val preferences: SharedPreferences, val locale: Locale) {
         set(value) {
             into (preferences) {
                 putInt(PREF_SPEED_UNIT, value)
+            }
+        }
+
+    var lastWeather: String
+        get() = preferences.getString(PREF_LAST_WEATHER, "")
+        set(value) {
+            into(preferences){
+                putString(PREF_LAST_WEATHER, value)
+            }
+            lastWeatherSync = System.currentTimeMillis()
+        }
+
+    var lastWeatherSync: Long
+        get() = preferences.getLong(PREF_LAST_WEATHER_SYNC, 0)
+        set(value) {
+            into(preferences){
+                putLong(PREF_LAST_WEATHER_SYNC, value)
+            }
+        }
+
+    var lastForecast: String
+        get() = preferences.getString(PREF_FORECAST, "")
+        set(value) {
+            into(preferences){
+                putString(PREF_FORECAST, value)
+            }
+            lastForecastSync = System.currentTimeMillis()
+        }
+
+    var lastForecastSync: Long
+        get() = preferences.getLong(PREF_FORECAST_SYNC, 0)
+        set(value) {
+            into(preferences){
+                putLong(PREF_FORECAST_SYNC, value)
             }
         }
 }
