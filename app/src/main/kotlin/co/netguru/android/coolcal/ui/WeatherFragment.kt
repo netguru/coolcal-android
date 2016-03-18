@@ -14,8 +14,6 @@ import co.netguru.android.coolcal.utils.logError
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import co.netguru.android.coolcal.weather.WeatherResponse
 import co.netguru.android.coolcal.utils.updateNeeded
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_weather.*
 import rx.android.schedulers.AndroidSchedulers
@@ -42,9 +40,8 @@ class WeatherFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (appPreferences.lastWeather.length > 0){
-            val turnsType = object : TypeToken<WeatherResponse>() {}.type
-            renderWeatherData(Gson().fromJson<WeatherResponse>(appPreferences.lastWeather, turnsType))
+        if (appPreferences.lastWeather != null) {
+            renderWeatherData(appPreferences.lastWeather as WeatherResponse)
         }
     }
 
@@ -56,7 +53,7 @@ class WeatherFragment : BaseFragment() {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response: WeatherResponse ->
-                    appPreferences.lastWeather = Gson().toJson(response)
+                    appPreferences.lastWeather = response
                     renderWeatherData(response)
                 }, { error ->
                     logError(error.message)

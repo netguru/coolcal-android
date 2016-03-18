@@ -23,7 +23,3 @@ inline fun into(preferences: SharedPreferences,
                 crossinline block: SharedPreferences.Editor.() -> SharedPreferences.Editor) {
     preferences.edit().block().apply()
 }
-
-fun updateNeeded(syncTime: Long): Boolean {
-    return System.currentTimeMillis() - syncTime > RestModule.SYNC_INTERVAL
-}

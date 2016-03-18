@@ -25,8 +25,6 @@ import co.netguru.android.coolcal.utils.logError
 import co.netguru.android.coolcal.utils.updateNeeded
 import co.netguru.android.coolcal.weather.ForecastResponse
 import co.netguru.android.coolcal.weather.OpenWeatherMap
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_events.*
@@ -80,9 +78,8 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
         eventsCalendarTabView.days = (0..5).map { i -> todayDt + i * DAY_MILLIS }
         eventsListView.adapter = adapter
 
-        if (appPreferences.lastForecast.length > 0){
-            val turnsType = object : TypeToken<ForecastResponse>() {}.type
-            adapter.forecastResponse = Gson().fromJson<ForecastResponse>(appPreferences.lastForecast, turnsType)
+        if (appPreferences.lastForecast != null){
+            adapter.forecastResponse = appPreferences.lastForecast as ForecastResponse
         }
     }
 
