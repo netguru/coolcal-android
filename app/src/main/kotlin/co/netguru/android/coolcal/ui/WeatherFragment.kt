@@ -40,7 +40,7 @@ class WeatherFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        renderWeatherData(appPreferences.lastWeather as WeatherResponse)
+        renderWeatherData(appPreferences.lastWeather)
     }
 
     private fun requestWeather(location: Location) {
@@ -58,20 +58,23 @@ class WeatherFragment : BaseFragment() {
                 })
     }
 
-    private fun renderWeatherData(data: WeatherResponse) {
-        val weather = data.weather[0]
+    private fun renderWeatherData(data: WeatherResponse?) {
+        if (data != null) {
 
-        picasso.load(weatherDecoder.getBackgroundsRes(weather.icon))
-                .fit()
-                .centerCrop()
-                .into(weatherBackground)
+            val weather = data.weather[0]
 
-        weatherIconImageView.setImageResource(weatherDecoder.getIconRes(weather.icon))
-        weatherDescriptionTextView.text = weather.description
-        weatherMessageTextView.text = "Weather description" // todo
-        weatherTemperatureTextView.text = weatherDataFormatter.formatTemperature(data.main?.temperature)
-        weatherPressureTextView.text = weatherDataFormatter.formatPressure(data.main?.pressure)
-        weatherWindTextView.text = weatherDataFormatter.formatWind(data.wind?.speed, data.wind?.deg)
+            picasso.load(weatherDecoder.getBackgroundsRes(weather.icon))
+                    .fit()
+                    .centerCrop()
+                    .into(weatherBackground)
+
+            weatherIconImageView.setImageResource(weatherDecoder.getIconRes(weather.icon))
+            weatherDescriptionTextView.text = weather.description
+            weatherMessageTextView.text = "Weather description" // todo
+            weatherTemperatureTextView.text = weatherDataFormatter.formatTemperature(data.main?.temperature)
+            weatherPressureTextView.text = weatherDataFormatter.formatPressure(data.main?.pressure)
+            weatherWindTextView.text = weatherDataFormatter.formatWind(data.wind?.speed, data.wind?.deg)
+        }
     }
 
     override fun onLocationChanged(location: Location?) {
