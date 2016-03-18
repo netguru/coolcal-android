@@ -3,6 +3,7 @@
     android:id="@+id/weatherFragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     tools:context=".ui.MainActivity"
     tools:showIn="@layout/activity_main">
 
@@ -11,26 +12,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/weather_background_image"
-        android:fitsSystemWindows="true"/>
+        android:fitsSystemWindows="true"
+        android:cropToPadding="false"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/spacing_top"
+        android:clipToPadding="false"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal|top"
-            android:weightSum="6"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/weatherMessageTextView"
                 style="@style/AppTheme.Weather.LargeText"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="@dimen/spacing_top"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_small"
                 tools:text="It will be a lovely day!" />
 
@@ -38,16 +42,14 @@
                 android:id="@+id/weatherDescriptionTextView"
                 style="@style/AppTheme.Weather.SmallText"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_normal"
                 tools:text="Scattered clouds" />
 
             <ImageView
                 android:id="@+id/weatherIconImageView"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_small"
                 android:contentDescription="@string/weather_icon_description"
                 tools:src="@drawable/icon_clear_sky_day" />
@@ -57,8 +59,7 @@
                 android:id="@+id/weatherTemperatureTextView"
                 style="@style/AppTheme.Weather.LargeText"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_small"
                 tools:text="21\u00b0" />
 
@@ -66,8 +67,7 @@
                 android:id="@+id/weatherWindTextView"
                 style="@style/AppTheme.Weather.SmallText"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_tiny"
                 android:drawableStart="@drawable/icon_tools_wind"
                 tools:text="2 mph E" />
@@ -76,9 +76,9 @@
                 android:id="@+id/weatherPressureTextView"
                 style="@style/AppTheme.Weather.SmallText"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_margin="@dimen/spacing_tiny"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:layout_marginBottom="@dimen/spacing_small"
                 android:drawableStart="@drawable/icon_tools_pressure"
                 tools:text="1 036 mb" />
 

@@ -13,7 +13,7 @@
     <dimen name="font_small">12sp</dimen>
 
     <!-- Spacings -->
-    <dimen name="spacing_top">74dp</dimen>
+    <dimen name="spacing_top" >74dp</dimen>
     <dimen name="spacing_huge">40dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_normal">16dp</dimen>
