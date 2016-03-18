@@ -40,9 +40,7 @@ class WeatherFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (appPreferences.lastWeather != null) {
-            renderWeatherData(appPreferences.lastWeather as WeatherResponse)
-        }
+        renderWeatherData(appPreferences.lastWeather as WeatherResponse)
     }
 
     private fun requestWeather(location: Location) {

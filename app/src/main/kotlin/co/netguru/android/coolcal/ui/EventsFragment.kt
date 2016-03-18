@@ -78,9 +78,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
         eventsCalendarTabView.days = (0..5).map { i -> todayDt + i * DAY_MILLIS }
         eventsListView.adapter = adapter
 
-        if (appPreferences.lastForecast != null){
-            adapter.forecastResponse = appPreferences.lastForecast as ForecastResponse
-        }
+        adapter.forecastResponse = appPreferences.lastForecast
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
