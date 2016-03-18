@@ -2,6 +2,9 @@ package co.netguru.android.coolcal.utils
 
 import android.content.SharedPreferences
 import android.util.Log
+import co.netguru.android.coolcal.rest.RestModule
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 @Suppress("unused")
 inline fun <reified T : Any> T.logDebug(msg: String?) {

@@ -2,6 +2,7 @@ package co.netguru.android.coolcal.ui
 
 import android.content.IntentSender
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import co.netguru.android.coolcal.BuildConfig
@@ -118,6 +119,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         if (location != null) {
             fragments.forEach { fragment -> fragment?.onLocationChanged(location) }
         } else {
+            Snackbar.make(slidingLayout, applicationContext.resources.getString(R.string.localization_disabled), Snackbar.LENGTH_LONG).show()
             logDebug("Null location!")
         }
     }
