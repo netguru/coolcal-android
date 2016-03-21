@@ -1,9 +1,11 @@
 package co.netguru.android.coolcal.ui
 
+import android.Manifest
 import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.database.MergeCursor
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
@@ -12,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import co.netguru.android.coolcal.BuildConfig
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.calendar.EventAdapter
@@ -21,9 +24,10 @@ import co.netguru.android.coolcal.calendar.eventIsAllDay
 import co.netguru.android.coolcal.preferences.AppPreferences
 import co.netguru.android.coolcal.rendering.TimeFormatter
 import co.netguru.android.coolcal.rendering.WeatherDataFormatter
+import co.netguru.android.coolcal.utils.askForPermission
+import co.netguru.android.coolcal.utils.isPermissionGranted
 import co.netguru.android.coolcal.utils.logError
 import co.netguru.android.coolcal.utils.updateNeeded
-import co.netguru.android.coolcal.weather.ForecastResponse
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -62,7 +66,16 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = EventAdapter(context, null, 0)
-        initEventsLoader(InstancesLoaderCallbacks())
+
+        if (BuildConfig.VERSION_CODE >= Build.VERSION_CODES.M) {
+            if (isPermissionGranted(activity, Manifest.permission.READ_CALENDAR)){
+                initEventsLoader(InstancesLoaderCallbacks())
+            } else {
+                askForPermission(activity, Manifest.permission.READ_CALENDAR, MainActivity.PERMISSIONS_REQUEST_CALENDAR)
+            }
+        } else {
+            initEventsLoader(InstancesLoaderCallbacks())
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -92,6 +105,10 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
             activity.supportLoaderManager.destroyLoader(loader)
         }
         super.onDestroy()
+    }
+
+    fun onCalendarPermissionGranted() {
+        initEventsLoader(InstancesLoaderCallbacks())
     }
 
     private fun initEventsLoader(callbacks: LoaderManager.LoaderCallbacks<Cursor>) {
