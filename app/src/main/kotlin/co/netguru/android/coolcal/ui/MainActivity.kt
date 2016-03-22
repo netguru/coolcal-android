@@ -1,12 +1,15 @@
 package co.netguru.android.coolcal.ui
 
+import android.Manifest
 import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import co.netguru.android.coolcal.BuildConfig
 import co.netguru.android.coolcal.R
+import co.netguru.android.coolcal.utils.givenPermission
 import co.netguru.android.coolcal.utils.logDebug
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -22,6 +25,8 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
     companion object {
         const val REQUEST_RESOLVE_ERROR = 1000
+        const val PERMISSIONS_REQUEST_FINE_LOCATION: Int = 1
+        const val PERMISSIONS_REQUEST_CALENDAR: Int = 2
     }
 
     private var mResolvingError: Boolean = false
@@ -51,6 +56,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         slidingLayout.setPanelSlideListener(fragments[1] as SlidingUpPanelLayout.PanelSlideListener)
+
 
         checkForUpdates()
     }
@@ -115,6 +121,12 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     override fun onConnected(p0: Bundle?) {
+        givenPermission(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION) {
+            getLocation()
+        }
+    }
+
+    private fun getLocation() {
         val location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
         if (location != null) {
             fragments.forEach { fragment -> fragment?.onLocationChanged(location) }
@@ -136,6 +148,28 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                 slidingLayout.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
             }
             else -> super.onBackPressed()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_REQUEST_FINE_LOCATION -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    googleApiClient.reconnect()
+                } else {
+                    // TODO consider placeholder for lack of weather??
+                    Snackbar.make(slidingLayout, applicationContext.resources.getString(R.string.localization_access_not_granted), Snackbar.LENGTH_LONG).show()
+                }
+            }
+            PERMISSIONS_REQUEST_CALENDAR -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    var fragment = fragments[1] as EventsFragment
+                    fragment.onCalendarPermissionGranted()
+                } else {
+                    // TODO action/placeholder on calendar permission denied??
+                    Snackbar.make(slidingLayout, applicationContext.resources.getString(R.string.calendar_access_not_granted), Snackbar.LENGTH_LONG).show()
+                }
+            }
         }
     }
 }
