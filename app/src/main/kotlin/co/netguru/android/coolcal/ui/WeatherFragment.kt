@@ -1,6 +1,7 @@
 package co.netguru.android.coolcal.ui
 
 import android.location.Location
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,6 +68,9 @@ class WeatherFragment : BaseFragment() {
                     .fit()
                     .centerCrop()
                     .into(weatherBackground)
+
+            content.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
 
             weatherIconImageView.setImageResource(weatherDecoder.getIconRes(weather.icon))
             weatherDescriptionTextView.text = weather.description
