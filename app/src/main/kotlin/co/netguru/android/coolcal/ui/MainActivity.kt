@@ -3,15 +3,13 @@ package co.netguru.android.coolcal.ui
 import android.Manifest
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import co.netguru.android.coolcal.BuildConfig
 import co.netguru.android.coolcal.R
-import co.netguru.android.coolcal.utils.askForPermission
-import co.netguru.android.coolcal.utils.isPermissionGranted
+import co.netguru.android.coolcal.utils.givenPermission
 import co.netguru.android.coolcal.utils.logDebug
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -123,14 +121,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     override fun onConnected(p0: Bundle?) {
-
-        if (BuildConfig.VERSION_CODE >= Build.VERSION_CODES.M) {
-            if (isPermissionGranted(this, Manifest.permission.ACCESS_FINE_LOCATION)){
-                getLocation()
-            } else {
-                askForPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION)
-            }
-        } else {
+        givenPermission(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION) {
             getLocation()
         }
     }

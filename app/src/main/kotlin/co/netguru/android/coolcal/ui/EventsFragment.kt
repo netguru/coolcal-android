@@ -24,10 +24,7 @@ import co.netguru.android.coolcal.calendar.eventIsAllDay
 import co.netguru.android.coolcal.preferences.AppPreferences
 import co.netguru.android.coolcal.rendering.TimeFormatter
 import co.netguru.android.coolcal.rendering.WeatherDataFormatter
-import co.netguru.android.coolcal.utils.askForPermission
-import co.netguru.android.coolcal.utils.isPermissionGranted
-import co.netguru.android.coolcal.utils.logError
-import co.netguru.android.coolcal.utils.updateNeeded
+import co.netguru.android.coolcal.utils.*
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -67,13 +64,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
         super.onCreate(savedInstanceState)
         adapter = EventAdapter(context, null, 0)
 
-        if (BuildConfig.VERSION_CODE >= Build.VERSION_CODES.M) {
-            if (isPermissionGranted(activity, Manifest.permission.READ_CALENDAR)){
-                initEventsLoader(InstancesLoaderCallbacks())
-            } else {
-                askForPermission(activity, Manifest.permission.READ_CALENDAR, MainActivity.PERMISSIONS_REQUEST_CALENDAR)
-            }
-        } else {
+        activity.givenPermission(Manifest.permission.READ_CALENDAR, MainActivity.PERMISSIONS_REQUEST_CALENDAR) {
             initEventsLoader(InstancesLoaderCallbacks())
         }
     }
