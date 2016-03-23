@@ -68,7 +68,6 @@ class WeatherFragment : BaseFragment() {
                     .fit()
                     .centerCrop()
                     .into(weatherBackground)
-
             content.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
 

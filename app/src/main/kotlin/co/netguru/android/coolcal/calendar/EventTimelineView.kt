@@ -13,6 +13,7 @@ import android.view.View
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.rendering.TimeFormatter
+import org.joda.time.DateTime
 import java.lang.Math.ceil
 import java.lang.Math.floor
 import java.util.concurrent.TimeUnit
@@ -92,6 +93,16 @@ class EventTimelineView : View {
         paint.isAntiAlias = true
         paint.strokeCap = Paint.Cap.BUTT
         paint.strokeWidth = 0f
+        paint
+    }
+
+    private val timeIndicatorPaint: Paint by lazy {
+        val paint = Paint()
+        paint.color = Color.RED
+        paint.isAntiAlias = true
+        paint.strokeCap = Paint.Cap.BUTT
+        paint.strokeWidth = 4f
+        paint.strokeMiter
         paint
     }
 
@@ -211,6 +222,12 @@ class EventTimelineView : View {
         set(value) {
             _showScale = value
         }
+    private var _showTimeIndicator: Boolean = true
+    private var showTimeIndicator: Boolean
+        get() = _showTimeIndicator
+        set(value) {
+            _showTimeIndicator = value
+        }
 
     /*
         Span
@@ -311,6 +328,9 @@ class EventTimelineView : View {
                 R.styleable.EventTimelineView_showScale ->
                     _showScale = a.getBoolean(attr, showScale)
 
+                R.styleable.EventTimelineView_showTimeIndicator ->
+                    _showTimeIndicator = a.getBoolean(attr, showTimeIndicator)
+
                 R.styleable.EventTimelineView_scaleColor ->
                     scalePaint.color = a.getColor(attr, scalePaint.color)
 
@@ -354,6 +374,7 @@ class EventTimelineView : View {
         drawScale(canvas)
         drawBars(canvas)
         drawTimeText(canvas)
+        drawTimeIndicator(canvas)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -449,6 +470,19 @@ class EventTimelineView : View {
                 val timeText = formatTime(timeMillis = i)
                 canvas.drawText(timeText, x, 0f - timeTextPaint.fontMetricsInt.ascent, timeTextPaint)
             }
+        }
+    }
+
+    private fun drawTimeIndicator(canvas: Canvas){
+        if (showTimeIndicator) {
+            var localTime = DateTime(System.currentTimeMillis()).toLocalDateTime()
+            if (localTime.dayOfYear == DateTime(timelineDtStart).dayOfYear) {
+                var localMillis = localTime.millisOfDay.toFloat()
+                var time = localMillis / unitMillis(DAY)
+                var position = time * measureWidth()
+                canvas.drawLine(position, timeTextHeight(), position, h.toFloat(), timeIndicatorPaint)
+            }
+
         }
     }
 

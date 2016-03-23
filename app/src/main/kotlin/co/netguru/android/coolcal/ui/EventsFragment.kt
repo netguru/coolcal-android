@@ -5,7 +5,6 @@ import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.database.MergeCursor
 import android.location.Location
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
@@ -14,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import co.netguru.android.coolcal.BuildConfig
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.calendar.EventAdapter
