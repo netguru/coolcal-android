@@ -1,5 +1,6 @@
 package co.netguru.android.coolcal.calendar
 
+import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,6 +11,7 @@ import co.netguru.android.coolcal.rendering.WeatherDataFormatter
 import co.netguru.android.coolcal.rendering.WeatherDecoder
 import co.netguru.android.coolcal.weather.Forecast
 import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder
+import org.joda.time.DateTime
 import javax.inject.Inject
 
 class EventHolder(itemView: View) : ViewHolder(itemView) {
@@ -21,7 +23,11 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
     @Inject lateinit var weatherDecoder: WeatherDecoder
     @Inject lateinit var weatherDataFormatter: WeatherDataFormatter
     @Inject lateinit var timeFormatter: TimeFormatter
+    @Inject lateinit var resources: Resources
 
+    val time_Indicator: View by lazy {
+        itemView.findViewById(R.id.event_time_indicator)
+    }
     val titleTextView: TextView by lazy {
         itemView.findViewById(R.id.event_title) as TextView
     }
@@ -55,5 +61,16 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
             temperatureTextView.text = weatherDataFormatter.formatTemperature(forecast.main?.temperature)
             weatherIconImageView.setImageResource(weatherDecoder.getIconRes(forecast.weatherList[0].icon))
         }
+        if (isCurrentEvent(obj.begin, obj.end) && !obj.isAllDay) {
+            time_Indicator.visibility = View.VISIBLE
+        } else {
+            time_Indicator.visibility = View.GONE
+        }
+    }
+
+    private fun isCurrentEvent(begin: Long, end: Long): Boolean {
+        var currentTime = DateTime(System.currentTimeMillis()).toLocalDateTime()
+        return DateTime(begin).toLocalDateTime().isBefore(currentTime)
+                && DateTime(end).toLocalDateTime().isAfter(currentTime)
     }
 }
