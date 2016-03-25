@@ -27,6 +27,9 @@
         <attr name="showTime" format="boolean|reference" />
         <attr name="showTitles" format="boolean|reference" />
         <attr name="showScale" format="boolean|reference" />
+        <attr name="showTimeIndicator" format="boolean|reference" />
+        <attr name="timeIndicatorSize" format="dimension|reference" />
+        <attr name="timeIndicatorColor" format="color|reference" />
         <attr name="timeTextSize" format="dimension|reference" />
         <attr name="titleTextSize" format="dimension|reference" />
         <attr name="timeTextColor" format="color|reference" />

@@ -21,4 +21,9 @@
     <dimen name="spacing_tiny">6dp</dimen>
 
     <dimen name="icon_size_small">18dp</dimen>
+
+    <!--Event holder-->
+    <dimen name="time_indicator_margin">10dp</dimen>
+    <dimen name="time_indicator_margin_top">4dp</dimen>
+
 </resources>

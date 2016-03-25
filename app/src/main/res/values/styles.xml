@@ -24,12 +24,14 @@
 
     <style name="AppTheme.EventPrimary">
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="android:textColor">@color/calendar_event_time_color</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
     <style name="AppTheme.EventSecondary">
-        <item name="android:textColor">@android:color/secondary_text_light</item>
+        <item name="android:textColor">@color/calendar_event_duration_color</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 

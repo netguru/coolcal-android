@@ -42,6 +42,7 @@ class WeatherFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         renderWeatherData(appPreferences.lastWeather)
+
     }
 
     private fun requestWeather(location: Location) {
@@ -68,7 +69,6 @@ class WeatherFragment : BaseFragment() {
                     .fit()
                     .centerCrop()
                     .into(weatherBackground)
-
             content.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
 

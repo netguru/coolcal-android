@@ -53,7 +53,9 @@
                 app:bottomSpacing="8dp"
                 app:markTime="2"
                 app:timelineUnit="hour"
-                app:topSpacing="4dp" />
+                app:topSpacing="4dp"
+                app:timeIndicatorColor="@color/timeline_time_indicator"
+                app:timeIndicatorSize="14dp"/>
         </FrameLayout>
     </HorizontalScrollView>
 </LinearLayout>

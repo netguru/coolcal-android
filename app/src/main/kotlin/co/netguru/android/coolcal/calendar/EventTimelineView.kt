@@ -2,10 +2,7 @@ package co.netguru.android.coolcal.calendar
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.os.Build
 import android.text.TextPaint
 import android.util.AttributeSet
@@ -13,6 +10,7 @@ import android.view.View
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.rendering.TimeFormatter
+import org.joda.time.DateTime
 import java.lang.Math.ceil
 import java.lang.Math.floor
 import java.util.concurrent.TimeUnit
@@ -95,6 +93,22 @@ class EventTimelineView : View {
         paint
     }
 
+    private val timeIndicatorLinePaint: Paint by lazy {
+        val paint = Paint()
+        paint.color = timeIndicatorColor
+        paint.isAntiAlias = true
+        paint.strokeCap = Paint.Cap.BUTT
+        paint.strokeWidth = timeIndicatorSize
+        paint
+    }
+
+    private val timeIndicatorPaint: Paint by lazy {
+        val paint = Paint()
+        paint.isAntiAlias = true
+        paint.strokeCap = Paint.Cap.BUTT
+        paint
+    }
+
     private val timeTextPaint: TextPaint by lazy {
         val paint = TextPaint()
         paint.color = Color.GRAY
@@ -126,6 +140,8 @@ class EventTimelineView : View {
      */
     private var w = 0
     private var h = 0
+    private val timeIndicatorVerticalSpacing = 2f
+    private val timeIndicatorDrawableTopMargin = 8
 
     /*
         Event bar
@@ -212,6 +228,27 @@ class EventTimelineView : View {
             _showScale = value
         }
 
+    /*
+        Time indicator
+     */
+    private var _showTimeIndicator: Boolean = true
+    private var showTimeIndicator: Boolean
+        get() = _showTimeIndicator
+        set(value) {
+            _showTimeIndicator = value
+        }
+    private var _timeIndicatorSize: Float = 14f
+    private var timeIndicatorSize: Float
+        get() = _timeIndicatorSize
+        set(value) {
+            _timeIndicatorSize = value
+        }
+    private var _timeIndicatorColor: Int = Color.GRAY
+    private var timeIndicatorColor: Int
+        get() = _timeIndicatorColor
+        set(value) {
+            _timeIndicatorColor = value
+        }
     /*
         Span
      */
@@ -311,6 +348,15 @@ class EventTimelineView : View {
                 R.styleable.EventTimelineView_showScale ->
                     _showScale = a.getBoolean(attr, showScale)
 
+                R.styleable.EventTimelineView_showTimeIndicator ->
+                    _showTimeIndicator = a.getBoolean(attr, showTimeIndicator)
+
+                R.styleable.EventTimelineView_timeIndicatorSize ->
+                    _timeIndicatorSize = a.getDimension(attr, timeIndicatorSize)
+
+                R.styleable.EventTimelineView_timeIndicatorColor ->
+                    _timeIndicatorColor = a.getColor(attr, timeIndicatorColor)
+
                 R.styleable.EventTimelineView_scaleColor ->
                     scalePaint.color = a.getColor(attr, scalePaint.color)
 
@@ -352,6 +398,7 @@ class EventTimelineView : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas!!)
         drawScale(canvas)
+        drawTimeIndicator(canvas)
         drawBars(canvas)
         drawTimeText(canvas)
     }
@@ -380,7 +427,7 @@ class EventTimelineView : View {
 
     private fun measureHeight(): Int {
         val size = adapter?.getItemCount() ?: 0
-        val borders = topSpacing + bottomSpacing
+        val borders = topSpacing() + bottomSpacing
         val bars = barHeight * size
         val spacings = barSpacing * (size - 1)
         val timeTextHeight = timeTextHeight()
@@ -398,12 +445,17 @@ class EventTimelineView : View {
         false -> 0f
     }
 
+    private fun topSpacing() = when (showTimeIndicator && isCurrentDay()) {
+        true -> topSpacing + indicatorHeight()
+        false -> topSpacing
+    }
+
     private fun prepareRect(rectF: RectF, i: Int, dtStart: Long, dtStop: Long) {
         val start = if (dtStart < timelineDtStart) timelineDtStart else dtStart
         val stop = if (dtStop > timelineDtStop) timelineDtStop else dtStop
         val startX = normForRange(start) * w
         val stopX = normForRange(stop) * w
-        val startY = (timeTextHeight() + topSpacing +
+        val startY = (timeTextHeight() + topSpacing() +
                 i * (barHeight + titleTextHeight() + barSpacing)).toFloat()
         val stopY = startY + barHeight
 
@@ -451,6 +503,38 @@ class EventTimelineView : View {
             }
         }
     }
+
+    private fun drawTimeIndicator(canvas: Canvas){
+        if (showTimeIndicator) {
+            if (isCurrentDay()) {
+                var localTime = getCurrentTime()
+                var localMillis = localTime.millisOfDay.toFloat()
+                var time = localMillis / unitMillis(DAY)
+                var position = time * measureWidth()
+                var top = h.toFloat()
+
+                canvas.drawLine(position, timeTextHeight(), position, top, timeIndicatorLinePaint)
+
+                var bitmap = createIndicatorBitmap()
+                var indicatorShift = bitmap.width/2
+                canvas.drawBitmap(bitmap, position-indicatorShift, timeTextHeight()
+                        + timeIndicatorDrawableTopMargin, timeIndicatorPaint)
+
+            }
+        }
+    }
+
+    private fun createIndicatorBitmap() = BitmapFactory.decodeResource(resources, R.drawable.current_time_indicator_calendar)
+
+    private fun indicatorHeight() = createIndicatorBitmap().height + 2 * timeIndicatorVerticalSpacing
+
+    private fun isCurrentDay(): Boolean {
+        var localTime = getCurrentTime()
+        return localTime.dayOfYear == DateTime(timelineDtStart).dayOfYear
+    }
+
+    private fun getCurrentTime() = DateTime(System.currentTimeMillis()).toLocalDateTime()
+
 
     private fun recalculateDrawRanges() {
         val unitMillis = unitMillis(timelineUnit)
