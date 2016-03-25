@@ -249,12 +249,6 @@ class EventTimelineView : View {
         set(value) {
             _timeIndicatorColor = value
         }
-    private var _timeIndicatorDrawable: Int = R.drawable.current_time_indicator_calendar
-    private var timeIndicatorDrawable: Int
-        get() = _timeIndicatorDrawable
-        set(value) {
-            _timeIndicatorDrawable = value
-        }
     /*
         Span
      */
@@ -362,9 +356,6 @@ class EventTimelineView : View {
 
                 R.styleable.EventTimelineView_timeIndicatorColor ->
                     _timeIndicatorColor = a.getColor(attr, timeIndicatorColor)
-
-                R.styleable.EventTimelineView_timeIndicatorDrawable ->
-                    _timeIndicatorDrawable = a.getColor(attr, timeIndicatorDrawable)
 
                 R.styleable.EventTimelineView_scaleColor ->
                     scalePaint.color = a.getColor(attr, scalePaint.color)
@@ -533,7 +524,7 @@ class EventTimelineView : View {
         }
     }
 
-    private fun createIndicatorBitmap() = BitmapFactory.decodeResource(resources, timeIndicatorDrawable)
+    private fun createIndicatorBitmap() = BitmapFactory.decodeResource(resources, R.drawable.current_time_indicator_calendar)
 
     private fun indicatorHeight() = createIndicatorBitmap().height + 2 * timeIndicatorVerticalSpacing
 

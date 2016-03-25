@@ -30,7 +30,6 @@
         <attr name="showTimeIndicator" format="boolean|reference" />
         <attr name="timeIndicatorSize" format="dimension|reference" />
         <attr name="timeIndicatorColor" format="color|reference" />
-        <attr name="timeIndicatorDrawable" format="integer" />
         <attr name="timeTextSize" format="dimension|reference" />
         <attr name="titleTextSize" format="dimension|reference" />
         <attr name="timeTextColor" format="color|reference" />

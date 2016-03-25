@@ -55,8 +55,7 @@
                 app:timelineUnit="hour"
                 app:topSpacing="4dp"
                 app:timeIndicatorColor="@color/timeline_time_indicator"
-                app:timeIndicatorSize="14dp"
-                app:timeIndicatorDrawable="@drawable/current_time_indicator_calendar"/>
+                app:timeIndicatorSize="14dp"/>
         </FrameLayout>
     </HorizontalScrollView>
 </LinearLayout>
