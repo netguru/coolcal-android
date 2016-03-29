@@ -2,6 +2,7 @@ package co.netguru.android.coolcal.rendering
 
 import android.content.res.Resources
 import co.netguru.android.coolcal.R
+import co.netguru.android.coolcal.weather.Temperature.celsius
 
 class WeatherDescriptionHelper(val resources: Resources) {
 
@@ -31,8 +32,8 @@ class WeatherDescriptionHelper(val resources: Resources) {
         return defaultMessage()
     }
 
-    private fun getDescriptionForLowPressure(type: String, temperature: Double): String {
-        when (convertToCelsius(temperature)) {
+    private fun getDescriptionForLowPressure(type: String, temperatureKelvin: Double): String {
+        when (temperatureKelvin.celsius()) {
             in MIN_TEMP..FREEZING -> return getFreezingLowDescription(type)
             in FREEZING..COLD -> return getColdLowDescription(type)
             in COLD..MILD -> return getMildLowDescription(type)
@@ -43,8 +44,8 @@ class WeatherDescriptionHelper(val resources: Resources) {
         }
     }
 
-    private fun getDescriptionForHighPressure(type: String, temperature: Double): String {
-        when (convertToCelsius(temperature)) {
+    private fun getDescriptionForHighPressure(type: String, temperatureKelvin: Double): String {
+        when (temperatureKelvin.celsius()) {
             in MIN_TEMP..FREEZING -> return getFreezingHighDescription(type)
             in FREEZING..COLD -> return getColdHighDescription(type)
             in COLD..MILD -> return getMildHighDescription(type)
@@ -53,10 +54,6 @@ class WeatherDescriptionHelper(val resources: Resources) {
             in HEAT..MAX_TEMP -> return getHeatHighDescription(type)
             else -> return  defaultMessage()
         }
-    }
-
-    private fun convertToCelsius(temperature: Double): Double {
-        return temperature - 273.15
     }
 
     private fun getHeatHighDescription(type: String): String {
