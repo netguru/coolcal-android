@@ -15,6 +15,7 @@ import co.netguru.android.coolcal.utils.logError
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import co.netguru.android.coolcal.weather.WeatherResponse
 import co.netguru.android.coolcal.utils.updateNeeded
+import co.netguru.android.coolcal.rendering.WeatherDescriptionHelper
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_weather.*
 import rx.android.schedulers.AndroidSchedulers
@@ -31,6 +32,7 @@ class WeatherFragment : BaseFragment() {
     @Inject lateinit var weatherDecoder: WeatherDecoder
     @Inject lateinit var appPreferences: AppPreferences
     @Inject lateinit var weatherDataFormatter: WeatherDataFormatter
+    @Inject lateinit var weatherDescription: WeatherDescriptionHelper
     @Inject lateinit var picasso: Picasso
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -74,7 +76,7 @@ class WeatherFragment : BaseFragment() {
 
             weatherIconImageView.setImageResource(weatherDecoder.getIconRes(weather.icon))
             weatherDescriptionTextView.text = weather.description
-            weatherMessageTextView.text = "Weather description" // todo
+            weatherMessageTextView.text = weatherDescription.getDescription(weather.icon, data.main?.temperature, data.main?.pressure)
             weatherTemperatureTextView.text = weatherDataFormatter.formatTemperature(data.main?.temperature)
             weatherPressureTextView.text = weatherDataFormatter.formatPressure(data.main?.pressure)
             weatherWindTextView.text = weatherDataFormatter.formatWind(data.wind?.speed, data.wind?.deg)

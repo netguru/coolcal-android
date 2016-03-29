@@ -13,4 +13,7 @@
     <string name="all_day">All day</string>
     <string name="time_placeholder">--:--</string>
     <string name="weather_background_image">Weather background image</string>
+
+    <string name="weather_desc_example">Weather Description</string>
+    <string name="weather_desc_default">Weather Description</string>
 </resources>
