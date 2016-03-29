@@ -1,8 +1,10 @@
 package co.netguru.android.coolcal.rendering
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import co.netguru.android.coolcal.preferences.AppPreferences
+import co.netguru.android.coolcal.rendering.WeatherDescriptionHelper
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
@@ -41,6 +43,10 @@ class RenderModule {
     @Provides
     @Singleton
     fun provideWeatherDecoder(): WeatherDecoder = WeatherDecoder()
+
+    @Provides
+    @Singleton
+    fun provideWeatherDescription(resources: Resources): WeatherDescriptionHelper = WeatherDescriptionHelper(resources)
 
     @Provides
     @Singleton
