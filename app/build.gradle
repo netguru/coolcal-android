@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.autoscout24.gradle.todo'
 
 /**
  * Function to retrieve a secret from environment variable or gradle property
@@ -71,6 +72,11 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+
+    todo {
+        sourceFolder = "app/src/main/kotlin"
+        fileExtensions = ["kt", "groovy"]
     }
 }
 
