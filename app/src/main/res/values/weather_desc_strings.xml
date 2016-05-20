@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--weather condition pattern weather_desc_{condition(clear_sky, etc)}_{d(day)/n(night)}_{level of temperature(1..7)}_{pressure(l(low)/h(high))}-->
+
+    <!--Clear sky-->
+    <string name="weather_desc_clear_sky_d_1_l">Want some hot tea?</string>
+    <string name="weather_desc_clear_sky_d_1_h">Hey, let\'s do something awesome today!</string>
+    <string name="weather_desc_clear_sky_n_1_l">Dreams of summer will keep you warm.</string>
+    <string name="weather_desc_clear_sky_n_1_h">Where\'s your fleece PJs?</string>
+
+    <string name="weather_desc_clear_sky_d_2_l">Not a bad day but could be better.</string>
+    <string name="weather_desc_clear_sky_d_2_h">Got out of bed? You rock!</string>
+    <string name="weather_desc_clear_sky_n_2_l">Look at the stars - this will get your mind off the cold.</string>
+    <string name="weather_desc_clear_sky_n_2_h">Curling up on the couch with a cup of tea sounds like plan!</string>
+
+    <string name="weather_desc_clear_sky_d_3_l">Well, aren\'t you just a ray of beautiful sunshine?</string>
+    <string name="weather_desc_clear_sky_d_3_h">A day without a smile is like a day without sunshine!</string>
+    <string name="weather_desc_clear_sky_n_3_l">Don\'t burn the midnight oil. Get your beauty sleep.</string>
+    <string name="weather_desc_clear_sky_n_3_h">Hello, night owl, how are you?</string>
+
+    <string name="weather_desc_clear_sky_d_4_l">Good morning, world! Your little ray of sunshine has arrived!</string>
+    <string name="weather_desc_clear_sky_d_4_h">Make hay when sun shines!</string>
+    <string name="weather_desc_clear_sky_n_4_l">Forecast for tonight: dark.</string>
+    <string name="weather_desc_clear_sky_n_4_h">So calm, is it the lull before the storm?</string>
+
+    <string name="weather_desc_clear_sky_d_5_l">Why not hang out with friends?</string>
+    <string name="weather_desc_clear_sky_d_5_h">No clouds on the horizon.</string>
+    <string name="weather_desc_clear_sky_n_5_l">Perfect night for a walk!</string>
+    <string name="weather_desc_clear_sky_n_5_h">Your excuse for staying at home tonight is invalid.</string>
+
+    <string name="weather_desc_clear_sky_d_6_l">You deserve a siesta today.</string>
+    <string name="weather_desc_clear_sky_d_6_h">Wherever you go - bring your own sunshine.</string>
+    <string name="weather_desc_clear_sky_n_6_l">Why not hang out with friends?</string>
+    <string name="weather_desc_clear_sky_n_6_h">Have a great holiday. Or dream of it!</string>
+
+    <string name="weather_desc_clear_sky_d_7_l">Don\'t forget your sun hat!</string>
+    <string name="weather_desc_clear_sky_d_7_h">Did you miss hating the summer heat?</string>
+    <string name="weather_desc_clear_sky_n_7_l">Heat index somewhere between OMG and WTF</string>
+    <string name="weather_desc_clear_sky_n_7_h">Oh, no. The weather\'s hotter than you.</string>
+
+    <!--Few clouds-->
+    <string name="weather_desc_few_clouds_d_1_l">Is it too soon to start whining about cold?</string>
+    <string name="weather_desc_few_clouds_d_1_h">Is this Jack Frost nipping at your nose?</string>
+    <string name="weather_desc_few_clouds_n_1_l">You better find someone to cozy up to.</string>
+    <string name="weather_desc_few_clouds_n_1_h">You may have cold hands, but we know there\'s a warm inside!</string>
+
+    <string name="weather_desc_few_clouds_d_2_l">Run. It\'s only cold when you\'re standing still!</string>
+    <string name="weather_desc_few_clouds_d_2_h">Run. It\'s only cold when you\'re standing still!</string>
+    <string name="weather_desc_few_clouds_n_2_l">You better find someone to cozy up to.</string>
+    <string name="weather_desc_few_clouds_n_2_h">You may have cold hands, but we know there\'s a warm inside!</string>
+
+    <string name="weather_desc_few_clouds_d_3_l">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_few_clouds_d_3_h">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_few_clouds_n_3_l">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_few_clouds_n_3_h">You may have cold hands, but we know there\'s a warm inside!</string>
+
+    <string name="weather_desc_few_clouds_d_4_l">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_few_clouds_d_4_h">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_few_clouds_n_4_l">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_few_clouds_n_4_h">Are you on cloud 9 tonight?</string>
+
+    <string name="weather_desc_few_clouds_d_5_l">It\'s as plain as day it\'ll be a lovely day!</string>
+    <string name="weather_desc_few_clouds_d_5_h">It\'s as plain as day it\'ll be a lovely day!</string>
+    <string name="weather_desc_few_clouds_n_5_l">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_few_clouds_n_5_h">Are you on cloud 9 tonight?</string>
+
+    <string name="weather_desc_few_clouds_d_6_l">Heat is no excuse for laziness. Oh, wait…</string>
+    <string name="weather_desc_few_clouds_d_6_h">Heat is no excuse for laziness. Oh, wait…</string>
+    <string name="weather_desc_few_clouds_n_6_l">Heat index somewhere between OMG and WTF</string>
+    <string name="weather_desc_few_clouds_n_6_h">How about a night on the town?</string>
+
+    <string name="weather_desc_few_clouds_d_7_l">Finally! Hot enough to complain about how it is.</string>
+    <string name="weather_desc_few_clouds_d_7_h">Ice-cream season is officially in its peak.</string>
+    <string name="weather_desc_few_clouds_n_7_l">Oh, no. The weather\'s hotter than you.</string>
+    <string name="weather_desc_few_clouds_n_7_h">How about a night on the town?</string>
+
+    <!--Scattered clouds-->
+    <string name="weather_desc_scattered_clouds_d_1_l">Count the shades of grey around you.</string>
+    <string name="weather_desc_scattered_clouds_d_1_h">Go and find your blanket now!</string>
+    <string name="weather_desc_scattered_clouds_n_1_l">Snowed under work? Take a hot bath!</string>
+    <string name="weather_desc_scattered_clouds_n_1_h">Don\'t get cold feet, ask for that raise!</string>
+
+    <string name="weather_desc_scattered_clouds_d_2_l">Think about a cloud. Just float around and be there.</string>
+    <string name="weather_desc_scattered_clouds_d_2_h">Go and find your blanket now!</string>
+    <string name="weather_desc_scattered_clouds_n_2_l">Go and find your blanket now!</string>
+    <string name="weather_desc_scattered_clouds_n_2_h">Go and find your blanket now!</string>
+
+    <string name="weather_desc_scattered_clouds_d_3_l">Don\'t complain about the clouds, they can never hold the sun forever.</string>
+    <string name="weather_desc_scattered_clouds_d_3_h">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_scattered_clouds_n_3_l">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_scattered_clouds_n_3_h">Are you on cloud 9 today?</string>
+
+    <string name="weather_desc_scattered_clouds_d_4_l">Can you see any faces in the clouds today?</string>
+    <string name="weather_desc_scattered_clouds_d_4_h">Are you on cloud 9 today?</string>
+    <string name="weather_desc_scattered_clouds_n_4_l">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_scattered_clouds_n_4_h">How about a night on the town?</string>
+
+    <string name="weather_desc_scattered_clouds_d_5_l">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_scattered_clouds_d_5_h">Don\'t complain about the clouds, they can never hold the sun forever.</string>
+    <string name="weather_desc_scattered_clouds_n_5_l">Don\'t let one cloud obliterate the whole sky!</string>
+    <string name="weather_desc_scattered_clouds_n_5_h">How about a night on the town?</string>
+
+    <string name="weather_desc_scattered_clouds_d_6_l">I miss complaining about cold weather.</string>
+    <string name="weather_desc_scattered_clouds_d_6_h">Ice-cream season is officially in its peak.</string>
+    <string name="weather_desc_scattered_clouds_n_6_l">Heat index somewhere between OMG and WTF</string>
+    <string name="weather_desc_scattered_clouds_n_6_h">Oh, no. The weather\'s hotter than you.</string>
+
+    <string name="weather_desc_scattered_clouds_d_7_l">I miss complaining about cold weather.</string>
+    <string name="weather_desc_scattered_clouds_d_7_h">Ice-cream season is officially in its peak.</string>
+    <string name="weather_desc_scattered_clouds_n_7_l">Heat index somewhere between OMG and WTF</string>
+    <string name="weather_desc_scattered_clouds_n_7_h">Oh, no. The weather\'s hotter than you.</string>
+
+    <!--Broken clouds-->
+    <string name="weather_desc_broken_clouds_d_1_l">Sorry if you\'re freezing your butts off.</string>
+    <string name="weather_desc_broken_clouds_d_1_h">Life would be dull if we had to stare into the cloudless monotony day after day.</string>
+    <string name="weather_desc_broken_clouds_n_1_l">Sorry if you\'re freezing your butts off.</string>
+    <string name="weather_desc_broken_clouds_n_1_h">Life would be dull if we had to stare into the cloudless monotony day after day.</string>
+
+    <string name="weather_desc_broken_clouds_d_2_l">Be a rainbow in someone\'s cloud today.</string>
+    <string name="weather_desc_broken_clouds_d_2_h">No cloud is ever in the same place. Each day is a new masterpiece.</string>
+    <string name="weather_desc_broken_clouds_n_2_l">Never inhale clouds. Your eyes will start raining.</string>
+    <string name="weather_desc_broken_clouds_n_2_h">Dark is the night</string>
+
+    <string name="weather_desc_broken_clouds_d_3_l">Don\'t keep your head in the clouds, go back to Earth!</string>
+    <string name="weather_desc_broken_clouds_d_3_h">Some dark clouds over your head, huh?</string>
+    <string name="weather_desc_broken_clouds_n_3_l">The clouds are always improvising, but the culprit is the wind.</string>
+    <string name="weather_desc_broken_clouds_n_3_h">Dark is the night</string>
+
+    <string name="weather_desc_broken_clouds_d_4_l">A thing to remember: every cloud has a silver lining.</string>
+    <string name="weather_desc_broken_clouds_d_4_h">Did you miss the hoodie weather?</string>
+    <string name="weather_desc_broken_clouds_n_4_l">Some dark clouds over your head, huh?</string>
+    <string name="weather_desc_broken_clouds_n_4_h">Dark is the night</string>
+
+    <string name="weather_desc_broken_clouds_d_5_l">There\'s a big blue sky waiting just behind the clouds!</string>
+    <string name="weather_desc_broken_clouds_d_5_h">Behind the clouds the sun is always shining</string>
+    <string name="weather_desc_broken_clouds_n_5_l">Some dark clouds over your head, huh?</string>
+    <string name="weather_desc_broken_clouds_n_5_h">Your new address: Cloud 9, 7th heaven, over the moon.</string>
+
+    <string name="weather_desc_broken_clouds_d_6_l">No cloud is so dark that the sun can\'t shine through!</string>
+    <string name="weather_desc_broken_clouds_d_6_h">Be your own sun breaking through the clouds.</string>
+    <string name="weather_desc_broken_clouds_n_6_l">Some dark clouds over your head, huh?</string>
+    <string name="weather_desc_broken_clouds_n_6_h">Your new address: Cloud 9, 7th heaven, over the moon.</string>
+
+    <string name="weather_desc_broken_clouds_d_7_l">There\'s a big blue sky waiting just behind the clouds!</string>
+    <string name="weather_desc_broken_clouds_d_7_h">Behind the clouds the sun is always shining</string>
+    <string name="weather_desc_broken_clouds_n_7_l">Some dark clouds over your head, huh?</string>
+    <string name="weather_desc_broken_clouds_n_7_h">Your new address: Cloud 9, 7th heaven, over the moon.</string>
+
+    <!--Shower rain-->
+    <string name="weather_desc_shower_rain_d_1_l">-</string>
+    <string name="weather_desc_shower_rain_d_1_h">-</string>
+    <string name="weather_desc_shower_rain_n_1_l">-</string>
+    <string name="weather_desc_shower_rain_n_1_h">-</string>
+
+    <string name="weather_desc_shower_rain_d_2_l">Have you checked the latest trends in umbrella fashion?</string>
+    <string name="weather_desc_shower_rain_d_2_h">You\'re going to have a face like thunder when you\'ll see how strong is it going to rain today.</string>
+    <string name="weather_desc_shower_rain_n_2_l">Heavens are open not only for you today</string>
+    <string name="weather_desc_shower_rain_n_2_h">Heavens are open not only for you today</string>
+
+    <string name="weather_desc_shower_rain_d_3_l">Rainbows apologise for angry skies.</string>
+    <string name="weather_desc_shower_rain_d_3_h">Catch your cats and dogs because of the rain!</string>
+    <string name="weather_desc_shower_rain_n_3_l">Your new address: Cloud 9, 7th heaven, over the moon.</string>
+    <string name="weather_desc_shower_rain_n_3_h">Heavens are open not only for you today</string>
+
+    <string name="weather_desc_shower_rain_d_4_l">You can\'t have a rainbow without a little rain.</string>
+    <string name="weather_desc_shower_rain_d_4_h">Rain drops are falling on my head… [nuty]</string>
+    <string name="weather_desc_shower_rain_n_4_l">Curling up on the couch with a cup of tea sounds like plan!</string>
+    <string name="weather_desc_shower_rain_n_4_h">Heavens are open not only for you today</string>
+
+    <string name="weather_desc_shower_rain_d_5_l">There\'s a big blue sky waiting just behind the clouds!</string>
+    <string name="weather_desc_shower_rain_d_5_h">Heavens are open not only for you today</string>
+    <string name="weather_desc_shower_rain_n_5_l">Curling up on the couch with a cup of tea sounds like plan!</string>
+    <string name="weather_desc_shower_rain_n_5_h">Heavens are open not only for you today</string>
+
+    <string name="weather_desc_shower_rain_d_6_l">There\'s a big blue sky waiting just behind the clouds!</string>
+    <string name="weather_desc_shower_rain_d_6_h">Have you checked the latest trends in umbrella fashion?</string>
+    <string name="weather_desc_shower_rain_n_6_l">Curling up on the couch with a cup of tea sounds like plan!</string>
+    <string name="weather_desc_shower_rain_n_6_h">Heavens are open not only for you today</string>
+
+    <string name="weather_desc_shower_rain_d_7_l">Have you checked the latest trends in umbrella fashion?</string>
+    <string name="weather_desc_shower_rain_d_7_h">Have you checked the latest trends in umbrella fashion?</string>
+    <string name="weather_desc_shower_rain_n_7_l">Curling up on the couch with a cup of tea sounds like plan!</string>
+    <string name="weather_desc_shower_rain_n_7_h">Heavens are open not only for you today</string>
+
+    <!--Rain-->
+    <string name="weather_desc_rain_d_1_l">-</string>
+    <string name="weather_desc_rain_d_1_h">-</string>
+    <string name="weather_desc_rain_n_1_l">-</string>
+    <string name="weather_desc_rain_n_1_h">-</string>
+
+    <string name="weather_desc_rain_d_2_l">Why does it always rain on me?</string>
+    <string name="weather_desc_rain_d_2_h">Rain drops are falling on my head… [nuty]</string>
+    <string name="weather_desc_rain_n_2_l">You better find someone to cozy up to.</string>
+    <string name="weather_desc_rain_n_2_h">You better find someone to cozy up to.</string>
+
+    <string name="weather_desc_rain_d_3_l">Why does it always rain on me?</string>
+    <string name="weather_desc_rain_d_3_h">Rain drops are falling on my head… [nuty]</string>
+    <string name="weather_desc_rain_n_3_l">You better find someone to cozy up to.</string>
+    <string name="weather_desc_rain_n_3_h">You better find someone to cozy up to.</string>
+
+    <string name="weather_desc_rain_d_4_l">Why does it always rain on me?</string>
+    <string name="weather_desc_rain_d_4_h">Why does it always rain on me?</string>
+    <string name="weather_desc_rain_n_4_l">Curling up on the couch with a cup of tea sounds like plan!</string>
+    <string name="weather_desc_rain_n_4_h">Have you checked the latest trends in umbrella fashion?</string>
+
+    <string name="weather_desc_rain_d_5_l">Why does it always rain on me?</string>
+    <string name="weather_desc_rain_d_5_h">Don\'t rain on my parade!</string>
+    <string name="weather_desc_rain_n_5_l">Curling up on the couch with a cup of tea sounds like plan!</string>
+    <string name="weather_desc_rain_n_5_h">Have you checked the latest trends in umbrella fashion?</string>
+
+    <string name="weather_desc_rain_d_6_l">You can\'t have a rainbow without a little rain.</string>
+    <string name="weather_desc_rain_d_6_h">You can\'t have a rainbow without a little rain.</string>
+    <string name="weather_desc_rain_n_6_l">Why does it always rain on me?</string>
+    <string name="weather_desc_rain_n_6_h">Have you checked the latest trends in umbrella fashion?</string>
+
+    <string name="weather_desc_rain_d_7_l">You can\'t have a rainbow without a little rain.</string>
+    <string name="weather_desc_rain_d_7_h">You can\'t have a rainbow without a little rain.</string>
+    <string name="weather_desc_rain_n_7_l">Why does it always rain on me?</string>
+    <string name="weather_desc_rain_n_7_h">Have you checked the latest trends in umbrella fashion?</string>
+
+    <!--Thunderstorm-->
+    <string name="weather_desc_thunderstorm_d_1_l">Your relationship with the weather today will definitely be very stormy</string>
+    <string name="weather_desc_thunderstorm_d_1_h">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_1_l">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_1_h">Warm pajamas will be a good choice!</string>
+
+    <string name="weather_desc_thunderstorm_d_2_l">Your relationship with the weather today will definitely be very stormy</string>
+    <string name="weather_desc_thunderstorm_d_2_h">Your relationship with the weather today will definitely be very stormy</string>
+    <string name="weather_desc_thunderstorm_n_2_l">Every light is a strobe light if you blink fast enough.</string>
+    <string name="weather_desc_thunderstorm_n_2_h">Warm pajamas will be a good choice!</string>
+
+    <string name="weather_desc_thunderstorm_d_3_l">Your relationship with the weather today will definitely be very stormy</string>
+    <string name="weather_desc_thunderstorm_d_3_h">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_3_l">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_3_h">Your relationship with the weather today will definitely be very stormy</string>
+
+    <string name="weather_desc_thunderstorm_d_4_l">Your relationship with the weather today will definitely be very stormy</string>
+    <string name="weather_desc_thunderstorm_d_4_h">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_4_l">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_4_h">Your relationship with the weather today will definitely be very stormy</string>
+
+    <string name="weather_desc_thunderstorm_d_5_l">Your relationship with the weather today will definitely be very stormy</string>
+    <string name="weather_desc_thunderstorm_d_5_h">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_5_l">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_5_h">Your relationship with the weather today will definitely be very stormy</string>
+
+    <string name="weather_desc_thunderstorm_d_6_l">Your relationship with the weather today will definitely be very stormy</string>
+    <string name="weather_desc_thunderstorm_d_6_h">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_6_l">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_6_h">Your relationship with the weather today will definitely be very stormy</string>
+
+    <string name="weather_desc_thunderstorm_d_7_l">Your relationship with the weather today will definitely be very stormy</string>
+    <string name="weather_desc_thunderstorm_d_7_h">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_7_l">There\'s a high possibility of a storm not only in a teacup</string>
+    <string name="weather_desc_thunderstorm_n_7_h">Your relationship with the weather today will definitely be very stormy</string>
+
+    <!--Snow-->
+    <string name="weather_desc_snow_d_1_l">Winter boots will save the day.</string>
+    <string name="weather_desc_snow_d_1_h">Brace yourselves. Cold weather tweets are coming.</string>
+    <string name="weather_desc_snow_n_1_l">Not only under the weather but also under the blanket.</string>
+    <string name="weather_desc_snow_n_1_h">Yes, there\'s snow outside. Check your Facebook later.</string>
+
+    <string name="weather_desc_snow_d_2_l">Embrace your inner child - build a snowman!</string>
+    <string name="weather_desc_snow_d_2_h">Ski or sledge?</string>
+    <string name="weather_desc_snow_n_2_l">Not only under the weather but also under the blanket.</string>
+    <string name="weather_desc_snow_n_2_h">Yes, there\'s snow outside. Check your Facebook later.</string>
+
+    <string name="weather_desc_snow_d_3_l">Hey, it\'s cuddle season!</string>
+    <string name="weather_desc_snow_d_3_h">Yes, there\'s snow outside. Check your Facebook later.</string>
+    <string name="weather_desc_snow_n_3_l">Yes, there\'s snow outside. Check your Facebook later.</string>
+    <string name="weather_desc_snow_n_3_h">Yes, there\'s snow outside. Check your Facebook later.</string>
+
+    <string name="weather_desc_snow_d_4_l">-</string>
+    <string name="weather_desc_snow_d_4_h">-</string>
+    <string name="weather_desc_snow_n_4_l">-</string>
+    <string name="weather_desc_snow_n_4_h">-</string>
+
+    <string name="weather_desc_snow_d_5_l">-</string>
+    <string name="weather_desc_snow_d_5_h">-</string>
+    <string name="weather_desc_snow_n_5_l">-</string>
+    <string name="weather_desc_snow_n_5_h">-</string>
+
+    <string name="weather_desc_snow_d_6_l">-</string>
+    <string name="weather_desc_snow_d_6_h">-</string>
+    <string name="weather_desc_snow_n_6_l">-</string>
+    <string name="weather_desc_snow_n_6_h">-</string>
+
+    <string name="weather_desc_snow_d_7_l">-</string>
+    <string name="weather_desc_snow_d_7_h">-</string>
+    <string name="weather_desc_snow_n_7_l">-</string>
+    <string name="weather_desc_snow_n_7_h">-</string>
+
+    <!--Mist-->
+    <string name="weather_desc_mist_d_1_l">Feels like Silent Hill, right?</string>
+    <string name="weather_desc_mist_d_1_h">Feels like Silent Hill, right?</string>
+    <string name="weather_desc_mist_n_1_l">No foggiest idea what\'s going on outside.</string>
+    <string name="weather_desc_mist_n_1_h">No foggiest idea what\'s going on outside.</string>
+
+    <string name="weather_desc_mist_d_2_l">No foggiest idea what\'s going on outside.</string>
+    <string name="weather_desc_mist_d_2_h">Very unclear situation.</string>
+    <string name="weather_desc_mist_n_2_l">Very unclear situation.</string>
+    <string name="weather_desc_mist_n_2_h">Very unclear situation.</string>
+
+    <string name="weather_desc_mist_d_3_l">What a day for playing hide-and-seek!</string>
+    <string name="weather_desc_mist_d_3_h">Area vision loading. Please wait.</string>
+    <string name="weather_desc_mist_n_3_l">Area vision loading. Please wait.</string>
+    <string name="weather_desc_mist_n_3_h">Area vision loading. Please wait.</string>
+
+    <string name="weather_desc_mist_d_4_l">No foggiest idea what\'s going on outside.</string>
+    <string name="weather_desc_mist_d_4_h">Worry not! Beyond the fog lies clarity.</string>
+    <string name="weather_desc_mist_n_4_l">Area vision loading. Please wait.</string>
+    <string name="weather_desc_mist_n_4_h">Area vision loading. Please wait.</string>
+
+    <string name="weather_desc_mist_d_5_l">Worry not! Beyond the fog lies clarity.</string>
+    <string name="weather_desc_mist_d_5_h">Worry not! Beyond the fog lies clarity.</string>
+    <string name="weather_desc_mist_n_5_l">What a night for playing hide-and-seek!</string>
+    <string name="weather_desc_mist_n_5_h">What a night for playing hide-and-seek!</string>
+
+    <string name="weather_desc_mist_d_6_l">What a night for playing hide-and-seek!</string>
+    <string name="weather_desc_mist_d_6_h">What a night for playing hide-and-seek!</string>
+    <string name="weather_desc_mist_n_6_l">Very unclear situation.</string>
+    <string name="weather_desc_mist_n_6_h">Very unclear situation.</string>
+
+    <string name="weather_desc_mist_d_7_l">What a night for playing hide-and-seek!</string>
+    <string name="weather_desc_mist_d_7_h">What a night for playing hide-and-seek!</string>
+    <string name="weather_desc_mist_n_7_l">Area vision loading. Please wait.</string>
+    <string name="weather_desc_mist_n_7_h">Area vision loading. Please wait.</string>
+</resources>
