@@ -325,4 +325,301 @@
     <string name="weather_desc_mist_d_7_h">What a night for playing hide-and-seek!</string>
     <string name="weather_desc_mist_n_7_l">Area vision loading. Please wait.</string>
     <string name="weather_desc_mist_n_7_h">Area vision loading. Please wait.</string>
+
+
+    <!--weather desc array pattern weather_desc_array_{level of temperature(1..7)}_{pressure(l(low)/h(high))}-->
+    <string-array name="weather_desc_array_1_l">
+        <item>@string/weather_desc_clear_sky_d_1_l</item>
+        <item>@string/weather_desc_clear_sky_n_1_l</item>
+        <item>@string/weather_desc_few_clouds_d_1_l</item>
+        <item>@string/weather_desc_few_clouds_n_1_l</item>
+        <item>@string/weather_desc_scattered_clouds_d_1_l</item>
+        <item>@string/weather_desc_scattered_clouds_n_1_l</item>
+        <item>@string/weather_desc_broken_clouds_d_1_l</item>
+        <item>@string/weather_desc_broken_clouds_n_1_l</item>
+        <item>@string/weather_desc_shower_rain_d_1_l</item>
+        <item>@string/weather_desc_shower_rain_n_1_l</item>
+        <item>@string/weather_desc_rain_d_1_l</item>
+        <item>@string/weather_desc_rain_n_1_l</item>
+        <item>@string/weather_desc_thunderstorm_d_1_l</item>
+        <item>@string/weather_desc_thunderstorm_n_1_l</item>
+        <item>@string/weather_desc_snow_d_1_l</item>
+        <item>@string/weather_desc_snow_n_1_l</item>
+        <item>@string/weather_desc_mist_d_1_l</item>
+        <item>@string/weather_desc_mist_n_1_l</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_2_l">
+        <item>@string/weather_desc_clear_sky_d_2_l</item>
+        <item>@string/weather_desc_clear_sky_n_2_l</item>
+        <item>@string/weather_desc_few_clouds_d_2_l</item>
+        <item>@string/weather_desc_few_clouds_n_2_l</item>
+        <item>@string/weather_desc_scattered_clouds_d_2_l</item>
+        <item>@string/weather_desc_scattered_clouds_n_2_l</item>
+        <item>@string/weather_desc_broken_clouds_d_2_l</item>
+        <item>@string/weather_desc_broken_clouds_n_2_l</item>
+        <item>@string/weather_desc_shower_rain_d_2_l</item>
+        <item>@string/weather_desc_shower_rain_n_2_l</item>
+        <item>@string/weather_desc_rain_d_2_l</item>
+        <item>@string/weather_desc_rain_n_2_l</item>
+        <item>@string/weather_desc_thunderstorm_d_2_l</item>
+        <item>@string/weather_desc_thunderstorm_n_2_l</item>
+        <item>@string/weather_desc_snow_d_2_l</item>
+        <item>@string/weather_desc_snow_n_2_l</item>
+        <item>@string/weather_desc_mist_d_2_l</item>
+        <item>@string/weather_desc_mist_n_2_l</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_3_l">
+        <item>@string/weather_desc_clear_sky_d_3_l</item>
+        <item>@string/weather_desc_clear_sky_n_3_l</item>
+        <item>@string/weather_desc_few_clouds_d_3_l</item>
+        <item>@string/weather_desc_few_clouds_n_3_l</item>
+        <item>@string/weather_desc_scattered_clouds_d_3_l</item>
+        <item>@string/weather_desc_scattered_clouds_n_3_l</item>
+        <item>@string/weather_desc_broken_clouds_d_3_l</item>
+        <item>@string/weather_desc_broken_clouds_n_3_l</item>
+        <item>@string/weather_desc_shower_rain_d_3_l</item>
+        <item>@string/weather_desc_shower_rain_n_3_l</item>
+        <item>@string/weather_desc_rain_d_3_l</item>
+        <item>@string/weather_desc_rain_n_3_l</item>
+        <item>@string/weather_desc_thunderstorm_d_3_l</item>
+        <item>@string/weather_desc_thunderstorm_n_3_l</item>
+        <item>@string/weather_desc_snow_d_3_l</item>
+        <item>@string/weather_desc_snow_n_3_l</item>
+        <item>@string/weather_desc_mist_d_3_l</item>
+        <item>@string/weather_desc_mist_n_3_l</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_4_l">
+        <item>@string/weather_desc_clear_sky_d_4_l</item>
+        <item>@string/weather_desc_clear_sky_n_4_l</item>
+        <item>@string/weather_desc_few_clouds_d_4_l</item>
+        <item>@string/weather_desc_few_clouds_n_4_l</item>
+        <item>@string/weather_desc_scattered_clouds_d_4_l</item>
+        <item>@string/weather_desc_scattered_clouds_n_4_l</item>
+        <item>@string/weather_desc_broken_clouds_d_4_l</item>
+        <item>@string/weather_desc_broken_clouds_n_4_l</item>
+        <item>@string/weather_desc_shower_rain_d_4_l</item>
+        <item>@string/weather_desc_shower_rain_n_4_l</item>
+        <item>@string/weather_desc_rain_d_4_l</item>
+        <item>@string/weather_desc_rain_n_4_l</item>
+        <item>@string/weather_desc_thunderstorm_d_4_l</item>
+        <item>@string/weather_desc_thunderstorm_n_4_l</item>
+        <item>@string/weather_desc_snow_d_4_l</item>
+        <item>@string/weather_desc_snow_n_4_l</item>
+        <item>@string/weather_desc_mist_d_4_l</item>
+        <item>@string/weather_desc_mist_n_4_l</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_5_l">
+        <item>@string/weather_desc_clear_sky_d_5_l</item>
+        <item>@string/weather_desc_clear_sky_n_5_l</item>
+        <item>@string/weather_desc_few_clouds_d_5_l</item>
+        <item>@string/weather_desc_few_clouds_n_5_l</item>
+        <item>@string/weather_desc_scattered_clouds_d_5_l</item>
+        <item>@string/weather_desc_scattered_clouds_n_5_l</item>
+        <item>@string/weather_desc_broken_clouds_d_5_l</item>
+        <item>@string/weather_desc_broken_clouds_n_5_l</item>
+        <item>@string/weather_desc_shower_rain_d_5_l</item>
+        <item>@string/weather_desc_shower_rain_n_5_l</item>
+        <item>@string/weather_desc_rain_d_5_l</item>
+        <item>@string/weather_desc_rain_n_5_l</item>
+        <item>@string/weather_desc_thunderstorm_d_5_l</item>
+        <item>@string/weather_desc_thunderstorm_n_5_l</item>
+        <item>@string/weather_desc_snow_d_5_l</item>
+        <item>@string/weather_desc_snow_n_5_l</item>
+        <item>@string/weather_desc_mist_d_5_l</item>
+        <item>@string/weather_desc_mist_n_5_l</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_6_l">
+        <item>@string/weather_desc_clear_sky_d_6_l</item>
+        <item>@string/weather_desc_clear_sky_n_6_l</item>
+        <item>@string/weather_desc_few_clouds_d_6_l</item>
+        <item>@string/weather_desc_few_clouds_n_6_l</item>
+        <item>@string/weather_desc_scattered_clouds_d_6_l</item>
+        <item>@string/weather_desc_scattered_clouds_n_6_l</item>
+        <item>@string/weather_desc_broken_clouds_d_6_l</item>
+        <item>@string/weather_desc_broken_clouds_n_6_l</item>
+        <item>@string/weather_desc_shower_rain_d_6_l</item>
+        <item>@string/weather_desc_shower_rain_n_6_l</item>
+        <item>@string/weather_desc_rain_d_6_l</item>
+        <item>@string/weather_desc_rain_n_6_l</item>
+        <item>@string/weather_desc_thunderstorm_d_6_l</item>
+        <item>@string/weather_desc_thunderstorm_n_6_l</item>
+        <item>@string/weather_desc_snow_d_6_l</item>
+        <item>@string/weather_desc_snow_n_6_l</item>
+        <item>@string/weather_desc_mist_d_6_l</item>
+        <item>@string/weather_desc_mist_n_6_l</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_7_l">
+        <item>@string/weather_desc_clear_sky_d_7_l</item>
+        <item>@string/weather_desc_clear_sky_n_7_l</item>
+        <item>@string/weather_desc_few_clouds_d_7_l</item>
+        <item>@string/weather_desc_few_clouds_n_7_l</item>
+        <item>@string/weather_desc_scattered_clouds_d_7_l</item>
+        <item>@string/weather_desc_scattered_clouds_n_7_l</item>
+        <item>@string/weather_desc_broken_clouds_d_7_l</item>
+        <item>@string/weather_desc_broken_clouds_n_7_l</item>
+        <item>@string/weather_desc_shower_rain_d_7_l</item>
+        <item>@string/weather_desc_shower_rain_n_7_l</item>
+        <item>@string/weather_desc_rain_d_7_l</item>
+        <item>@string/weather_desc_rain_n_7_l</item>
+        <item>@string/weather_desc_thunderstorm_d_7_l</item>
+        <item>@string/weather_desc_thunderstorm_n_7_l</item>
+        <item>@string/weather_desc_snow_d_7_l</item>
+        <item>@string/weather_desc_snow_n_7_l</item>
+        <item>@string/weather_desc_mist_d_7_l</item>
+        <item>@string/weather_desc_mist_n_7_l</item>
+    </string-array>
+
+    <!--High pressure-->
+    <string-array name="weather_desc_array_1_h">
+        <item>@string/weather_desc_clear_sky_d_1_h</item>
+        <item>@string/weather_desc_clear_sky_n_1_h</item>
+        <item>@string/weather_desc_few_clouds_d_1_h</item>
+        <item>@string/weather_desc_few_clouds_n_1_h</item>
+        <item>@string/weather_desc_scattered_clouds_d_1_h</item>
+        <item>@string/weather_desc_scattered_clouds_n_1_h</item>
+        <item>@string/weather_desc_broken_clouds_d_1_h</item>
+        <item>@string/weather_desc_broken_clouds_n_1_h</item>
+        <item>@string/weather_desc_shower_rain_d_1_h</item>
+        <item>@string/weather_desc_shower_rain_n_1_h</item>
+        <item>@string/weather_desc_rain_d_1_h</item>
+        <item>@string/weather_desc_rain_n_1_h</item>
+        <item>@string/weather_desc_thunderstorm_d_1_h</item>
+        <item>@string/weather_desc_thunderstorm_n_1_h</item>
+        <item>@string/weather_desc_snow_d_1_h</item>
+        <item>@string/weather_desc_snow_n_1_h</item>
+        <item>@string/weather_desc_mist_d_1_h</item>
+        <item>@string/weather_desc_mist_n_1_h</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_2_h">
+        <item>@string/weather_desc_clear_sky_d_2_h</item>
+        <item>@string/weather_desc_clear_sky_n_2_h</item>
+        <item>@string/weather_desc_few_clouds_d_2_h</item>
+        <item>@string/weather_desc_few_clouds_n_2_h</item>
+        <item>@string/weather_desc_scattered_clouds_d_2_h</item>
+        <item>@string/weather_desc_scattered_clouds_n_2_h</item>
+        <item>@string/weather_desc_broken_clouds_d_2_h</item>
+        <item>@string/weather_desc_broken_clouds_n_2_h</item>
+        <item>@string/weather_desc_shower_rain_d_2_h</item>
+        <item>@string/weather_desc_shower_rain_n_2_h</item>
+        <item>@string/weather_desc_rain_d_2_h</item>
+        <item>@string/weather_desc_rain_n_2_h</item>
+        <item>@string/weather_desc_thunderstorm_d_2_h</item>
+        <item>@string/weather_desc_thunderstorm_n_2_h</item>
+        <item>@string/weather_desc_snow_d_2_h</item>
+        <item>@string/weather_desc_snow_n_2_h</item>
+        <item>@string/weather_desc_mist_d_2_h</item>
+        <item>@string/weather_desc_mist_n_2_h</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_3_h">
+        <item>@string/weather_desc_clear_sky_d_3_h</item>
+        <item>@string/weather_desc_clear_sky_n_3_h</item>
+        <item>@string/weather_desc_few_clouds_d_3_h</item>
+        <item>@string/weather_desc_few_clouds_n_3_h</item>
+        <item>@string/weather_desc_scattered_clouds_d_3_h</item>
+        <item>@string/weather_desc_scattered_clouds_n_3_h</item>
+        <item>@string/weather_desc_broken_clouds_d_3_h</item>
+        <item>@string/weather_desc_broken_clouds_n_3_h</item>
+        <item>@string/weather_desc_shower_rain_d_3_h</item>
+        <item>@string/weather_desc_shower_rain_n_3_h</item>
+        <item>@string/weather_desc_rain_d_3_h</item>
+        <item>@string/weather_desc_rain_n_3_h</item>
+        <item>@string/weather_desc_thunderstorm_d_3_h</item>
+        <item>@string/weather_desc_thunderstorm_n_3_h</item>
+        <item>@string/weather_desc_snow_d_3_h</item>
+        <item>@string/weather_desc_snow_n_3_h</item>
+        <item>@string/weather_desc_mist_d_3_h</item>
+        <item>@string/weather_desc_mist_n_3_h</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_4_h">
+        <item>@string/weather_desc_clear_sky_d_4_h</item>
+        <item>@string/weather_desc_clear_sky_n_4_h</item>
+        <item>@string/weather_desc_few_clouds_d_4_h</item>
+        <item>@string/weather_desc_few_clouds_n_4_h</item>
+        <item>@string/weather_desc_scattered_clouds_d_4_h</item>
+        <item>@string/weather_desc_scattered_clouds_n_4_h</item>
+        <item>@string/weather_desc_broken_clouds_d_4_h</item>
+        <item>@string/weather_desc_broken_clouds_n_4_h</item>
+        <item>@string/weather_desc_shower_rain_d_4_h</item>
+        <item>@string/weather_desc_shower_rain_n_4_h</item>
+        <item>@string/weather_desc_rain_d_4_h</item>
+        <item>@string/weather_desc_rain_n_4_h</item>
+        <item>@string/weather_desc_thunderstorm_d_4_h</item>
+        <item>@string/weather_desc_thunderstorm_n_4_h</item>
+        <item>@string/weather_desc_snow_d_4_h</item>
+        <item>@string/weather_desc_snow_n_4_h</item>
+        <item>@string/weather_desc_mist_d_4_h</item>
+        <item>@string/weather_desc_mist_n_4_h</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_5_h">
+        <item>@string/weather_desc_clear_sky_d_5_h</item>
+        <item>@string/weather_desc_clear_sky_n_5_h</item>
+        <item>@string/weather_desc_few_clouds_d_5_h</item>
+        <item>@string/weather_desc_few_clouds_n_5_h</item>
+        <item>@string/weather_desc_scattered_clouds_d_5_h</item>
+        <item>@string/weather_desc_scattered_clouds_n_5_h</item>
+        <item>@string/weather_desc_broken_clouds_d_5_h</item>
+        <item>@string/weather_desc_broken_clouds_n_5_h</item>
+        <item>@string/weather_desc_shower_rain_d_5_h</item>
+        <item>@string/weather_desc_shower_rain_n_5_h</item>
+        <item>@string/weather_desc_rain_d_5_h</item>
+        <item>@string/weather_desc_rain_n_5_h</item>
+        <item>@string/weather_desc_thunderstorm_d_5_h</item>
+        <item>@string/weather_desc_thunderstorm_n_5_h</item>
+        <item>@string/weather_desc_snow_d_5_h</item>
+        <item>@string/weather_desc_snow_n_5_h</item>
+        <item>@string/weather_desc_mist_d_5_h</item>
+        <item>@string/weather_desc_mist_n_5_h</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_6_h">
+        <item>@string/weather_desc_clear_sky_d_6_h</item>
+        <item>@string/weather_desc_clear_sky_n_6_h</item>
+        <item>@string/weather_desc_few_clouds_d_6_h</item>
+        <item>@string/weather_desc_few_clouds_n_6_h</item>
+        <item>@string/weather_desc_scattered_clouds_d_6_h</item>
+        <item>@string/weather_desc_scattered_clouds_n_6_h</item>
+        <item>@string/weather_desc_broken_clouds_d_6_h</item>
+        <item>@string/weather_desc_broken_clouds_n_6_h</item>
+        <item>@string/weather_desc_shower_rain_d_6_h</item>
+        <item>@string/weather_desc_shower_rain_n_6_h</item>
+        <item>@string/weather_desc_rain_d_6_h</item>
+        <item>@string/weather_desc_rain_n_6_h</item>
+        <item>@string/weather_desc_thunderstorm_d_6_h</item>
+        <item>@string/weather_desc_thunderstorm_n_6_h</item>
+        <item>@string/weather_desc_snow_d_6_h</item>
+        <item>@string/weather_desc_snow_n_6_h</item>
+        <item>@string/weather_desc_mist_d_6_h</item>
+        <item>@string/weather_desc_mist_n_6_h</item>
+    </string-array>
+
+    <string-array name="weather_desc_array_7_h">
+        <item>@string/weather_desc_clear_sky_d_7_h</item>
+        <item>@string/weather_desc_clear_sky_n_7_h</item>
+        <item>@string/weather_desc_few_clouds_d_7_h</item>
+        <item>@string/weather_desc_few_clouds_n_7_h</item>
+        <item>@string/weather_desc_scattered_clouds_d_7_h</item>
+        <item>@string/weather_desc_scattered_clouds_n_7_h</item>
+        <item>@string/weather_desc_broken_clouds_d_7_h</item>
+        <item>@string/weather_desc_broken_clouds_n_7_h</item>
+        <item>@string/weather_desc_shower_rain_d_7_h</item>
+        <item>@string/weather_desc_shower_rain_n_7_h</item>
+        <item>@string/weather_desc_rain_d_7_h</item>
+        <item>@string/weather_desc_rain_n_7_h</item>
+        <item>@string/weather_desc_thunderstorm_d_7_h</item>
+        <item>@string/weather_desc_thunderstorm_n_7_h</item>
+        <item>@string/weather_desc_snow_d_7_h</item>
+        <item>@string/weather_desc_snow_n_7_h</item>
+        <item>@string/weather_desc_mist_d_7_h</item>
+        <item>@string/weather_desc_mist_n_7_h</item>
+    </string-array>
 </resources>
