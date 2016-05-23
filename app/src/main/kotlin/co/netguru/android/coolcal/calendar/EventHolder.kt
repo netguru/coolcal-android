@@ -9,6 +9,7 @@ import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.rendering.TimeFormatter
 import co.netguru.android.coolcal.rendering.WeatherDataFormatter
 import co.netguru.android.coolcal.rendering.WeatherDecoder
+import co.netguru.android.coolcal.rendering.WeatherDescriptionHelper
 import co.netguru.android.coolcal.weather.Forecast
 import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder
 import org.joda.time.DateTime
@@ -24,6 +25,7 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
     @Inject lateinit var weatherDataFormatter: WeatherDataFormatter
     @Inject lateinit var timeFormatter: TimeFormatter
     @Inject lateinit var resources: Resources
+    @Inject lateinit var weatherDescription: WeatherDescriptionHelper
 
     val time_Indicator: View by lazy {
         itemView.findViewById(R.id.event_time_indicator)
@@ -50,16 +52,19 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
     fun bind(obj: Event, forecast: Forecast?) {
         titleTextView.text = obj.title ?: ""
         timeTextView.text = timeFormatter.formatTimeOfDay(obj.begin, obj.isAllDay)
-        messageTextView.text = "not implemented yet" //todo
         durationTextView.text = timeFormatter.formatPeriod(obj.begin, obj.end, obj.isAllDay)
         if (forecast == null || obj.isAllDay) {
             temperatureTextView.visibility = View.GONE
             weatherIconImageView.visibility = View.GONE
         } else {
+            val temperature = forecast.main?.temperature
+            val icon = forecast.weatherList[0].icon
             temperatureTextView.visibility = View.VISIBLE
             weatherIconImageView.visibility = View.VISIBLE
-            temperatureTextView.text = weatherDataFormatter.formatTemperature(forecast.main?.temperature)
-            weatherIconImageView.setImageResource(weatherDecoder.getIconRes(forecast.weatherList[0].icon))
+            temperatureTextView.text = weatherDataFormatter.formatTemperature(temperature)
+            weatherIconImageView.setImageResource(weatherDecoder.getIconRes(icon))
+            messageTextView.text = weatherDescription.getDescription(icon, temperature,
+                    forecast.main?.pressure)
         }
         if (isCurrentEvent(obj.begin, obj.end) && !obj.isAllDay) {
             time_Indicator.visibility = View.VISIBLE

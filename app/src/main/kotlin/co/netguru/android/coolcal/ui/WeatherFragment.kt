@@ -1,7 +1,6 @@
 package co.netguru.android.coolcal.ui
 
 import android.location.Location
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +10,11 @@ import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.preferences.AppPreferences
 import co.netguru.android.coolcal.rendering.WeatherDataFormatter
 import co.netguru.android.coolcal.rendering.WeatherDecoder
+import co.netguru.android.coolcal.rendering.WeatherDescriptionHelper
 import co.netguru.android.coolcal.utils.logError
+import co.netguru.android.coolcal.utils.updateNeeded
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import co.netguru.android.coolcal.weather.WeatherResponse
-import co.netguru.android.coolcal.utils.updateNeeded
-import co.netguru.android.coolcal.rendering.WeatherDescriptionHelper
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_weather.*
 import rx.android.schedulers.AndroidSchedulers
