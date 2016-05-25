@@ -7,9 +7,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import co.netguru.android.coolcal.BuildConfig
 
-fun askForPermission(activity: Activity, permission: String, requestCode: Int) {
+fun askForPermission(activity: Activity, permission: Array<String>, requestCode: Int) {
     ActivityCompat.requestPermissions(activity,
-            arrayOf(permission),
+            permission,
             requestCode)
 }
 
@@ -19,14 +19,24 @@ fun isPermissionGranted(activity: Activity, permission: String): Boolean {
             == PackageManager.PERMISSION_GRANTED)
 }
 
-inline fun <T : Activity> T.givenPermission(permission: String,
+fun arePermissionsGranted(activity: Activity, permissions: Array<String>): Boolean {
+    for (permission in permissions) {
+        if (!isPermissionGranted(activity, permission)) {
+            return false
+        }
+    }
+    return true
+}
+
+inline fun <T : Activity> T.givenPermission(permissions: Array<String>,
                                             requestCode: Int,
                                             crossinline block: () -> Unit): Unit {
     if (BuildConfig.VERSION_CODE >= Build.VERSION_CODES.M) {
-        if (isPermissionGranted(this, permission)){
+        if (arePermissionsGranted(this, permissions)) {
             block()
         } else {
-            askForPermission(this, permission, requestCode)
+            //TODO: Check rationale
+            askForPermission(this, permissions, requestCode)
         }
     } else {
         block()
