@@ -146,15 +146,14 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
         var todayEvents = 0
         var busyTodaySum = 0L
         if (cursor.moveToFirst()) {
-            while (cursor.moveToNext()) {
+            do {
                 val duration = cursor.eventDuration()
                 val isAllDay = cursor.eventIsAllDay()
-
                 if (!isAllDay) {
                     todayEvents += 1
                     busyTodaySum += duration
                 }
-            }
+            } while (cursor.moveToNext())
         }
         cursor.moveToPosition(startPosition) // reset cursor
 
