@@ -35,7 +35,6 @@ inline fun <T : Activity> T.givenPermission(permissions: Array<String>,
         if (arePermissionsGranted(this, permissions)) {
             block()
         } else {
-            //TODO: Check rationale
             askForPermission(this, permissions, requestCode)
         }
     } else {
