@@ -169,6 +169,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     response ->
+                    appPreferences.lastForecast = response
                     adapter.forecastResponse = response
                 }, {
                     error ->
