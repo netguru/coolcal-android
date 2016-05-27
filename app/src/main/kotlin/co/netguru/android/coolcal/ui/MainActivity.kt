@@ -25,8 +25,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
     companion object {
         const val REQUEST_RESOLVE_ERROR = 1000
-        const val PERMISSIONS_REQUEST_FINE_LOCATION: Int = 1
-        const val PERMISSIONS_REQUEST_CALENDAR: Int = 2
+        const val PERMISSIONS_REQUEST_CALENDAR_LOCATION = 1
     }
 
     private var mResolvingError: Boolean = false
@@ -57,7 +56,11 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         supportActionBar?.setDisplayShowTitleEnabled(false)
         slidingLayout.setPanelSlideListener(fragments[1] as SlidingUpPanelLayout.PanelSlideListener)
 
-
+        givenPermission(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_CALENDAR), PERMISSIONS_REQUEST_CALENDAR_LOCATION, {
+            var fragment = fragments[1] as EventsFragment
+            fragment.onCalendarPermissionGranted()
+        })
         checkForUpdates()
     }
 
@@ -121,7 +124,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     override fun onConnected(p0: Bundle?) {
-        givenPermission(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_FINE_LOCATION) {
+        givenPermission(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_CALENDAR_LOCATION) {
             getLocation()
         }
     }
@@ -152,22 +155,37 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            PERMISSIONS_REQUEST_FINE_LOCATION -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    googleApiClient.reconnect()
-                } else {
-                    // TODO consider placeholder for lack of weather??
-                    Snackbar.make(slidingLayout, applicationContext.resources.getString(R.string.localization_access_not_granted), Snackbar.LENGTH_LONG).show()
-                }
+        fun onCalendarPermissionResult(i: Int) {
+            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                var fragment = fragments[1] as EventsFragment
+                fragment.onCalendarPermissionGranted()
+            } else {
+                // TODO action/placeholder on calendar permission denied??
+                Snackbar.make(slidingLayout, applicationContext
+                        .resources.getString(R.string.calendar_access_not_granted), Snackbar.LENGTH_LONG).show()
             }
-            PERMISSIONS_REQUEST_CALENDAR -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    var fragment = fragments[1] as EventsFragment
-                    fragment.onCalendarPermissionGranted()
-                } else {
-                    // TODO action/placeholder on calendar permission denied??
-                    Snackbar.make(slidingLayout, applicationContext.resources.getString(R.string.calendar_access_not_granted), Snackbar.LENGTH_LONG).show()
+        }
+
+        fun onLocationPermissionResult(i: Int) {
+            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                googleApiClient.reconnect()
+            } else {
+                // TODO consider placeholder for lack of weather??
+                Snackbar.make(slidingLayout, applicationContext.resources
+                        .getString(R.string.localization_access_not_granted), Snackbar.LENGTH_LONG).show()
+            }
+        }
+
+        when (requestCode) {
+            PERMISSIONS_REQUEST_CALENDAR_LOCATION -> {
+                if (grantResults.size > 0) {
+                    for (i in 0..permissions.size - 1) {
+                        when (permissions[i]) {
+                            Manifest.permission.ACCESS_FINE_LOCATION -> onLocationPermissionResult(i)
+                            Manifest.permission.READ_CALENDAR -> onCalendarPermissionResult(i)
+                            else -> throw IllegalArgumentException("Not handled permission: ${permissions[i]}")
+                        }
+                    }
                 }
             }
         }

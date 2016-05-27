@@ -1,6 +1,5 @@
 package co.netguru.android.coolcal.ui
 
-import android.Manifest
 import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.database.MergeCursor
@@ -22,7 +21,8 @@ import co.netguru.android.coolcal.calendar.eventIsAllDay
 import co.netguru.android.coolcal.preferences.AppPreferences
 import co.netguru.android.coolcal.rendering.TimeFormatter
 import co.netguru.android.coolcal.rendering.WeatherDataFormatter
-import co.netguru.android.coolcal.utils.*
+import co.netguru.android.coolcal.utils.logError
+import co.netguru.android.coolcal.utils.updateNeeded
 import co.netguru.android.coolcal.weather.OpenWeatherMap
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -61,10 +61,6 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = EventAdapter(context, null, 0)
-
-        activity.givenPermission(Manifest.permission.READ_CALENDAR, MainActivity.PERMISSIONS_REQUEST_CALENDAR) {
-            initEventsLoader(InstancesLoaderCallbacks())
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
