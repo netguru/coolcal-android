@@ -58,6 +58,13 @@ class CalendarTabView : LinearLayout {
         }
     }
 
+    private var _dayClickListener: OnDayClickListener? = null
+    var dayClickListener: OnDayClickListener?
+        get() = _dayClickListener
+        set(value) {
+            _dayClickListener = value
+        }
+
     constructor(context: Context) : this(context, null) {
     }
 
@@ -76,10 +83,20 @@ class CalendarTabView : LinearLayout {
     }
 
     private fun init(context: Context) {
+        //Set click listeners for days views.
+        fun setFramesListeners() {
+            for (i in 0..frames.size - 1) {
+                frames[i].setOnClickListener({
+                    if (dayClickListener != null) {
+                        (dayClickListener as OnDayClickListener).onDayClick(days!![i])
+                    }
+                })
+            }
+        }
         App.component.inject(this)
         inflate(context, R.layout.view_calendar_tabs, this)
         this.orientation = LinearLayout.HORIZONTAL
-
+        setFramesListeners()
         addOnLayoutChangeListener({ v, left, top, right, bottom, oldLeft,
                                     oldTop, oldRight, oldBottom ->
             resetPivots()
@@ -95,6 +112,12 @@ class CalendarTabView : LinearLayout {
         }
     }
 
+    fun areClickableDays(clickable: Boolean) {
+        for (view in frames) {
+            view.isClickable = clickable
+        }
+    }
+
     private fun switchActive(newPos: Int) {
         springs[currentPos].endValue = 0.0
         springs[newPos].endValue = 1.0
@@ -104,11 +127,13 @@ class CalendarTabView : LinearLayout {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         switchActive(currentPos)
+        areClickableDays(false)
         springs.forEach { spring -> spring.addListener(springListener) }
     }
 
     override fun onDetachedFromWindow() {
         springs.forEach { spring -> spring.removeListener(springListener) }
+        dayClickListener = null
         super.onDetachedFromWindow()
     }
 
@@ -128,5 +153,16 @@ class CalendarTabView : LinearLayout {
         }
     }
 
+    /**
+     * Listener to handle click on Day from calendar tab.
+     */
+    interface OnDayClickListener {
+
+        /**
+         * Callback for day click.
+         * @param dayInMillis Clicked day in milliseconds.
+         */
+        fun onDayClick(dayInMillis: Long)
+    }
 
 }

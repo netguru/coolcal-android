@@ -64,6 +64,21 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
         sectionViewHolder!!.bind(section!!)
     }
 
+    /**
+     * Try find section position for passed start day milliseconds.
+     * @param dayMillis Start day milliseconds.
+     * @return Position in listView or null.
+     */
+    fun findSectionPosition(dayMillis: Long): Int? {
+        for ((position, timeLineData) in mSectionMap) {
+            if (timeLineData.dtStart == dayMillis) {
+                return position
+            }
+        }
+
+        return null
+    }
+
     private fun getEventDayStart(cursor: Cursor): Long {
         val dt = cursor.from(CalendarContract.Instances.BEGIN) { getLong(it) }
         return millisAtStartOfDay(dt)
