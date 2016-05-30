@@ -14,10 +14,7 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
-import co.netguru.android.coolcal.calendar.EventAdapter
-import co.netguru.android.coolcal.calendar.InstancesLoader
-import co.netguru.android.coolcal.calendar.eventDuration
-import co.netguru.android.coolcal.calendar.eventIsAllDay
+import co.netguru.android.coolcal.calendar.*
 import co.netguru.android.coolcal.preferences.AppPreferences
 import co.netguru.android.coolcal.rendering.TimeFormatter
 import co.netguru.android.coolcal.rendering.WeatherDataFormatter
@@ -74,6 +71,14 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
         dayOfWeekTextView.text = timeFormatter.formatDayOfWeekShort(todayDt)
         dayOfMonthTextView.text = timeFormatter.formatDayOfMonth(todayDt)
         eventsCalendarTabView.days = (0..5).map { i -> todayDt + i * DAY_MILLIS }
+        eventsCalendarTabView.dayClickListener = object : CalendarTabView.OnDayClickListener {
+            override fun onDayClick(dayInMillis: Long) {
+                var pos = adapter.findSectionPosition(dayInMillis)
+                if (pos != null) {
+                    eventsListView.smoothScrollToPosition(pos)
+                }
+            }
+        }
         eventsListView.adapter = adapter
 
         adapter.forecastResponse = appPreferences.lastForecast
@@ -193,6 +198,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     override fun onPanelExpanded(panel: View?) {
         crossfadePanelAlpha(1f)
+        eventsCalendarTabView.areClickableDays(true)
     }
 
     override fun onPanelSlide(panel: View?, slideOffset: Float) {
@@ -201,6 +207,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     override fun onPanelCollapsed(panel: View?) {
         crossfadePanelAlpha(0f)
+        eventsCalendarTabView.areClickableDays(false)
     }
 
     override fun onPanelHidden(panel: View?) {
