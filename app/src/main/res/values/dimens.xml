@@ -13,7 +13,7 @@
     <dimen name="font_small">12sp</dimen>
 
     <!-- Spacings -->
-    <dimen name="spacing_top" >74dp</dimen>
+    <dimen name="spacing_top">74dp</dimen>
     <dimen name="spacing_huge">40dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_normal">16dp</dimen>
@@ -25,5 +25,7 @@
     <!--Event holder-->
     <dimen name="time_indicator_margin">10dp</dimen>
     <dimen name="time_indicator_margin_top">4dp</dimen>
+
+    <dimen name="events_drop_down_shadow_height">8dp</dimen>
 
 </resources>

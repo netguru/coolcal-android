@@ -20,7 +20,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing_tiny"
+            android:layout_height="@dimen/events_drop_down_shadow_height"
             android:layout_alignParentTop="true"
             android:background="@drawable/vertical_shadow" />
 

@@ -39,6 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:overScrollMode="ifContentScrolls"
+        android:paddingEnd="@dimen/spacing_large"
+        android:paddingStart="@dimen/spacing_large"
         android:scrollbars="none">
 
         <FrameLayout
@@ -52,10 +54,10 @@
                 app:barSpacing="4dp"
                 app:bottomSpacing="8dp"
                 app:markTime="2"
-                app:timelineUnit="hour"
-                app:topSpacing="4dp"
                 app:timeIndicatorColor="@color/timeline_time_indicator"
-                app:timeIndicatorSize="14dp"/>
+                app:timeIndicatorSize="14dp"
+                app:timelineUnit="hour"
+                app:topSpacing="4dp" />
         </FrameLayout>
     </HorizontalScrollView>
 </LinearLayout>
