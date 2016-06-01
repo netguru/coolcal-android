@@ -51,15 +51,15 @@
                 android:id="@+id/eventTimelineView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:barSpacing="@dimen/events_timeline_bar_spacing"
-                app:bottomSpacing="@dimen/events_timeline_bottom_spacing"
-                app:endSpacing="@dimen/events_timeline_end_spacing"
+                app:barSpacing="@dimen/spacing_extra_tiny"
+                app:bottomSpacing="@dimen/spacing_extra_small"
+                app:endSpacing="@dimen/spacing_small"
                 app:markTime="2"
-                app:startSpacing="@dimen/events_timeline_start_spacing"
+                app:startSpacing="@dimen/spacing_small"
                 app:timeIndicatorColor="@color/timeline_time_indicator"
-                app:timeIndicatorSize="@dimen/events_timeline_indicator_size"
+                app:timeIndicatorSize="@dimen/time_indicator_size"
                 app:timelineUnit="hour"
-                app:topSpacing="@dimen/events_timeline_top_spacing" />
+                app:topSpacing="@dimen/spacing_extra_tiny" />
         </FrameLayout>
     </HorizontalScrollView>
 </LinearLayout>
