@@ -7,6 +7,8 @@
         <attr name="barSpacing" format="dimension|reference" />
         <attr name="topSpacing" format="dimension|reference" />
         <attr name="bottomSpacing" format="dimension|reference" />
+        <attr name="startSpacing" format="dimension|reference" />
+        <attr name="endSpacing" format="dimension|reference" />
 
         <!-- Time span attributes -->
         <!-- ex. 20dp, with timeUnit = hour every hour on the timeline will take up 20dp width -->
@@ -14,11 +16,11 @@
         <attr name="markTime" format="float|reference" />
         <attr name="markScale" format="float|reference" />
         <attr name="timelineUnit" format="enum">
-            <enum name="millisecond" value="0"/>
-            <enum name="second" value="1"/>
-            <enum name="minute" value="2"/>
-            <enum name="hour" value="3"/>
-            <enum name="day" value="4"/>
+            <enum name="millisecond" value="0" />
+            <enum name="second" value="1" />
+            <enum name="minute" value="2" />
+            <enum name="hour" value="3" />
+            <enum name="day" value="4" />
         </attr>
 
         <!-- Styling -->

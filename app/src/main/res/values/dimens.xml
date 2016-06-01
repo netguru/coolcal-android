@@ -27,5 +27,11 @@
     <dimen name="time_indicator_margin_top">4dp</dimen>
 
     <dimen name="events_drop_down_shadow_height">8dp</dimen>
+    <dimen name="events_timeline_bar_spacing">4dp</dimen>
+    <dimen name="events_timeline_bottom_spacing">8dp</dimen>
+    <dimen name="events_timeline_end_spacing">10dp</dimen>
+    <dimen name="events_timeline_start_spacing">10dp</dimen>
+    <dimen name="events_timeline_indicator_size">14dp</dimen>
+    <dimen name="events_timeline_top_spacing">4dp</dimen>
 
 </resources>

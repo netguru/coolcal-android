@@ -138,7 +138,13 @@ class EventTimelineView : View {
     /*
         Size
      */
-    private var w = 0
+    private var _w = 0
+    private var w: Int
+        get() = _w
+        set(value) {
+            _w = value - (_startSpacing.toInt() + _endSpacing.toInt())
+        }
+
     private var h = 0
     private val timeIndicatorVerticalSpacing = 2f
     private val timeIndicatorDrawableTopMargin = 8
@@ -175,6 +181,18 @@ class EventTimelineView : View {
         get() = _bottomSpacing
         set(value) {
             _bottomSpacing = value
+        }
+    private var _startSpacing = 0f
+    var startSpacing: Float
+        get() = _startSpacing
+        set(value) {
+            _startSpacing = value
+        }
+    private var _endSpacing = 0f
+    var endSpacing: Float
+        get() = _endSpacing
+        set(value) {
+            _endSpacing = value
         }
 
     /*
@@ -327,6 +345,12 @@ class EventTimelineView : View {
                 R.styleable.EventTimelineView_bottomSpacing ->
                     _bottomSpacing = a.getDimension(attr, bottomSpacing)
 
+                R.styleable.EventTimelineView_startSpacing ->
+                    _startSpacing = a.getDimension(attr, startSpacing)
+
+                R.styleable.EventTimelineView_endSpacing ->
+                    _endSpacing = a.getDimension(attr, endSpacing)
+
                 R.styleable.EventTimelineView_unitWidth ->
                     _unitWidth = a.getDimension(attr, unitWidth)
 
@@ -423,7 +447,7 @@ class EventTimelineView : View {
     }
 
     private fun measureWidth(): Int =
-            ((timeSpan.toFloat() / unitMillis(timelineUnit)) * unitWidth).toInt()
+            (((timeSpan.toFloat() / unitMillis(timelineUnit)) * unitWidth) + startSpacing + endSpacing).toInt()
 
     private fun measureHeight(): Int {
         val size = adapter?.getItemCount() ?: 0
@@ -453,8 +477,8 @@ class EventTimelineView : View {
     private fun prepareRect(rectF: RectF, i: Int, dtStart: Long, dtStop: Long) {
         val start = if (dtStart < timelineDtStart) timelineDtStart else dtStart
         val stop = if (dtStop > timelineDtStop) timelineDtStop else dtStop
-        val startX = normForRange(start) * w
-        val stopX = normForRange(stop) * w
+        val startX = normForRange(start) * w + startSpacing
+        val stopX = normForRange(stop) * w + startSpacing
         val startY = (timeTextHeight() + topSpacing() +
                 i * (barHeight + titleTextHeight() + barSpacing)).toFloat()
         val stopY = startY + barHeight
@@ -488,7 +512,7 @@ class EventTimelineView : View {
     private fun drawScale(canvas: Canvas) {
         if (showScale) {
             for (i in scaleDrawRange!!) {
-                val x = normForRange(i) * w
+                val x = normForRange(i) * w + startSpacing
                 canvas.drawLine(x, timeTextHeight(), x, h.toFloat(), scalePaint)
             }
         }
@@ -497,27 +521,27 @@ class EventTimelineView : View {
     private fun drawTimeText(canvas: Canvas) {
         if (showTime) {
             for (i in timeMarkDrawRange!!) {
-                val x = normForRange(i) * w
+                val x = normForRange(i) * w + startSpacing
                 val timeText = formatTime(timeMillis = i)
                 canvas.drawText(timeText, x, 0f - timeTextPaint.fontMetricsInt.ascent, timeTextPaint)
             }
         }
     }
 
-    private fun drawTimeIndicator(canvas: Canvas){
+    private fun drawTimeIndicator(canvas: Canvas) {
         if (showTimeIndicator) {
             if (isCurrentDay()) {
                 var localTime = getCurrentTime()
                 var localMillis = localTime.millisOfDay.toFloat()
                 var time = localMillis / unitMillis(DAY)
-                var position = time * measureWidth()
+                var position = time * w + startSpacing
                 var top = h.toFloat()
 
                 canvas.drawLine(position, timeTextHeight(), position, top, timeIndicatorLinePaint)
 
                 var bitmap = createIndicatorBitmap()
-                var indicatorShift = bitmap.width/2
-                canvas.drawBitmap(bitmap, position-indicatorShift, timeTextHeight()
+                var indicatorShift = (bitmap.width / 2)
+                canvas.drawBitmap(bitmap, position - indicatorShift, timeTextHeight()
                         + timeIndicatorDrawableTopMargin, timeIndicatorPaint)
 
             }
