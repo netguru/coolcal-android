@@ -34,6 +34,7 @@
             tools:text="21:37" />
 
         <Space
+            android:id="@+id/event_time_space"
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_tiny" />
 
@@ -42,6 +43,7 @@
             style="@style/AppTheme.EventSecondary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minEms="4"
             tools:text="20h 30m" />
     </LinearLayout>
 
@@ -91,6 +93,7 @@
             tools:text="Event title" />
 
         <Space
+            android:id="@+id/event_title_space"
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_tiny" />
 

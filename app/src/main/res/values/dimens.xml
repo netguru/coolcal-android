@@ -13,12 +13,15 @@
     <dimen name="font_small">12sp</dimen>
 
     <!-- Spacings -->
-    <dimen name="spacing_top" >74dp</dimen>
+    <dimen name="spacing_top">74dp</dimen>
     <dimen name="spacing_huge">40dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="spacing_normal">16dp</dimen>
     <dimen name="spacing_small">10dp</dimen>
+    <dimen name="spacing_extra_small">8dp</dimen>
     <dimen name="spacing_tiny">6dp</dimen>
+    <dimen name="spacing_extra_tiny">4dp</dimen>
+    <dimen name="time_indicator_size">14dp</dimen>
 
     <dimen name="icon_size_small">18dp</dimen>
 

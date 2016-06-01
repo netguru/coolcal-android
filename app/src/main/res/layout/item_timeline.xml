@@ -39,6 +39,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:overScrollMode="ifContentScrolls"
+        android:paddingEnd="@dimen/spacing_large"
+        android:paddingStart="@dimen/spacing_large"
         android:scrollbars="none">
 
         <FrameLayout
@@ -49,13 +51,15 @@
                 android:id="@+id/eventTimelineView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:barSpacing="4dp"
-                app:bottomSpacing="8dp"
+                app:barSpacing="@dimen/spacing_extra_tiny"
+                app:bottomSpacing="@dimen/spacing_extra_small"
+                app:endSpacing="@dimen/spacing_small"
                 app:markTime="2"
-                app:timelineUnit="hour"
-                app:topSpacing="4dp"
+                app:startSpacing="@dimen/spacing_small"
                 app:timeIndicatorColor="@color/timeline_time_indicator"
-                app:timeIndicatorSize="14dp"/>
+                app:timeIndicatorSize="@dimen/time_indicator_size"
+                app:timelineUnit="hour"
+                app:topSpacing="@dimen/spacing_extra_tiny" />
         </FrameLayout>
     </HorizontalScrollView>
 </LinearLayout>
