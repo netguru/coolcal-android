@@ -29,6 +29,4 @@
     <dimen name="time_indicator_margin">10dp</dimen>
     <dimen name="time_indicator_margin_top">4dp</dimen>
 
-    <dimen name="drop_down_shadow_height">8dp</dimen>
-
 </resources>
