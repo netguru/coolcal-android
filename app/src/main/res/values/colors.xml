@@ -16,5 +16,6 @@
     <color name="vertical_shadow_start_color">#00000000</color>
     <color name="vertical_shadow_center_color">#0D000000</color>
     <color name="vertical_shadow_end_color">#1A000000</color>
+    <color name="weather_text_drop_shadow_color">#7F000000</color>
 
 </resources>

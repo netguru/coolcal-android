@@ -38,6 +38,7 @@ android {
         targetSdkVersion 23
         versionCode = project.ext.versionCode
         versionName "0.1"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes.each { buildType ->
@@ -92,7 +93,7 @@ dependencies {
     compile 'net.hockeyapp.android:HockeySDK:3.7.0'
 
     // Android support libs
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
 
