@@ -1,5 +1,6 @@
 package co.netguru.android.coolcal.ui
 
+import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -53,12 +54,12 @@ class WeatherFragment : BaseFragment() {
                 openWeatherMap.getWeather(latitude, longitude)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response: WeatherResponse ->
-                    appPreferences.lastWeather = response
-                    renderWeatherData(response)
-                }, { error ->
-                    logError(error.message)
-                })
+                        .subscribe({ response: WeatherResponse ->
+                            appPreferences.lastWeather = response
+                            renderWeatherData(response)
+                        }, { error ->
+                            logError(error.message)
+                        })
     }
 
     private fun renderWeatherData(data: WeatherResponse?) {
@@ -67,6 +68,7 @@ class WeatherFragment : BaseFragment() {
             val weather = data.weather[0]
 
             picasso.load(weatherDecoder.getBackgroundsRes(weather.icon))
+                    .config(Bitmap.Config.ARGB_8888)
                     .fit()
                     .centerCrop()
                     .into(weatherBackground)
