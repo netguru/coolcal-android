@@ -41,14 +41,21 @@
         <item name="android:drawablePadding">@dimen/spacing_tiny</item>
     </style>
 
-    <style name="AppTheme.Weather.SmallText">
+    <style name="AppTheme.Weather.DropShadow.SmallText">
         <item name="android:textColor">@color/pale_blue</item>
-        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:textSize">@dimen/font_big</item>
     </style>
 
-    <style name="AppTheme.Weather.LargeText">
+    <style name="AppTheme.Weather.DropShadow.LargeText">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/font_huge</item>
+    </style>
+
+    <style name="AppTheme.Weather.DropShadow">
+        <item name="android:shadowColor">@color/weather_text_drop_shadow_color</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">3</item>
+        <item name="android:shadowRadius">1.5</item>
     </style>
 
     <style name="AppTheme.Header">

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="bottom"
     sothree:umanoPanelHeight="?attr/actionBarSize"
-    sothree:umanoShadowHeight="4dp">
+    sothree:umanoShadowHeight="@dimen/sliding_up_panel_shadow_height">
 
     <include
         android:id="@+id/content_panel_top"

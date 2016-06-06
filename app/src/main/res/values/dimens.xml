@@ -9,6 +9,7 @@
     <dimen name="font_huge">40sp</dimen>
     <dimen name="font_larger">20sp</dimen>
     <dimen name="font_large">18sp</dimen>
+    <dimen name="font_big">16sp</dimen>
     <dimen name="font_normal">14sp</dimen>
     <dimen name="font_small">12sp</dimen>
 
@@ -28,5 +29,9 @@
     <!--Event holder-->
     <dimen name="time_indicator_margin">10dp</dimen>
     <dimen name="time_indicator_margin_top">4dp</dimen>
+
+    <dimen name="sliding_up_panel_shadow_height">10dp</dimen>
+    <dimen name="handle_width">20dp</dimen>
+    <dimen name="handle_height">4dp</dimen>
 
 </resources>
