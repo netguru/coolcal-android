@@ -55,6 +55,8 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
     private val todayDt: Long = LocalDateTime(System.currentTimeMillis())
             .toLocalDate().toDateTimeAtStartOfDay().millis
 
+    private val cursorLoaderCallback = InstancesLoaderCallbacks()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = EventAdapter(context, null, 0)
@@ -98,7 +100,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
     }
 
     fun onCalendarPermissionGranted() {
-        initEventsLoader(InstancesLoaderCallbacks())
+        initEventsLoader(cursorLoaderCallback)
     }
 
     private fun initEventsLoader(callbacks: LoaderManager.LoaderCallbacks<Cursor>) {
@@ -112,7 +114,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
             data.putLong(InstancesLoader.ARG_DT_FROM, dtStart)
             data.putLong(InstancesLoader.ARG_DT_TO, dtStop)
 
-            activity.supportLoaderManager.initLoader(loader, data, callbacks)
+            activity.supportLoaderManager.restartLoader(loader, data, callbacks)
         }
     }
 
@@ -257,7 +259,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
                     }
                 }
 
-                if (cursors.all { it != null }) {
+                if (cursors.all { it != null && !it.isClosed }) {
                     val mergeCursor = MergeCursor(cursors)
                     adapter.swapCursor(mergeCursor)
                     initScrollListener()
@@ -266,7 +268,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
 
         override fun onLoaderReset(loader: Loader<Cursor>?) {
-            // nic
+            adapter.swapCursor(null)
         }
     }
 }

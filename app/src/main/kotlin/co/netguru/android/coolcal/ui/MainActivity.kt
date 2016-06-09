@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar
 import co.netguru.android.coolcal.BuildConfig
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.utils.givenPermission
+import co.netguru.android.coolcal.utils.ifPermissionsGranted
 import co.netguru.android.coolcal.utils.logDebug
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -58,8 +59,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
         givenPermission(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.READ_CALENDAR), PERMISSIONS_REQUEST_CALENDAR_LOCATION, {
-            var fragment = fragments[1] as EventsFragment
-            fragment.onCalendarPermissionGranted()
         })
         checkForUpdates()
     }
@@ -79,6 +78,10 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     override fun onResume() {
         super.onResume()
         checkForCrashes()
+        ifPermissionsGranted(arrayOf(Manifest.permission.READ_CALENDAR), {
+            val fragment = fragments[1] as EventsFragment
+            fragment.onCalendarPermissionGranted()
+        })
     }
 
     override fun onPause() {
@@ -157,7 +160,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         fun onCalendarPermissionResult(i: Int) {
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                var fragment = fragments[1] as EventsFragment
+                val fragment = fragments[1] as EventsFragment
                 fragment.onCalendarPermissionGranted()
             } else {
                 // TODO action/placeholder on calendar permission denied??

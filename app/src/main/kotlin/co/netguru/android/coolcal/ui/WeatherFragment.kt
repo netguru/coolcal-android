@@ -55,7 +55,9 @@ class WeatherFragment : BaseFragment() {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({ response: WeatherResponse ->
-                            appPreferences.lastWeather = response
+                            if (response.weather.size != 0) {
+                                appPreferences.lastWeather = response
+                            }
                             renderWeatherData(response)
                         }, { error ->
                             logError(error.message)

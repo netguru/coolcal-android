@@ -41,3 +41,10 @@ inline fun <T : Activity> T.givenPermission(permissions: Array<String>,
         block()
     }
 }
+
+inline fun <T : Activity> T.ifPermissionsGranted(permissions: Array<String>
+                                                 , crossinline onPermissionsGranted: () -> Unit) {
+    if (arePermissionsGranted(this, permissions)) {
+        onPermissionsGranted()
+    }
+}
