@@ -296,10 +296,8 @@ class EventTimelineView : View {
 
     inline fun refresh(crossinline block: EventTimelineView.() -> Unit) {
         block()
-        while (!isInLayout) {
-            requestLayout()
-            break
-        }
+        //TODO: Optimize view refreshing.
+        requestLayout()
         invalidate()
     }
 
@@ -531,16 +529,16 @@ class EventTimelineView : View {
     private fun drawTimeIndicator(canvas: Canvas) {
         if (showTimeIndicator) {
             if (isCurrentDay()) {
-                var localTime = getCurrentTime()
-                var localMillis = localTime.millisOfDay.toFloat()
-                var time = localMillis / unitMillis(DAY)
-                var position = time * w + startSpacing
-                var top = h.toFloat()
+                val localTime = getCurrentTime()
+                val localMillis = localTime.millisOfDay.toFloat()
+                val time = localMillis / unitMillis(DAY)
+                val position = time * w + startSpacing
+                val top = h.toFloat()
 
                 canvas.drawLine(position, timeTextHeight(), position, top, timeIndicatorLinePaint)
 
-                var bitmap = createIndicatorBitmap()
-                var indicatorShift = (bitmap.width / 2)
+                val bitmap = createIndicatorBitmap()
+                val indicatorShift = (bitmap.width / 2)
                 canvas.drawBitmap(bitmap, position - indicatorShift, timeTextHeight()
                         + timeIndicatorDrawableTopMargin, timeIndicatorPaint)
 
@@ -553,7 +551,7 @@ class EventTimelineView : View {
     private fun indicatorHeight() = createIndicatorBitmap().height + 2 * timeIndicatorVerticalSpacing
 
     private fun isCurrentDay(): Boolean {
-        var localTime = getCurrentTime()
+        val localTime = getCurrentTime()
         return localTime.dayOfYear == DateTime(timelineDtStart).dayOfYear
     }
 
