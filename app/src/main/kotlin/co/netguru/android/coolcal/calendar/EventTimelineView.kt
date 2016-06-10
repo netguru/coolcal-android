@@ -296,6 +296,7 @@ class EventTimelineView : View {
 
     inline fun refresh(crossinline block: EventTimelineView.() -> Unit) {
         block()
+        //TODO: Optimize view refreshing.
         requestLayout()
         invalidate()
     }
