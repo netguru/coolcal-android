@@ -115,6 +115,9 @@ dependencies {
     // Rebound
     compile 'com.facebook.rebound:rebound:0.3.8'
 
+    //Wava animations
+    compile 'com.github.hujiaweibujidao:wava:1.0.0'
+
     // GSON
     compile 'com.google.code.gson:gson:2.5'
 
