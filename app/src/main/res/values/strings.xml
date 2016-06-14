@@ -15,4 +15,6 @@
     <string name="weather_background_image">Weather background image</string>
 
     <string name="weather_desc_default">Weather Description</string>
+
+    <string name="text_no_events">You don\'t have any events :(</string>
 </resources>
