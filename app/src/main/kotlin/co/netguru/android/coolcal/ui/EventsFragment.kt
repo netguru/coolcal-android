@@ -75,12 +75,13 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
         eventsCalendarTabView.days = (0..5).map { i -> todayDt + i * DAY_MILLIS }
         eventsCalendarTabView.dayClickListener = object : CalendarTabView.OnDayClickListener {
             override fun onDayClick(dayInMillis: Long) {
-                var pos = adapter.findSectionPosition(dayInMillis)
+                val pos = adapter.findSectionPosition(dayInMillis)
                 if (pos != null) {
                     eventsListView.smoothScrollToPosition(pos)
                 }
             }
         }
+        eventsListView.emptyView = eventsListEmptyView
         eventsListView.adapter = adapter
 
         adapter.forecastResponse = appPreferences.lastForecast
