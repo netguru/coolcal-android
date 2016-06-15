@@ -1,5 +1,6 @@
 package co.netguru.android.coolcal.ui
 
+import android.content.Intent
 import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.database.MergeCursor
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.AdapterView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.calendar.*
@@ -83,6 +85,10 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
         eventsListView.emptyView = eventsListEmptyView
         eventsListView.adapter = adapter
+        eventsListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            //TODO: Passed event id to get and display details
+            startActivity(Intent(activity, EventDetailsActivity::class.java))
+        }
 
         adapter.forecastResponse = appPreferences.lastForecast
     }
