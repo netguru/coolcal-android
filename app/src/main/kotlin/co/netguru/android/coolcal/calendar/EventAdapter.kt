@@ -12,7 +12,7 @@ import com.twotoasters.sectioncursoradapter.adapter.SectionCursorAdapter
 import org.joda.time.DateTime
 import java.util.concurrent.TimeUnit
 
-class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
+class EventAdapter(context: Context, cursor: Cursor?, flags: Int, val eventHolderListener: EventHolder.EventHolderListener) :
         SectionCursorAdapter<TimelineData, TimelineHolder, EventHolder>
         (context, cursor, flags, R.layout.item_timeline, R.layout.item_event) {
 
@@ -54,7 +54,7 @@ class EventAdapter(context: Context, cursor: Cursor?, flags: Int) :
     }
 
     override fun createItemViewHolder(cursor: Cursor?, itemView: View?): EventHolder?
-            = EventHolder(itemView!!)
+            = EventHolder(itemView!!, eventHolderListener)
 
     override fun createSectionViewHolder(sectionView: View?, section: TimelineData?): TimelineHolder?
             = TimelineHolder(sectionView!!)

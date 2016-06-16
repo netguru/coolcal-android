@@ -16,10 +16,11 @@ import com.twotoasters.sectioncursoradapter.adapter.viewholder.ViewHolder
 import org.joda.time.DateTime
 import javax.inject.Inject
 
-class EventHolder(itemView: View) : ViewHolder(itemView) {
+class EventHolder(itemView: View, val eventHolderListener: EventHolderListener) : ViewHolder(itemView) {
 
     init {
         App.component.inject(this)
+        itemView.setOnClickListener { eventHolderListener.OnEventCLick(event) }
     }
 
     @Inject lateinit var weatherDecoder: WeatherDecoder
@@ -56,7 +57,10 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
         itemView.findViewById(R.id.event_title_space) as Space
     }
 
+    private lateinit var event: Event
+
     fun bind(obj: Event, forecast: Forecast?) {
+        event = obj
         titleTextView.text = obj.title ?: ""
         timeTextView.text = timeFormatter.formatTimeOfDay(obj.begin, obj.isAllDay)
         durationTextView.text = timeFormatter.formatPeriod(obj.begin, obj.end, obj.isAllDay)
@@ -84,7 +88,7 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
     }
 
     private fun isCurrentEvent(begin: Long, end: Long): Boolean {
-        var currentTime = DateTime(System.currentTimeMillis()).toLocalDateTime()
+        val currentTime = DateTime(System.currentTimeMillis()).toLocalDateTime()
         return DateTime(begin).toLocalDateTime().isBefore(currentTime)
                 && DateTime(end).toLocalDateTime().isAfter(currentTime)
     }
@@ -96,5 +100,13 @@ class EventHolder(itemView: View) : ViewHolder(itemView) {
         messageTextView.visibility = visibility
         eventTimeSpace.visibility = visibility
         eventTitleSpace.visibility = visibility
+    }
+
+    /**
+     * Interface to communicate with parent component.
+     */
+    interface EventHolderListener {
+
+        fun OnEventCLick(clickedEvent: Event)
     }
 }

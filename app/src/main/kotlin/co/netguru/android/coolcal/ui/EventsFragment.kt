@@ -1,6 +1,5 @@
 package co.netguru.android.coolcal.ui
 
-import android.content.Intent
 import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
 import android.database.MergeCursor
@@ -13,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import android.widget.AdapterView
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.calendar.*
@@ -33,7 +31,7 @@ import rx.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
+class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener, EventHolder.EventHolderListener {
 
     companion object {
         // loader id's
@@ -61,7 +59,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = EventAdapter(context, null, 0)
+        adapter = EventAdapter(context, null, 0, this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -85,10 +83,6 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
         }
         eventsListView.emptyView = eventsListEmptyView
         eventsListView.adapter = adapter
-        eventsListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            //TODO: Passed event id to get and display details
-            startActivity(Intent(activity, EventDetailsActivity::class.java))
-        }
 
         adapter.forecastResponse = appPreferences.lastForecast
     }
@@ -108,6 +102,10 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     fun onCalendarPermissionGranted() {
         initEventsLoader(cursorLoaderCallback)
+    }
+
+    override fun OnEventCLick(clickedEvent: Event) {
+        EventDetailsActivity.newIntent(activity, clickedEvent)
     }
 
     private fun initEventsLoader(callbacks: LoaderManager.LoaderCallbacks<Cursor>) {
