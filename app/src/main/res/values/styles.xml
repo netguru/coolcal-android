@@ -84,4 +84,26 @@
     <style name="AppTheme.Header.SmallText">
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
+
+    <style name="AppTheme.EventDetailLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">@dimen/margin_large</item>
+    </style>
+
+    <style name="AppTheme.EventDetailIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginEnd">@dimen/activity_vertical_margin</item>
+    </style>
+
+    <style name="AppTheme.EventDetailText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/font_big</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+    </style>
 </resources>

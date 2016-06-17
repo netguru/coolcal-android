@@ -22,5 +22,10 @@ class EventDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_details)
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.eventDetailsContainer, EventDetailsFragment(), EventDetailsFragment.TAG)
+                    .commit()
+        }
     }
 }
