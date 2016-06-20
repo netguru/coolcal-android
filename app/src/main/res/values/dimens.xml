@@ -38,4 +38,5 @@
     <dimen name="min_height_toolbar_twice">112dp</dimen>
     <dimen name="margin_large">24dp</dimen>
 
+    <item name="vector_viewport" format="float" type="dimen">24</item>
 </resources>

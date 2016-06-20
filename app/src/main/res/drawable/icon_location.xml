@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:width="@dimen/icon_size_normal"
     android:height="@dimen/icon_size_normal"
-    android:viewportHeight="24"
-    android:viewportWidth="24"
+    android:viewportHeight="@dimen/vector_viewport"
+    android:viewportWidth="@dimen/vector_viewport"
     tools:ignore="VectorRaster">
     <path
         android:fillColor="@color/current_event_background"
