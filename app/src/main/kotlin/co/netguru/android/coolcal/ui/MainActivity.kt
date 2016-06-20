@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                 Manifest.permission.READ_CALENDAR), PERMISSIONS_REQUEST_CALENDAR_LOCATION, {
         })
         checkForUpdates()
+        checkForCrashes()
     }
 
     override fun onStart() {
@@ -77,7 +78,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
     override fun onResume() {
         super.onResume()
-        checkForCrashes()
         ifPermissionsGranted(arrayOf(Manifest.permission.READ_CALENDAR), {
             val fragment = fragments[1] as EventsFragment
             fragment.onCalendarPermissionGranted()

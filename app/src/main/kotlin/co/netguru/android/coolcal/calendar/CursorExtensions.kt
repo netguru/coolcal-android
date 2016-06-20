@@ -17,4 +17,7 @@ fun Cursor.eventIsAllDay() = from(ALL_DAY) { getInt(it) } != 0
 fun Cursor.eventTitle() = from(TITLE) { getString(it) }
 fun Cursor.eventDisplayColor() = from(DISPLAY_COLOR) { getInt(it) }
 fun Cursor.eventDuration() = eventEnd() - eventBegin()
+fun Cursor.eventOwner() = from(OWNER_ACCOUNT) { getString(it) }
+fun Cursor.eventLocation() = from(EVENT_LOCATION) { getString(it) }
+fun Cursor.eventDescription() = from(DESCRIPTION) { getString(it) }
 

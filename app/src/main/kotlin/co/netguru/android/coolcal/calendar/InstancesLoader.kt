@@ -52,6 +52,9 @@ object InstancesLoader {
             CalendarContract.Instances.CALENDAR_DISPLAY_NAME,
             CalendarContract.Instances.CALENDAR_ID,
             CalendarContract.Instances.DURATION,
-            CalendarContract.Instances.ALL_DAY)
+            CalendarContract.Instances.ALL_DAY,
+            CalendarContract.Instances.OWNER_ACCOUNT,
+            CalendarContract.Instances.EVENT_LOCATION,
+            CalendarContract.Instances.DESCRIPTION)
 }
 

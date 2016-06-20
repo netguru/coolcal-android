@@ -7,6 +7,7 @@
 
     <!-- Font sizes -->
     <dimen name="font_huge">40sp</dimen>
+    <dimen name="font_extra_large">24sp</dimen>
     <dimen name="font_larger">20sp</dimen>
     <dimen name="font_large">18sp</dimen>
     <dimen name="font_big">16sp</dimen>
@@ -25,6 +26,7 @@
     <dimen name="time_indicator_size">14dp</dimen>
 
     <dimen name="icon_size_small">18dp</dimen>
+    <dimen name="icon_size_normal">24dp</dimen>
 
     <!--Event holder-->
     <dimen name="time_indicator_margin">10dp</dimen>
@@ -33,5 +35,8 @@
     <dimen name="sliding_up_panel_shadow_height">10dp</dimen>
     <dimen name="handle_width">20dp</dimen>
     <dimen name="handle_height">4dp</dimen>
+    <dimen name="min_height_toolbar_twice">112dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
 
+    <item name="vector_viewport" format="float" type="dimen">24</item>
 </resources>

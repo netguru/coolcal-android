@@ -31,7 +31,7 @@ import rx.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
+class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener, EventHolder.EventHolderListener {
 
     companion object {
         // loader id's
@@ -59,7 +59,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = EventAdapter(context, null, 0)
+        adapter = EventAdapter(context, null, 0, this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -102,6 +102,10 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener {
 
     fun onCalendarPermissionGranted() {
         initEventsLoader(cursorLoaderCallback)
+    }
+
+    override fun OnEventCLick(clickedEvent: Event) {
+        EventDetailsActivity.newIntent(activity, clickedEvent)
     }
 
     private fun initEventsLoader(callbacks: LoaderManager.LoaderCallbacks<Cursor>) {

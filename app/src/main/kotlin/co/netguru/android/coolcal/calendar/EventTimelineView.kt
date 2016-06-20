@@ -112,7 +112,7 @@ class EventTimelineView : View {
     private val timeTextPaint: TextPaint by lazy {
         val paint = TextPaint()
         paint.color = Color.GRAY
-        paint.isElegantTextHeight = true
+        setElegantTextHeight(paint)
         paint.isAntiAlias = true
         paint.textSize = 20f
         paint.textAlign = Paint.Align.CENTER
@@ -122,11 +122,17 @@ class EventTimelineView : View {
     private val titleTextPaint: TextPaint by lazy {
         val paint = TextPaint()
         paint.color = Color.GRAY
-        paint.isElegantTextHeight = true
+        setElegantTextHeight(paint)
         paint.isAntiAlias = true
         paint.textSize = 20f
         paint.textAlign = Paint.Align.LEFT
         paint
+    }
+
+    private fun setElegantTextHeight(paint: TextPaint) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            paint.isElegantTextHeight = true
+        }
     }
 
     /*
