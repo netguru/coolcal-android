@@ -50,4 +50,13 @@ interface TimeFormatter {
      * @param isAllDay is the event all-day. default is false
      */
     open fun formatPeriod(timeMillis: Long?, isAllDay: Boolean = false): String?
+
+    /**
+     * Format provided dates to a long date format, e.g. 20.06.2016, 8:00 - 9:00, 20.06.2016, All day,
+     * 20.06.2016, 8:00 - 21.06.2016, 9:00.
+     * @param dtStart First date in millis.
+     * @param dtEnd Second date in millis.
+     * @param isAllDay Value determinate if event is all day.
+     */
+    open fun formatLongDate(dtStart: Long?, dtEnd: Long?, isAllDay: Boolean = false): String?
 }

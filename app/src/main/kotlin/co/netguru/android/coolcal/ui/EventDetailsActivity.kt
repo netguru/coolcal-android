@@ -22,9 +22,15 @@ class EventDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_details)
+        val containsEvent = intent.extras.containsKey(EVENT_DETAILS_BUNDLE)
+        if (!containsEvent) {
+            throw IllegalArgumentException("Event details should contain event object")
+        }
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.eventDetailsContainer, EventDetailsFragment(), EventDetailsFragment.TAG)
+                    .replace(R.id.eventDetailsContainer
+                            , EventDetailsFragment.newInstance(intent.extras.getParcelable(EVENT_DETAILS_BUNDLE))
+                            , EventDetailsFragment.TAG)
                     .commit()
         }
     }

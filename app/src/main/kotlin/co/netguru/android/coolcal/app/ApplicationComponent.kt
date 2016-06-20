@@ -7,6 +7,7 @@ import co.netguru.android.coolcal.calendar.TimelineHolder
 import co.netguru.android.coolcal.preferences.PreferencesModule
 import co.netguru.android.coolcal.rendering.RenderModule
 import co.netguru.android.coolcal.rest.RestModule
+import co.netguru.android.coolcal.ui.EventDetailsFragment
 import co.netguru.android.coolcal.ui.EventsFragment
 import co.netguru.android.coolcal.ui.WeatherFragment
 import dagger.Component
@@ -26,5 +27,6 @@ interface ApplicationComponent {
     fun inject(target: EventHolder)
     fun inject(target: TimelineHolder)
     fun inject(target: CalendarTabView) // todo: make no @inject in view
-    fun inject(target: EventTimelineView) // todo: jw
+    fun inject(target: EventTimelineView)// todo: jw
+    fun inject(target: EventDetailsFragment)
 }
