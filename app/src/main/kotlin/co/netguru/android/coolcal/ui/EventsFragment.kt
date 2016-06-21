@@ -2,7 +2,6 @@ package co.netguru.android.coolcal.ui
 
 import android.database.Cursor
 import android.database.CursorIndexOutOfBoundsException
-import android.database.MergeCursor
 import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.LoaderManager
@@ -34,8 +33,12 @@ import javax.inject.Inject
 class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener, EventHolder.EventHolderListener {
 
     companion object {
+
+        private val EVENTS_LOADER = 0
+        private val TODAY_EVENTS_LOADER = 1
+
         // loader id's
-        val loaders = intArrayOf(0, 1, 2, 3, 4)
+        val loaders = intArrayOf(EVENTS_LOADER, TODAY_EVENTS_LOADER)
 
         private val DAY_MILLIS = TimeUnit.DAYS.toMillis(1)
     }
@@ -93,13 +96,6 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener, 
         (activity as MainActivity).slidingLayout.setDragView(eventsCalendarTabView)
     }
 
-    override fun onDestroy() {
-        loaders.forEach { loader ->
-            activity.supportLoaderManager.destroyLoader(loader)
-        }
-        super.onDestroy()
-    }
-
     fun onCalendarPermissionGranted() {
         initEventsLoader(cursorLoaderCallback)
     }
@@ -109,18 +105,30 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener, 
     }
 
     private fun initEventsLoader(callbacks: LoaderManager.LoaderCallbacks<Cursor>) {
-        // create separate loader for each consecutive 5 days (--> MergeCursor)
+        loaders.forEach {
+            when (it) {
+                EVENTS_LOADER -> {
+                    restartEventsLoader(EVENTS_LOADER, 0, 5, callbacks)
+                }
+                TODAY_EVENTS_LOADER -> {
+                    restartEventsLoader(TODAY_EVENTS_LOADER, 0, 1, callbacks)
+                }
+                else -> {
+                    throw IllegalArgumentException("Unknown loader id: $it")
+                }
 
-        loaders.forEachIndexed { i, loader ->
-            val dtStart = todayDt + i * DAY_MILLIS
-            val dtStop = todayDt + (i + 1) * DAY_MILLIS
-
-            val data = Bundle()
-            data.putLong(InstancesLoader.ARG_DT_FROM, dtStart)
-            data.putLong(InstancesLoader.ARG_DT_TO, dtStop)
-
-            activity.supportLoaderManager.restartLoader(loader, data, callbacks)
+            }
         }
+    }
+
+    private fun restartEventsLoader(loaderId: Int, dtStartNumber: Int, dtEndNumber: Int, callbacks: LoaderManager.LoaderCallbacks<Cursor>) {
+        val dtStart = todayDt + dtStartNumber * DAY_MILLIS
+        val dtStop = todayDt + dtEndNumber * DAY_MILLIS
+        val data = Bundle()
+        data.putLong(InstancesLoader.ARG_DT_FROM, dtStart)
+        data.putLong(InstancesLoader.ARG_DT_TO, dtStop)
+
+        activity.supportLoaderManager.restartLoader(loaderId, data, callbacks)
     }
 
     private fun switchActiveDay(firstVisibleItem: Int) {
@@ -154,7 +162,6 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener, 
     }
 
     private fun initTodayStatistics(cursor: Cursor) {
-        val startPosition = cursor.position
         var todayEvents = 0
         var busyTodaySum = 0L
         if (cursor.moveToFirst()) {
@@ -167,7 +174,7 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener, 
                 }
             } while (cursor.moveToNext())
         }
-        cursor.moveToPosition(startPosition) // reset cursor
+        cursor.close()
 
         numberOfEventsTextView.text = "$todayEvents"
         busyForTextView.text = timeFormatter.formatPeriod(busyTodaySum)
@@ -235,8 +242,6 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener, 
     inner class InstancesLoaderCallbacks :
             LoaderManager.LoaderCallbacks<Cursor> {
 
-        val cursors = arrayOfNulls<Cursor>(5)
-
         override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor>? {
             when (id) {
                 in loaders -> {
@@ -254,20 +259,16 @@ class EventsFragment : BaseFragment(), SlidingUpPanelLayout.PanelSlideListener, 
             synchronized(this) {
                 val id = loader?.id!!
                 when (id) {
-                    in loaders -> {
-                        cursors[id] = cursor
-
-                        if (id == 0) initTodayStatistics(cursor!!)
+                    EVENTS_LOADER -> {
+                        adapter.swapCursor(cursor)
+                        initScrollListener()
+                    }
+                    TODAY_EVENTS_LOADER -> {
+                        initTodayStatistics(cursor!!)
                     }
                     else -> {
-                        /* null */
+                        throw IllegalArgumentException("Unknown loader id : $id")
                     }
-                }
-
-                if (cursors.all { it != null && !it.isClosed }) {
-                    val mergeCursor = MergeCursor(cursors)
-                    adapter.swapCursor(mergeCursor)
-                    initScrollListener()
                 }
             }
         }
