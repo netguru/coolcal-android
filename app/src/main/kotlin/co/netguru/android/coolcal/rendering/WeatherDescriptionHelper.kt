@@ -10,20 +10,13 @@ class WeatherDescriptionHelper(val resources: Resources) {
 
         const val HIGH_PRESSURE = 1013f
         const val EXTREME_COLD = Int.MIN_VALUE
-        const val EXTREME_COLD_END = -5
         const val FREEZING = -4
-        const val FREEZING_END = 0
         const val COLD = 1
-        const val COLD_END = 8
         const val MILD = 9
-        const val MILD_END = 16
         const val WARM = 17
-        const val WARM_END = 24
         const val HOT = 25
-        const val HOT_END = 32
         const val HEAT = 33
         const val HEAT_END = Int.MAX_VALUE
-
     }
 
     fun getDescription(type: String?, temperature: Double?, pressure: Double?): String {
@@ -39,28 +32,44 @@ class WeatherDescriptionHelper(val resources: Resources) {
     }
 
     private fun getDescriptionForLowPressure(type: String, temperatureKelvin: Double): String {
-        when (temperatureKelvin.celsius()) {
-            in EXTREME_COLD..EXTREME_COLD_END -> return getExtremeColdLowDescription(type)
-            in FREEZING..FREEZING_END -> return getFreezingLowDescription(type)
-            in COLD..COLD_END -> return getColdLowDescription(type)
-            in MILD..MILD_END -> return getMildLowDescription(type)
-            in WARM..WARM_END -> return getWarmLowDescription(type)
-            in HOT..HOT_END -> return getHotLowDescription(type)
-            in HEAT..HEAT_END -> return getHeatLowDescription(type)
-            else -> return defaultMessage()
+        val tempCelsius = temperatureKelvin.celsius()
+        if (tempCelsius >= EXTREME_COLD && tempCelsius < FREEZING) {
+            return getExtremeColdLowDescription(type)
+        } else if (tempCelsius >= FREEZING && tempCelsius < COLD) {
+            return getFreezingLowDescription(type)
+        } else if (tempCelsius >= COLD && tempCelsius < MILD) {
+            return getColdLowDescription(type)
+        } else if (tempCelsius >= MILD && tempCelsius < WARM) {
+            return getMildLowDescription(type)
+        } else if (tempCelsius >= WARM && tempCelsius < HOT) {
+            return getWarmLowDescription(type)
+        } else if (tempCelsius >= HOT && tempCelsius < HEAT) {
+            return getHotLowDescription(type)
+        } else if (tempCelsius >= HEAT && tempCelsius <= HEAT_END) {
+            return getHeatLowDescription(type)
+        } else {
+            return defaultMessage()
         }
     }
 
     private fun getDescriptionForHighPressure(type: String, temperatureKelvin: Double): String {
-        when (temperatureKelvin.celsius()) {
-            in EXTREME_COLD..EXTREME_COLD_END -> return getExtremeColdHighDescription(type)
-            in FREEZING..FREEZING_END -> return getFreezingHighDescription(type)
-            in COLD..COLD_END -> return getColdHighDescription(type)
-            in MILD..MILD_END -> return getMildHighDescription(type)
-            in WARM..WARM_END -> return getWarmHighDescription(type)
-            in HOT..HOT_END -> return getHotHighDescription(type)
-            in HEAT..HEAT_END -> return getHeatHighDescription(type)
-            else -> return defaultMessage()
+        val tempCelsius = temperatureKelvin.celsius()
+        if (tempCelsius >= EXTREME_COLD && tempCelsius < FREEZING) {
+            return getExtremeColdHighDescription(type)
+        } else if (tempCelsius >= FREEZING && tempCelsius < COLD) {
+            return getFreezingHighDescription(type)
+        } else if (tempCelsius >= COLD && tempCelsius < MILD) {
+            return getColdHighDescription(type)
+        } else if (tempCelsius >= MILD && tempCelsius < WARM) {
+            return getMildHighDescription(type)
+        } else if (tempCelsius >= WARM && tempCelsius < HOT) {
+            return getWarmHighDescription(type)
+        } else if (tempCelsius >= HOT && tempCelsius < HEAT) {
+            return getHotHighDescription(type)
+        } else if (tempCelsius >= HEAT && tempCelsius <= HEAT_END) {
+            return getHeatHighDescription(type)
+        } else {
+            return defaultMessage()
         }
     }
 
