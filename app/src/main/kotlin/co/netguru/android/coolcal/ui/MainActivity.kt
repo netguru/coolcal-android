@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
 import co.netguru.android.coolcal.BuildConfig
 import co.netguru.android.coolcal.R
 import co.netguru.android.coolcal.utils.givenPermission
@@ -17,6 +19,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import de.psdev.licensesdialog.LicensesDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import net.hockeyapp.android.CrashManager
 import net.hockeyapp.android.UpdateManager
@@ -51,7 +54,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         setContentView(R.layout.activity_main)
 
         val toolbar = findViewById(R.id.toolbar) as Toolbar
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp)
+        toolbar.showOverflowMenu()
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -87,6 +90,28 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     override fun onPause() {
         super.onPause()
         UpdateManager.unregister()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_licenses -> {
+                displayLicenses()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun displayLicenses() {
+        LicensesDialog.Builder(this)
+                .setNotices(R.raw.notices)
+                .build()
+                .showAppCompat();
     }
 
     private fun checkForCrashes() {

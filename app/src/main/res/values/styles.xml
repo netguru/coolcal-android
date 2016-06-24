@@ -106,4 +106,8 @@
         <item name="android:textColor">@color/text_black</item>
         <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
     </style>
+
+    <style name="ToolbarTheme" parent="AppTheme.NoActionBar">
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
 </resources>
