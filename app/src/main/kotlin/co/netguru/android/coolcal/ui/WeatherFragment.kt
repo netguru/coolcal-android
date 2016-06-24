@@ -3,6 +3,7 @@ package co.netguru.android.coolcal.ui
 import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -137,7 +138,17 @@ class WeatherFragment : BaseFragment(), SpringListener {
                             renderWeatherData(response)
                         }, { error ->
                             logError(error.message)
+                            showErrorDialog()
                         })
+    }
+
+    private fun showErrorDialog() {
+        val builder = AlertDialog.Builder(activity);
+        builder.setMessage(R.string.weather_request_error)
+                .setNegativeButton(android.R.string.ok) { dialog, which -> };
+        val dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     private fun renderWeatherData(data: WeatherResponse?) {
