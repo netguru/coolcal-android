@@ -17,4 +17,6 @@
     <string name="weather_desc_default">Weather Description</string>
 
     <string name="text_no_events">You don\'t have any events :(</string>
+
+    <string name="action_licenses">Licenses</string>
 </resources>

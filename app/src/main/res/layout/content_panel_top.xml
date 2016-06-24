@@ -8,17 +8,18 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
-
     <fragment
         android:id="@+id/weather_fragment"
         android:name="co.netguru.android.coolcal.ui.WeatherFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_weather" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:theme="@style/ToolbarTheme" />
 
 </android.support.design.widget.CoordinatorLayout>
