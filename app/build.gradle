@@ -18,8 +18,10 @@ def secret(String envVarName, String propertyName) {
     }
 }
 
-def hockeyAppAppIdProp = secret("HOCKEYAPP_APP_ID", "HockeyAppAppId")
+def hockeyAppIdField = 'HOCKEY_APP_ID'
 
+def stagingHockeyAppAppIdProp = secret("HOCKEYAPP_APP_ID_STAGING", "HockeyAppAppIdStaging")
+def productionHockeyAppAppIdProp = secret("HOCKEYAPP_APP_ID_PRODUCTION", "HockeyAppAppIdProduction")
 def openWeatherMapApiKeyProp = secret("OPENWEATHERMAP_API_KEY", "OpenWeatherMapApiKey")
 
 project.ext {
@@ -42,7 +44,6 @@ android {
     }
 
     buildTypes.each { buildType ->
-        buildType.buildConfigField 'String', 'HOCKEYAPP_APP_ID', hockeyAppAppIdProp
         buildType.buildConfigField 'String', 'OPENWEATHERMAP_API_KEY', openWeatherMapApiKeyProp
     }
 
@@ -63,14 +64,18 @@ android {
     productFlavors {
         staging {
             applicationId "co.netguru.android.coolcal.staging"
+            buildConfigField 'String', hockeyAppIdField, stagingHockeyAppAppIdProp
         }
 
         production {
             applicationId "co.netguru.android.coolcal"
+            buildConfigField 'String', hockeyAppIdField, productionHockeyAppAppIdProp
         }
     }
 
     sourceSets {
+        debug.java.srcDirs += 'src/debug/kotlin'
+        release.java.srcDirs += 'src/release/kotlin'
         main.java.srcDirs += 'src/main/kotlin'
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
@@ -136,9 +141,6 @@ dependencies {
 
     // Picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
-
-    // Anko SQLite
-    compile 'org.jetbrains.anko:anko-sqlite:0.8.2'
 
     // test
     testCompile "org.robolectric:robolectric:3.0"
