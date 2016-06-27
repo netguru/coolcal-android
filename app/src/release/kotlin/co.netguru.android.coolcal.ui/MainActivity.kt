@@ -70,19 +70,19 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         googleApiClient.connect()
     }
 
-    override fun onStop() {
-        super.onStop()
-        if (googleApiClient.isConnected) {
-            googleApiClient.disconnect()
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         ifPermissionsGranted(arrayOf(Manifest.permission.READ_CALENDAR), {
             val fragment = fragments[1] as EventsFragment
             fragment.onCalendarPermissionGranted()
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (googleApiClient.isConnected) {
+            googleApiClient.disconnect()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
