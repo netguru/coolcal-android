@@ -9,7 +9,6 @@ import co.netguru.android.coolcal.app.App
 import co.netguru.android.coolcal.calendar.Event
 import co.netguru.android.coolcal.rendering.TimeFormatter
 import kotlinx.android.synthetic.main.fragment_event_details.*
-import org.jetbrains.anko.bundleOf
 import javax.inject.Inject
 
 class EventDetailsFragment : BaseFragment() {
@@ -20,7 +19,9 @@ class EventDetailsFragment : BaseFragment() {
 
         @JvmStatic fun newInstance(event: Event): EventDetailsFragment {
             val fragment = EventDetailsFragment()
-            fragment.arguments = bundleOf(Pair(FRAGMENT_EVENT_DETAILS_BUNDLE, event))
+            val args = Bundle()
+            args.putParcelable(FRAGMENT_EVENT_DETAILS_BUNDLE, event)
+            fragment.arguments = args
 
             return fragment
         }

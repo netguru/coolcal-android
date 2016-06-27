@@ -91,12 +91,6 @@
         <copyright>Copyright 2013 Square, Inc.</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
-    <!-- Anko-->
-    <notice>
-        <name>Anko</name>
-        <url>https://github.com/Kotlin/anko</url>
-        <license>Apache Software License 2.0</license>
-    </notice>
     <!-- Leak canary-->
     <notice>
         <name>LeakCanary</name>

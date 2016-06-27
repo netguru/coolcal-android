@@ -115,12 +115,11 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     private fun checkForCrashes() {
-        CrashManager.register(this, BuildConfig.HOCKEYAPP_APP_ID)
+        CrashManager.register(this, BuildConfig.HOCKEY_APP_ID)
     }
 
     private fun checkForUpdates() {
-        // TODO Remove this for store / production builds!
-        UpdateManager.register(this, BuildConfig.HOCKEYAPP_APP_ID)
+        UpdateManager.register(this, BuildConfig.HOCKEY_APP_ID)
     }
 
     /*
