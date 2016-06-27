@@ -1,8 +1,8 @@
 #CoolCal
 
-| production                                                                                                                                                     | staging                                                                                                                                                    |                                                     
+| production                                                                                                                                                     | master                                                                                                                                                    |                                                     
 |----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=master)](https://www.bitrise.io/app/f8461c8e446b8de1) | [![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=staging)](https://www.bitrise.io/app/f8461c8e446b8de1) |
+| [![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=production)](https://www.bitrise.io/app/f8461c8e446b8de1) | [![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=master)](https://www.bitrise.io/app/f8461c8e446b8de1) |
 
 Welcome to the **CoolCal Android** project, simple weather/calendar application.
 
@@ -10,8 +10,8 @@ Welcome to the **CoolCal Android** project, simple weather/calendar application.
 
 ### Product flavors
 The following flavors are used for building the project:
-- **staging**: used for the development cycle with workflows: _staging_.
-- **production**: used for deployment, built with _master_ workflow.
+- **staging**: used for the development cycle with workflows: _master_.
+- **production**: used for deployment, built with _production_ workflow.
 
 ### Build types 
 - **debug** 
@@ -48,8 +48,8 @@ We use Bitrise for CI and HockeyApp for APK deployment.
 
 ### Bitrise workflows:
 - **Feature** - used with feature branches.
-- **Master** - triggered by pushing to `master` branch, deploys to HockeyApp CoolCal production, used for production.
-- **Staging** - triggered by pushing to `staging` branch, deploys to HockeyApp CoolCal staging, used for development cycle.
+- **Production** - triggered by pushing to `production` branch, deploys to HockeyApp CoolCal production, used for production.
+- **Master** - triggered by pushing to `master` branch, deploys to HockeyApp CoolCal master, used for development cycle.
 
 ## Development
 
@@ -76,9 +76,9 @@ Code review is performed for each Pull Request that corresponds to a ticket in J
 
 ### Workflow
 - Start ticket in Jira
-- Create new branch from staging f.e. feature/JIR-123
+- Create new branch from master f.e. feature/JIR-123
 - Commit often to new feature branch
 - When you finish creating Pull Request and ask for review
-- When review is done merge PR into staging and delete branch
-- QA is testing build from staging branch
-- At the end of sprint after QA review create PR and merge from staging to master branch.
+- When review is done merge PR into master and delete branch
+- QA is testing build from master branch
+- At the end of sprint after QA review create PR and merge from master to production branch.
