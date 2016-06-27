@@ -72,13 +72,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         googleApiClient.connect()
     }
 
-    override fun onStop() {
-        super.onStop()
-        if (googleApiClient.isConnected) {
-            googleApiClient.disconnect()
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         ifPermissionsGranted(arrayOf(Manifest.permission.READ_CALENDAR), {
@@ -86,6 +79,14 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             fragment.onCalendarPermissionGranted()
         })
     }
+
+    override fun onStop() {
+        super.onStop()
+        if (googleApiClient.isConnected) {
+            googleApiClient.disconnect()
+        }
+    }
+
 
     override fun onPause() {
         super.onPause()
@@ -115,12 +116,11 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     }
 
     private fun checkForCrashes() {
-        CrashManager.register(this, BuildConfig.HOCKEYAPP_APP_ID)
+        CrashManager.register(this, BuildConfig.HOCKEY_APP_ID)
     }
 
     private fun checkForUpdates() {
-        // TODO Remove this for store / production builds!
-        UpdateManager.register(this, BuildConfig.HOCKEYAPP_APP_ID)
+        UpdateManager.register(this, BuildConfig.HOCKEY_APP_ID)
     }
 
     /*
