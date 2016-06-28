@@ -34,58 +34,71 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
-    defaultConfig {
-        applicationId "co.netguru.android.coolcal"
-        minSdkVersion 19
-        targetSdkVersion 23
-        versionCode = project.ext.versionCode
-        versionName "0.1"
-        vectorDrawables.useSupportLibrary = true
-    }
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
 
-    buildTypes.each { buildType ->
-        buildType.buildConfigField 'String', 'OPENWEATHERMAP_API_KEY', openWeatherMapApiKeyProp
-    }
+        def Properties versionProperties = new Properties();
+        versionProperties.load(new FileInputStream(versionPropsFile))
 
-    buildTypes {
-        debug {
-            versionNameSuffix "-debug-$versionCode"
-            debuggable true
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        release {
-            versionNameSuffix "-release-$versionCode"
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+        def major = versionProperties['MAJOR']
+        def minor = versionProperties['MINOR']
+        def patch = versionProperties['PATCH']
 
-    productFlavors {
-        staging {
-            applicationId "co.netguru.android.coolcal.staging"
-            buildConfigField 'String', hockeyAppIdField, stagingHockeyAppAppIdProp
-        }
-
-        production {
+        defaultConfig {
             applicationId "co.netguru.android.coolcal"
-            buildConfigField 'String', hockeyAppIdField, productionHockeyAppAppIdProp
+            minSdkVersion 19
+            targetSdkVersion 23
+            versionCode = project.ext.versionCode
+            versionName "${major}.${minor}.${patch}"
+            vectorDrawables.useSupportLibrary = true
         }
-    }
 
-    sourceSets {
-        debug.java.srcDirs += 'src/debug/kotlin'
-        release.java.srcDirs += 'src/release/kotlin'
-        main.java.srcDirs += 'src/main/kotlin'
-        androidTest.java.srcDirs += 'src/androidTest/kotlin'
-    }
+        buildTypes.each { buildType ->
+            buildType.buildConfigField 'String', 'OPENWEATHERMAP_API_KEY', openWeatherMapApiKeyProp
+        }
 
-    todo {
-        sourceFolder = "app/src/main/kotlin"
-        fileExtensions = ["kt", "groovy"]
+        buildTypes {
+            debug {
+                versionNameSuffix "-debug-$versionCode"
+                debuggable true
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+            release {
+                versionNameSuffix "-release-$versionCode"
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+        }
+
+        productFlavors {
+            staging {
+                applicationId "co.netguru.android.coolcal.staging"
+                buildConfigField 'String', hockeyAppIdField, stagingHockeyAppAppIdProp
+            }
+
+            production {
+                applicationId "co.netguru.android.coolcal"
+                buildConfigField 'String', hockeyAppIdField, productionHockeyAppAppIdProp
+            }
+        }
+
+        sourceSets {
+            debug.java.srcDirs += 'src/debug/kotlin'
+            release.java.srcDirs += 'src/release/kotlin'
+            main.java.srcDirs += 'src/main/kotlin'
+            androidTest.java.srcDirs += 'src/androidTest/kotlin'
+        }
+
+        todo {
+            sourceFolder = "app/src/main/kotlin"
+            fileExtensions = ["kt", "groovy"]
+        }
+
+    } else {
+        throw new GradleException("Could not read version.properties!")
     }
 }
-
 kapt {
     generateStubs = true
 }
