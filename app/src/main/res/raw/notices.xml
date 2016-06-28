@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notices>
+    <!-- Joda time -->
+    <notice>
+        <name>Joda Time</name>
+        <url>http://joda-time.sourceforge.net/</url>
+        <copyright>Copyright 2001-2005 Stephen Colebourne</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- Kotlin -->
+    <notice>
+        <name>Kotlin</name>
+        <url>https://kotlinlang.org</url>
+        <copyright>Copyright 2010-2016 JetBrains s.r.o.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- SlidingUpPanel -->
+    <notice>
+        <name>AndroidSlidingUpPanel</name>
+        <url>https://github.com/umano/AndroidSlidingUpPanel</url>
+        <copyright>Copyright 2015 Anton Lopyrev</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- Kotterknife -->
+    <notice>
+        <name>Kotter Knife</name>
+        <url>https://github.com/JakeWharton/kotterknife</url>
+        <copyright>Copyright 2014 Jake Wharton</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- SectionCursorAdapter-->
+    <notice>
+        <name>SectionCursorAdapter</name>
+        <url>https://github.com/twotoasters/SectionCursorAdapter</url>
+        <copyright>Copyright 2014 Two Toasters</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- Rebound-->
+    <notice>
+        <name>Rebound</name>
+        <url>http://facebook.github.io/rebound/</url>
+        <copyright>Copyright (c) 2013, Facebook, Inc. All rights reserved.</copyright>
+        <license>BSD 2-Clause License</license>
+    </notice>
+    <!-- Wava-->
+    <notice>
+        <name>wava</name>
+        <url>https://github.com/hujiaweibujidao/wava</url>
+        <copyright>Copyright (c) 2016 Hujiawei</copyright>
+        <license>MIT License</license>
+    </notice>
+    <!-- GSON-->
+    <notice>
+        <name>google-gson</name>
+        <url>https://github.com/google/gson</url>
+        <copyright>Copyright 2008 Google Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- Retrofit-->
+    <notice>
+        <name>Retrofit</name>
+        <url>http://square.github.io/retrofit/</url>
+        <copyright>Copyright 2013 Square, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- RxJava-->
+    <notice>
+        <name>RxJava: Reactive Extensions for the JVM</name>
+        <url>https://github.com/ReactiveX/RxJava</url>
+        <copyright>Copyright 2013 Netflix, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- RxAndroid-->
+    <notice>
+        <name>RxAndroid: Reactive Extensions for Android</name>
+        <url>https://github.com/ReactiveX/RxJava</url>
+        <copyright>Copyright 2015 The RxAndroid authors</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- Dagger 2-->
+    <notice>
+        <name>Dagger 2</name>
+        <url>https://github.com/google/dagger</url>
+        <copyright>Copyright 2012 Square, Inc. Copyright 2012 Google, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- Picasso-->
+    <notice>
+        <name>Picasso</name>
+        <url>http://square.github.io/picasso/</url>
+        <copyright>Copyright 2013 Square, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- Leak canary-->
+    <notice>
+        <name>LeakCanary</name>
+        <url>https://github.com/square/leakcanary</url>
+        <copyright>Copyright 2015 Square, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- LicensesDialog-->
+    <notice>
+        <name>LicensesDialog</name>
+        <url>https://github.com/PSDev/LicensesDialog</url>
+        <copyright>Copyright 2013-2016 Philip Schiffer</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <!-- Roboelectric-->
+    <notice>
+        <name>Robolectric</name>
+        <url>http://robolectric.org</url>
+        <copyright>Copyright (c) 2010 Xtreme Labs and Pivotal Labs</copyright>
+        <license>MIT License</license>
+    </notice>
+    <!-- Mockito-->
+    <notice>
+        <name>Mockito</name>
+        <url>http://mockito.org</url>
+        <copyright>Copyright (c) 2007 Mockito contributors</copyright>
+        <license>MIT License</license>
+    </notice>
+</notices>

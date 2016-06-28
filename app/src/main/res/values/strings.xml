@@ -1,5 +1,22 @@
 <resources>
     <string name="app_name">CoolCal</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="action_settings">Settings</string>
+    <string name="weather_icon_description">Weather condition icon</string>
+
+    <string name="localization_disabled">Turn on localization to update weather</string>
+    <string name="localization_access_not_granted">Localization permission not granted. Weather can not be displayed.</string>
+    <string name="calendar_access_not_granted">Calendar permission not granted. Calendar events can not be displayed.</string>
+
+    <string name="text_number_of_events">Number of events:</string>
+    <string name="text_busy_for">Busy for:</string>
+    <string name="panel_handle_description">Panel handle</string>
+
+    <string name="all_day">All day</string>
+    <string name="time_placeholder">--:--</string>
+    <string name="weather_background_image">Weather background image</string>
+    <string name="weather_request_error">Error during weather fetching :(</string>
+    <string name="weather_desc_default">Weather Description</string>
+
+    <string name="text_no_events">You don\'t have any events :(</string>
+
+    <string name="action_licenses">Licenses</string>
 </resources>

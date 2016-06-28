@@ -1,0 +1,99 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/weatherFragmentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".ui.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <ImageView
+        android:id="@+id/weatherBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/weather_background_image"
+        android:fitsSystemWindows="true"
+        android:cropToPadding="false"/>
+
+    <ScrollView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/spacing_top"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/weatherMessageTextView"
+                style="@style/AppTheme.Weather.DropShadow.LargeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                tools:text="It will be a lovely day!" />
+
+            <TextView
+                android:id="@+id/weatherDescriptionTextView"
+                style="@style/AppTheme.Weather.DropShadow.SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:textColor="@android:color/white"
+                tools:text="Scattered clouds" />
+
+            <ImageView
+                android:id="@+id/weatherIconImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:contentDescription="@string/weather_icon_description"
+                tools:src="@drawable/icon_clear_sky_day" />
+
+
+            <TextView
+                android:id="@+id/weatherTemperatureTextView"
+                style="@style/AppTheme.Weather.DropShadow.LargeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_small"
+                tools:text="21\u00b0" />
+
+            <TextView
+                android:id="@+id/weatherWindTextView"
+                style="@style/AppTheme.Weather.DropShadow.SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:drawableStart="@drawable/icon_tools_wind"
+                android:textColor="@android:color/white"
+                tools:text="2 mph E" />
+
+            <TextView
+                android:id="@+id/weatherPressureTextView"
+                style="@style/AppTheme.Weather.DropShadow.SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:drawableStart="@drawable/icon_tools_pressure"
+                android:textColor="@android:color/white"
+                tools:text="1 036 mb" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+</FrameLayout>
