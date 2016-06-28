@@ -1,35 +1,18 @@
 .gradle
 !settings.gradle
-.DS_Store
-/build
- 
-# built application files
-*.apk
-# files for the dex VM
-*.dex
-
-# generated files
-bin/
-bin
-gen
-gen/
   
 # Local configuration file (sdk path, etc)
 *.properties
-  
-# Eclipse project files
-.classpath
-.project
+!gradle-wrapper.properties
   
 # Android Studio
-.idea/
-/*/local.properties
-/*/out
-/*/*/build
+.idea
 build
-/*/*/production
 *.iml
 *.iws
 *.ipr
-*~
 *.swp
+*~
+~$*
+
+.DS_Store

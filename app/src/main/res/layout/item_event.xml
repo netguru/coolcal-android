@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingRight="@dimen/spacing_large"
+    android:paddingTop="@dimen/spacing_normal"
+    tools:ignore="RtlSymmetry">
+
+    <ImageView
+        android:id="@+id/event_time_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/time_indicator_margin"
+        android:layout_marginTop="@dimen/time_indicator_margin_top"
+        android:src="@drawable/current_time_indicator_timeline"/>
+
+    <LinearLayout
+        android:id="@+id/event_time_duration_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/spacing_large"
+        android:layout_alignParentStart="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/event_time"
+            style="@style/AppTheme.EventPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minEms="4"
+            tools:text="21:37" />
+
+        <Space
+            android:id="@+id/event_time_space"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_tiny" />
+
+        <TextView
+            android:id="@+id/event_duration"
+            style="@style/AppTheme.EventSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minEms="4"
+            tools:text="20h 30m" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/event_icon_temperature_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/event_weather_icon"
+            android:layout_width="@dimen/icon_size_small"
+            android:layout_height="@dimen/icon_size_small"
+            android:layout_gravity="center"
+            android:contentDescription="@string/weather_icon_description"
+            tools:src="@mipmap/ic_launcher" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_tiny" />
+
+        <TextView
+            android:id="@+id/event_temperature"
+            style="@style/AppTheme.EventSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            tools:text="9" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_large"
+        android:layout_marginStart="@dimen/spacing_tiny"
+        android:layout_toEndOf="@id/event_time_duration_layout"
+        android:layout_toStartOf="@id/event_icon_temperature_layout"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/event_title"
+            style="@style/AppTheme.EventPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Event title" />
+
+        <Space
+            android:id="@+id/event_title_space"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_tiny" />
+
+        <TextView
+            android:id="@+id/event_message"
+            style="@style/AppTheme.EventSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Informal description" />
+    </LinearLayout>
+
+</RelativeLayout>

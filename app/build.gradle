@@ -1,32 +1,33 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'de.felixschulze.gradle.hockeyapp'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.autoscout24.gradle.todo'
 
-// kockeyapp integration
-hockeyapp {
-    notify = 1 // 1 - Notify all testers
-    status = 2 // 2 - Make available for download
-    notesType = 1 // 1 - Markdown format
-    notes = "Build number: " + System.getenv("CIRCLE_BUILD_NUM")
-    variantToApiToken = [
-            stagingDebug     : "11fd3051b7e84463a3886d697ad4a1ac",
-            productionRelease: "a215b9c3e6db473190c3c87bdb4d866f"
-    ]
-    variantToReleaseType = [
-            stagingDebug     : 0, // 0 - Beta release
-            productionRelease: 1 // 1 - Live release
-    ]
-    variantToApplicationId = [
-            stagingDebug     : "58ea9641fa3f44f39ca9e8de891460ad",
-            productionRelease: "289d8cbf7a8c4c808aab7b60b7923c3e",
-    ]
-    mappingFileNameRegex = "mapping.txt"
+/**
+ * Function to retrieve a secret from environment variable or gradle property
+ * @param envVarName name of the environment variable to be used in the first place
+ * @param propertyName name of the gradle.properties entry
+ * @return value of the env. var, property or "undefined"
+ */
+def secret(String envVarName, String propertyName) {
+    try {
+        return '"' + (System.getenv(envVarName) ?: property(propertyName)) + '"'
+    } catch (MissingPropertyException ignored) {
+        return "\"$propertyName undefined\""
+    }
 }
 
-// CI
+def hockeyAppIdField = 'HOCKEY_APP_ID'
+
+def stagingHockeyAppAppIdProp = secret("HOCKEYAPP_APP_ID_STAGING", "HockeyAppAppIdStaging")
+def productionHockeyAppAppIdProp = secret("HOCKEYAPP_APP_ID_PRODUCTION", "HockeyAppAppIdProduction")
+def openWeatherMapApiKeyProp = secret("OPENWEATHERMAP_API_KEY", "OpenWeatherMapApiKey")
+
 project.ext {
-    circleDir = System.getenv("CIRCLE_ARTIFACTS") ?: "./build"
-    versionCode = Integer.parseInt(System.getenv("CIRCLE_BUILD_NUM") ?: "0")
+    localBuildVersionCode = Integer.MAX_VALUE
+    bitriseBuildNumber = System.getenv("BITRISE_BUILD_NUMBER")
+    versionCode = bitriseBuildNumber ? Integer.parseInt(bitriseBuildNumber) : localBuildVersionCode
 }
 
 android {
@@ -35,18 +36,26 @@ android {
 
     defaultConfig {
         applicationId "co.netguru.android.coolcal"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode = project.ext.versionCode
+        versionName "0.1"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes.each { buildType ->
+        buildType.buildConfigField 'String', 'OPENWEATHERMAP_API_KEY', openWeatherMapApiKeyProp
     }
 
     buildTypes {
         debug {
+            versionNameSuffix "-debug-$versionCode"
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
+            versionNameSuffix "-release-$versionCode"
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -55,42 +64,106 @@ android {
     productFlavors {
         staging {
             applicationId "co.netguru.android.coolcal.staging"
+            buildConfigField 'String', hockeyAppIdField, stagingHockeyAppAppIdProp
         }
 
         production {
             applicationId "co.netguru.android.coolcal"
+            buildConfigField 'String', hockeyAppIdField, productionHockeyAppAppIdProp
         }
     }
 
     sourceSets {
+        debug.java.srcDirs += 'src/debug/kotlin'
+        release.java.srcDirs += 'src/release/kotlin'
         main.java.srcDirs += 'src/main/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+
+    todo {
+        sourceFolder = "app/src/main/kotlin"
+        fileExtensions = ["kt", "groovy"]
     }
 }
 
+kapt {
+    generateStubs = true
+}
 
 dependencies {
-    // lang support
+    // Kotlin standard library
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    // lib
-    compile 'net.hockeyapp.android:HockeySDK:2.2.1'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    // HockeyApp
+    compile 'net.hockeyapp.android:HockeySDK:3.7.0'
+
+    // Android support libs
+    compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
 
-    // module
-    compile project(':owm')
+    // Play Services Location
+    compile 'com.google.android.gms:play-services-location:8.4.0'
+
+    // Sliding up panel
+    compile 'com.sothree.slidinguppanel:library:3.2.0'
+
+    // Kotterknife / Butterknife
+    compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+
+    // JodaTime
+    compile 'joda-time:joda-time:2.9.1' // todo: change to JodaTime-android for smaller apk
+
+    // SectionCursorAdapter
+    compile 'com.twotoasters.SectionCursorAdapter:library:2.0.1'
+
+    // Rebound
+    compile 'com.facebook.rebound:rebound:0.3.8'
+
+    //Wava animations
+    compile 'com.github.hujiaweibujidao:wava:1.0.0'
+
+    // GSON
+    compile 'com.google.code.gson:gson:2.5'
+
+    // Retrofit
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+
+    // ReactiveX
+    compile 'io.reactivex:rxandroid:1.0.1'
+
+    // Dagger2
+    kapt 'com.google.dagger:dagger-compiler:2.0.2'
+    compile 'com.google.dagger:dagger:2.0.2'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    // Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // test
+    testCompile "org.robolectric:robolectric:3.0"
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+
+    // Leak canary
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+
+    //Licenses dialog
+    compile 'de.psdev.licensesdialog:licensesdialog:1.8.1'
 }
 
 buildscript {
-    ext.kotlin_version = '1.0.0-beta-3595'
+    ext.kotlin_version = '1.0.0'
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
     }
-}
-repositories {
-    mavenCentral()
 }

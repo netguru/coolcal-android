@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_large"
+        android:paddingStart="@dimen/spacing_large"
+        android:paddingTop="@dimen/spacing_normal">
+
+        <TextView
+            android:id="@+id/dayOfMonthTextView"
+            style="@style/AppTheme.Header.LargeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:includeFontPadding="false"
+            tools:text="05" />
+
+        <TextView
+            android:id="@+id/dayOfWeekTextView"
+            style="@style/AppTheme.Header.SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/dayOfMonthTextView"
+            android:layout_marginStart="@dimen/spacing_tiny"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/dayOfMonthTextView"
+            tools:text="tuesday" />
+    </RelativeLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="ifContentScrolls"
+        android:paddingEnd="@dimen/spacing_large"
+        android:paddingStart="@dimen/spacing_large"
+        android:scrollbars="none">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <co.netguru.android.coolcal.calendar.EventTimelineView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/eventTimelineView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barSpacing="@dimen/spacing_extra_tiny"
+                app:bottomSpacing="@dimen/spacing_extra_small"
+                app:endSpacing="@dimen/spacing_small"
+                app:markTime="2"
+                app:startSpacing="@dimen/spacing_small"
+                app:timeIndicatorColor="@color/timeline_time_indicator"
+                app:timeIndicatorSize="@dimen/time_indicator_size"
+                app:timelineUnit="hour"
+                app:topSpacing="@dimen/spacing_extra_tiny" />
+        </FrameLayout>
+    </HorizontalScrollView>
+</LinearLayout>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--Fake toolbar contains close button and event title-->
+    <LinearLayout
+        android:id="@+id/eventTitleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/eventIconClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@drawable/icon_close" />
+
+        <TextView
+            android:id="@+id/eventDetailsTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="bottom"
+            android:minHeight="@dimen/min_height_toolbar_twice"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_extra_large" />
+    </LinearLayout>
+
+    <!--Event details-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/eventTitleLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--Event time-->
+            <LinearLayout
+                android:id="@+id/eventDetailsTimeLayout"
+                style="@style/AppTheme.EventDetailLayout"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    style="@style/AppTheme.EventDetailIcon"
+                    android:contentDescription="@string/app_name"
+                    app:srcCompat="@drawable/icon_clock" />
+
+                <TextView
+                    android:id="@+id/eventDetailsTimeText"
+                    style="@style/AppTheme.EventDetailText" />
+            </LinearLayout>
+
+            <!--Event location-->
+            <LinearLayout
+                android:id="@+id/eventDetailsLocationLayout"
+                style="@style/AppTheme.EventDetailLayout"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    style="@style/AppTheme.EventDetailIcon"
+                    android:contentDescription="@string/app_name"
+                    app:srcCompat="@drawable/icon_location" />
+
+                <TextView
+                    android:id="@+id/eventDetailsLocationText"
+                    style="@style/AppTheme.EventDetailText" />
+            </LinearLayout>
+
+            <!--Event notes-->
+            <LinearLayout
+                android:id="@+id/eventDetailsNotesLayout"
+                style="@style/AppTheme.EventDetailLayout"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    style="@style/AppTheme.EventDetailIcon"
+                    android:contentDescription="@string/app_name"
+                    app:srcCompat="@drawable/icon_event_notes" />
+
+                <TextView
+                    android:id="@+id/eventDetailsNotesText"
+                    style="@style/AppTheme.EventDetailText" />
+            </LinearLayout>
+
+            <!--Event owner-->
+            <LinearLayout
+                android:id="@+id/eventDetailsOwnerLayout"
+                style="@style/AppTheme.EventDetailLayout"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    style="@style/AppTheme.EventDetailIcon"
+                    android:contentDescription="@string/app_name"
+                    app:srcCompat="@drawable/icon_calendar" />
+
+                <TextView
+                    android:id="@+id/eventDetailsOwnerText"
+                    style="@style/AppTheme.EventDetailText" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
