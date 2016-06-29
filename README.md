@@ -22,7 +22,8 @@ Build types currently do not differ.
 ### Build properties
 Each build requires defining a set of properties that are injected into the application code through BuildConfig generation. The properties are:
 
-- HockeyApp App ID
+- HockeyAppAppIdStaging
+- HockeyAppAppIdProduction
 - OpenWeatherMap Api Key
 
 Instructions for providing properties:
@@ -30,15 +31,20 @@ Instructions for providing properties:
 #### Local builds
 Define properties in `gradle.properties`. Paste the following code and insert values, **without quotation marks**: 
 ```
-HockeyAppAppId=
+HockeyAppAppIdStaging=
+HockeyAppAppIdProduction=
 OpenWeatherMapApiKey=
 ```
 
 #### Bitrise builds
 Define **secret environment variables** for your app on Bitrise. Variables should be named:
 ```
-HOCKEYAPP_APP_ID
+HOCKEYAPP_APP_ID_STAGING
+HOCKEYAPP_APP_ID_PRODUCTION
 OPENWEATHERMAP_API_KEY
+KEYSTORE_PASSWORD
+KEYSTORE_ALIAS
+KEYSTORE_PRIVATE_PASSWORD
 ```
 ### ProGuard
 Configured.
