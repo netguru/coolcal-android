@@ -4,87 +4,43 @@
 |----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=production)](https://www.bitrise.io/app/f8461c8e446b8de1) | [![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=master)](https://www.bitrise.io/app/f8461c8e446b8de1) |
 
-Welcome to the **CoolCal Android** project, simple weather/calendar application.
+Welcome to the **CoolCal Android** project, simple weather/calendar application. You can find app on [Google Play](https://play.google.com/store/apps/details?id=co.netguru.android.coolcal)
 
-## Building
+### Contributing
 
-### Product flavors
-The following flavors are used for building the project:
-- **staging**: used for the development cycle with workflows: _master_.
-- **production**: used for deployment, built with _production_ workflow.
+We’re really happy to accept contributions from the community, that’s the main reason why we open-sourced it! There are many ways to contribute, even if you’re not a technical person.
 
-### Build types 
-- **debug** 
-- **release** 
+We’re using the github workflow to accept modifications (even internally), basically you’ll have to:
 
-Build types currently do not differ.
+* create an issue related to the problem you want to fix(good for traceability and cross-reference)
+* fork the repository
+* create a branch by convenction feature/TaskName
+* develop
+* commit incrementally with readable and detailed commit messages
+* submit a pull-request against the master branch of this repository
 
-### Build properties
-Each build requires defining a set of properties that are injected into the application code through BuildConfig generation. The properties are:
+If you have any questions just write to us coolcal@netguru.co. 
 
-- HockeyAppAppIdStaging
-- HockeyAppAppIdProduction
-- OpenWeatherMap Api Key
+### Submitting bugs
 
-Instructions for providing properties:
+You can report issues directly on Github, that would be a really helpful contribution.Please document as much as possible the steps to reproduce your problem (even better with screenshots).
 
-#### Local builds
-Define properties in `gradle.properties`. Paste the following code and insert values, **without quotation marks**: 
-```
-HockeyAppAppIdStaging=
-HockeyAppAppIdProduction=
-OpenWeatherMapApiKey=
-```
+###License
+=======
 
-#### Bitrise builds
-Define **secret environment variables** for your app on Bitrise. Variables should be named:
-```
-HOCKEYAPP_APP_ID_STAGING
-HOCKEYAPP_APP_ID_PRODUCTION
-OPENWEATHERMAP_API_KEY
-KEYSTORE_PASSWORD
-KEYSTORE_ALIAS
-KEYSTORE_PRIVATE_PASSWORD
-```
-### ProGuard
-Configured.
+    Copyright 2016 Netguru sp z.o.o 
 
-## Deployment
-We use Bitrise for CI and HockeyApp for APK deployment.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-### Bitrise workflows:
-- **Feature** - used with feature branches.
-- **Production** - triggered by pushing to `production` branch, deploys to HockeyApp CoolCal production, used for production.
-- **Master** - triggered by pushing to `master` branch, deploys to HockeyApp CoolCal master, used for development cycle.
+       http://www.apache.org/licenses/LICENSE-2.0
 
-## Development
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
-### Integrations
-#### HockeyApp
-HockeyApp integration serves as deployment platform. The api key for different
-build flavors MUST be different. HockeyApp's crash manager SHOULD only be initialized for non-debug
-builds.
 
-### Supported devices
-- minSdkVersion: 19
-- targetSdkVersion: 23
-
-### Coding guidelines
-- The code should be readable and self-explanatory according to Netguru guidelines - full variable names, meaningful methods, etc.
-- Document public interfaces
-- Please leave no commented-out code.
-
-### Architecture
-The project is based on Dagger 2. Activities represent basic business processes in the app and Fragments correspond with views. API calls to open weather backend are based on Retrofit 2.
-
-### Code review
-Code review is performed for each Pull Request that corresponds to a ticket in Jira. When you are ready to show your code set "Ready for review" label. After review reviewer sets "Review done" label and comments if there is any feedback. Developer responsible for PR is obliged to merge it into the master branch.
-
-### Workflow
-- Start ticket in Jira
-- Create new branch from master f.e. feature/JIR-123
-- Commit often to new feature branch
-- When you finish creating Pull Request and ask for review
-- When review is done merge PR into master and delete branch
-- QA is testing build from master branch
-- At the end of sprint after QA review create PR and merge from master to production branch.
+ [1]: https://github.com/netguru/coolcal-android
