@@ -1,8 +1,6 @@
-#CoolCal
+# CoolCal
 
-| production                                                                                                                                                     | master                                                                                                                                                    |                                                     
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=production)](https://www.bitrise.io/app/f8461c8e446b8de1) | [![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=master)](https://www.bitrise.io/app/f8461c8e446b8de1) |
+[![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=master)](https://www.bitrise.io/app/f8461c8e446b8de1)
 
 Welcome to the **CoolCal Android** project, simple weather/calendar application. You can find app on [Google Play](https://play.google.com/store/apps/details?id=co.netguru.android.coolcal)
 
