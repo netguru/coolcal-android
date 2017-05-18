@@ -1,8 +1,6 @@
-#CoolCal
+# CoolCal
 
-| production                                                                                                                                                     | master                                                                                                                                                    |                                                     
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=production)](https://www.bitrise.io/app/f8461c8e446b8de1) | [![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=master)](https://www.bitrise.io/app/f8461c8e446b8de1) |
+[![Build Status](https://www.bitrise.io/app/f8461c8e446b8de1.svg?token=Ydp21H8UswECEztLf4Zn9A&branch=master)](https://www.bitrise.io/app/f8461c8e446b8de1)
 
 Welcome to the **CoolCal Android** project, simple weather/calendar application. You can find app on [Google Play](https://play.google.com/store/apps/details?id=co.netguru.android.coolcal)
 
@@ -25,7 +23,7 @@ If you have any questions just write to us coolcal@netguru.co.
 
 You can report issues directly on Github, that would be a really helpful contribution.Please document as much as possible the steps to reproduce your problem (even better with screenshots).
 
-###License
+### License
 =======
 
     Copyright 2016 Netguru sp z.o.o 
