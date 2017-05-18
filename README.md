@@ -23,7 +23,7 @@ If you have any questions just write to us coolcal@netguru.co.
 
 You can report issues directly on Github, that would be a really helpful contribution.Please document as much as possible the steps to reproduce your problem (even better with screenshots).
 
-###License
+### License
 =======
 
     Copyright 2016 Netguru sp z.o.o 
