@@ -9,6 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#FF888888</color>
 
+    <color name="text_black">#000</color>
+
     <color name="current_event_background">#FF888888</color>
     <color name="calendar_event_time_color">#373737</color>
     <color name="calendar_event_duration_color">#999999</color>
