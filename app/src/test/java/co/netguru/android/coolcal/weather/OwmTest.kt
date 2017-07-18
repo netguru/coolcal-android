@@ -24,6 +24,8 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
 
     lateinit var openWeatherMap: OpenWeatherMap
 
+    private val city = "Kraków"
+
     @Before
     fun prepare() {
         val interceptor = OwmInterceptor(BuildConfig.OPENWEATHERMAP_API_KEY)
@@ -51,15 +53,20 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
 
     @Test
     @Throws(Exception::class)
-    fun testCalls() {
-        testCall(openWeatherMap.getWeather("Kraków"))
-        testCall(openWeatherMap.getForecast("Kraków"))
+    fun testForecastCall() {
+        testCall(openWeatherMap.getForecast(city))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun testWeatherCall() {
+        testCall(openWeatherMap.getWeather(city))
     }
 
     @Test
     @Throws(Exception::class)
     fun testWeatherResponse() {
-        openWeatherMap.getWeather("Kraków")
+        openWeatherMap.getWeather(city)
                 .toBlocking()
                 .forEach { response ->
                     assertNotNull(response.coord)
@@ -75,7 +82,7 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
     @Test
     @Throws(Exception::class)
     fun testForecastResponse() {
-        openWeatherMap.getForecast("Kraków", count = 1)
+        openWeatherMap.getForecast(city, count = 1)
                 .toBlocking()
                 .forEach { response ->
                     response.forecastList.forEach {
