@@ -1,18 +1,13 @@
 package co.netguru.android.coolcal.weather
 
 import co.netguru.android.coolcal.BuildConfig
-import co.netguru.android.coolcal.rest.CacheControlInterceptor
-import co.netguru.android.coolcal.rest.OwmInterceptor
-import com.squareup.okhttp.OkHttpClient
+import co.netguru.android.coolcal.NetworkServiceHelper
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricGradleTestRunner
 import org.robolectric.annotation.Config
-import retrofit.GsonConverterFactory
-import retrofit.Retrofit
-import retrofit.RxJavaCallAdapterFactory
 import rx.Observable
 import rx.observers.TestSubscriber
 
@@ -28,27 +23,20 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
 
     @Before
     fun prepare() {
-        val interceptor = OwmInterceptor(BuildConfig.OPENWEATHERMAP_API_KEY)
-        val client = OkHttpClient()
-        client.interceptors().add(interceptor)
-        client.networkInterceptors().add(CacheControlInterceptor(10 * 60L, 10 * 60L))
-        val retrofit = Retrofit.Builder()
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(OpenWeatherMap.API_ROOT)
-                .build()
+        val retrofit = NetworkServiceHelper().provideRetrofit(OpenWeatherMap.API_ROOT)
         openWeatherMap = retrofit.create(OpenWeatherMap::class.java)
     }
 
     @Throws(Exception::class)
-    fun<T> testCall(obs: Observable<T>) {
+    fun <T> testCall(obs: Observable<T>) {
         val testSubscriber = TestSubscriber<T>()
 
         obs.subscribe(testSubscriber)
 
-        testSubscriber.assertValueCount(1)
-        testSubscriber.assertCompleted()
+        testSubscriber.apply {
+            assertValueCount(1)
+            assertCompleted()
+        }
     }
 
     @Test
@@ -69,12 +57,15 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
         openWeatherMap.getWeather(city)
                 .toBlocking()
                 .forEach { response ->
-                    assertNotNull(response.coord)
-                    assertNotNull(response.cityName)
-                    assertNotNull(response.weather[0])
-                    assertNotNull(response.main)
-                    assertNotNull(response.wind)
-                    assertNotNull(response.sys)
+                    response.apply {
+                        assertNotNull(coord)
+                        assertNotNull(cityName)
+                        assertNotNull(weather[0])
+                        assertNotNull(main)
+                        assertNotNull(wind)
+                        assertNotNull(sys)
+                    }
+
                     System.out.println(response.toString())
                 }
     }
@@ -87,11 +78,14 @@ class TestNoLeakCanaryApp : NoLeakCanaryApp() {
                 .forEach { response ->
                     response.forecastList.forEach {
                         forecast ->
-                        assertNotNull(forecast.main)
-                        assertNotNull(forecast.weatherList[0])
-                        assertNotNull(forecast.dateString)
+                        forecast.apply {
+                            assertNotNull(main)
+                            assertNotNull(weatherList[0])
+                            assertNotNull(dateString)
+                        }
+
+                        System.out.println(response.toString())
                     }
-                    System.out.println(response.toString())
                 }
     }
 }
