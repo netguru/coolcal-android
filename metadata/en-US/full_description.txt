@@ -1,0 +1,9 @@
+Coolcal is a simple and easy-to-use weather calendar application that will make your day better. Funny comments about current or forecast weather will fill you with positive energy for the rest of your day :D A minimalist event list will show you a selection of interesting events in your nearest area. You can also check the details of a particular event.
+		
+Key feature:
+- simple 
+- material design
+- beautiful 
+- funny
+
+Download it right now and smile :D
