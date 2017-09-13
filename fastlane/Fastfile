@@ -9,8 +9,8 @@ platform :android do
 
   desc "Deploy app to playstore"
   lane :production do
-    supply(json_key: ENV["$BITRISEIO_SERVICE_ACCOUNT_JSON_URL"],
-    package_name: ENV["$APP_PACKAGE_ID"],
+    supply(json_key: ENV["BITRISEIO_SERVICE_ACCOUNT_JSON_URL"],
+    package_name: ENV["APP_PACKAGE_ID"],
     track: ENV["FASTLANE_TRACK"],
       apk: ENV["$BITRISE_SIGNED_APK_PATH"],
       skip_upload_metadata: true,
